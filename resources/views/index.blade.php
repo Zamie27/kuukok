@@ -40,10 +40,10 @@
     </section>
 
     <!-- Tentang Kami -->
-    <section id="tentang-kami" class="relative bg-base-100">
+    <section id="tentang-kami" class="relative bg-section-light">
         <div class="max-w-7xl mx-auto px-4 lg:px-8 flex flex-col gap-12 md:gap-16 py-24 md:py-32">
             <!-- Title -->
-            <div class="text-center space-y-3 animate-fade-up">
+            <div class="text-center space-y-3 reveal-on-scroll">
                 <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-base-content">Tentang Kami</h2>
                 <p class="text-base md:text-lg text-base-content/70">Solusi digital profesional dengan fokus pada kualitas, konsistensi, dan hasil nyata</p>
             </div>
@@ -51,7 +51,7 @@
             <div class="divider"></div>
 
             <!-- Feature grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-up">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-on-scroll">
                 <div class="card bg-base-100 border border-base-300 shadow-sm">
                     <div class="card-body">
                         <div class="flex items-center gap-3 mb-2">
@@ -107,7 +107,7 @@
             </div>
 
             <!-- Centered stats strip -->
-            <div class="animate-fade-up flex justify-center">
+            <div class="reveal-on-scroll flex justify-center">
                 <div class="stats stats-vertical sm:stats-horizontal w-full max-w-full sm:max-w-3xl shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300 rounded-2xl text-center">
                     <div class="stat">
                         <div class="stat-title text-base-content/70">Projects Completed</div>
@@ -130,16 +130,17 @@
     </section>
 
     <!-- Portofolio -->
-    <section id="portfolio" class="relative bg-base-100">
+    <section id="portfolio" class="relative bg-section-secondary">
         <div class="max-w-7xl mx-auto px-4 lg:px-8 py-24 md:py-28 space-y-10 portfolio">
-            <div class="text-center space-y-3 animate-fade-up">
-                <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-base-content">Portofolio</h2>
-                <p class="text-base md:text-lg text-base-content/70">Beberapa proyek terbaik yang telah kami kerjakan</p>
+            <div class="text-center space-y-3 reveal-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-inherit">Portofolio</h2>
+                <p class="text-base md:text-lg text-inherit opacity-90">Beberapa proyek terbaik yang telah kami kerjakan</p>
             </div>
 
-            <div class="portfolio__grid animate-fade-up">
+            <div class="portfolio__grid reveal-on-scroll">
                 <article class="portfolio__card interactive-transition">
                     <div class="portfolio__image">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Corporate Website" loading="lazy">
                         <div class="portfolio__overlay"></div>
                     </div>
                     <div class="portfolio__body">
@@ -151,75 +152,80 @@
                 </article>
                 <article class="portfolio__card interactive-transition">
                     <div class="portfolio__image">
+                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80" alt="Brand Identity" loading="lazy">
                         <div class="portfolio__overlay"></div>
                     </div>
                     <div class="portfolio__body">
                         <div class="portfolio__category">Design</div>
                         <h3 class="portfolio__title">Brand Identity</h3>
                         <p class="portfolio__desc">Logo, color palette, dan brand guideline lengkap.</p>
-                        <div class="card-actions justify-end"><a href="#" class="link link-primary">Lihat Detail →</a></div>
+                        <div class="card-actions justify-end"><a href="#" class="portfolio__link">Lihat Detail →</a></div>
                     </div>
                 </article>
                 <article class="portfolio__card interactive-transition">
                     <div class="portfolio__image">
+                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=800&q=80" alt="E-Commerce Platform" loading="lazy">
                         <div class="portfolio__overlay"></div>
                     </div>
                     <div class="portfolio__body">
                         <div class="portfolio__category">Web App</div>
                         <h3 class="portfolio__title">E‑Commerce Platform</h3>
                         <p class="portfolio__desc">Toko online dengan payment gateway terintegrasi.</p>
-                        <div class="card-actions justify-end"><a href="#" class="link link-primary">Lihat Detail →</a></div>
+                        <div class="card-actions justify-end"><a href="#" class="portfolio__link">Lihat Detail →</a></div>
                     </div>
                 </article>
                 <article class="portfolio__card interactive-transition">
                     <div class="portfolio__image">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80" alt="Mobile App UI/UX" loading="lazy">
                         <div class="portfolio__overlay"></div>
                     </div>
                     <div class="portfolio__body">
                         <div class="portfolio__category">UI/UX</div>
                         <h3 class="portfolio__title">Mobile App UI/UX</h3>
                         <p class="portfolio__desc">Desain aplikasi mobile yang user‑friendly.</p>
-                        <div class="card-actions justify-end"><a href="#" class="link link-primary">Lihat Detail →</a></div>
+                        <div class="card-actions justify-end"><a href="#" class="portfolio__link">Lihat Detail →</a></div>
                     </div>
                 </article>
                 <article class="portfolio__card interactive-transition">
                     <div class="portfolio__image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Dashboard Analytics" loading="lazy">
                         <div class="portfolio__overlay"></div>
                     </div>
                     <div class="portfolio__body">
                         <div class="portfolio__category">Data Viz</div>
                         <h3 class="portfolio__title">Dashboard Analytics</h3>
                         <p class="portfolio__desc">Platform analitik dengan visualisasi data real‑time.</p>
-                        <div class="card-actions justify-end"><a href="#" class="link link-primary">Lihat Detail →</a></div>
+                        <div class="card-actions justify-end"><a href="#" class="portfolio__link">Lihat Detail →</a></div>
                     </div>
                 </article>
                 <article class="portfolio__card interactive-transition">
                     <div class="portfolio__image">
+                        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80" alt="Social Media Content" loading="lazy">
                         <div class="portfolio__overlay"></div>
                     </div>
                     <div class="portfolio__body">
                         <div class="portfolio__category">Content</div>
                         <h3 class="portfolio__title">Social Media Content</h3>
                         <p class="portfolio__desc">Konten visual dan video marketing untuk sosmed.</p>
-                        <div class="card-actions justify-end"><a href="#" class="link link-primary">Lihat Detail →</a></div>
+                        <div class="card-actions justify-end"><a href="#" class="portfolio__link">Lihat Detail →</a></div>
                     </div>
                 </article>
             </div>
             <div class="flex justify-center">
-                <a href="{{ route('portfolio.index') }}" class="btn btn-outline btn-primary">Lihat Portofolio Lainnya →</a>
+                <a href="#" class="btn btn-outline btn-primary bg-base-100">Lihat Portofolio Lainnya →</a>
             </div>
         </div>
     </section>
 
     <!-- Harga -->
-    <section id="pricing" class="relative bg-base-100">
+    <section id="pricing" class="relative bg-section-light">
         <div class="max-w-7xl mx-auto px-4 lg:px-8 py-24 md:py-28 space-y-10 pricing">
-            <div class="text-center space-y-3 animate-fade-up">
+            <div class="text-center space-y-3 reveal-on-scroll">
                 <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-base-content">Paket & Layanan</h2>
                 <p class="text-base md:text-lg text-base-content/70">Harga terjangkau dengan kualitas profesional untuk berbagai kebutuhan</p>
             </div>
 
-            <div class="pricing__grid animate-fade-up">
+            <div class="pricing__grid reveal-on-scroll">
                 <!-- Basic -->
                 <article class="pricing__card interactive-transition">
                     <div class="card-body space-y-4">
@@ -278,16 +284,92 @@
     </section>
 
     <!-- Testimoni -->
-    <section id="testimoni" class="relative bg-base-100">
+    <section id="testimoni" class="relative bg-section-secondary">
         <div class="max-w-7xl mx-auto px-4 lg:px-8 py-24 md:py-28 space-y-10 testimoni">
-            <div class="text-center space-y-3 animate-fade-up">
-                <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-base-content">Testimoni</h2>
-                <p class="text-base md:text-lg text-base-content/70">Apa kata klien kami tentang hasil kerja kami</p>
+            <div class="text-center space-y-3 reveal-on-scroll">
+                <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-inherit">Testimoni</h2>
+                <p class="text-base md:text-lg text-inherit opacity-90">Apa kata klien kami tentang hasil kerja kami</p>
             </div>
 
-            <!-- Horizontal Scrollable Carousel -->
-            <div class="relative w-full overflow-hidden">
-                <div id="testimoniCarousel" class="testimoni__track scrollbar-hide py-4 px-2">
+            <!-- Marquee Carousel -->
+            <div class="relative w-full overflow-hidden reveal-on-scroll">
+                <!-- Gradient Masks -->
+                <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#F1F5F9] dark:from-[#1E293B] to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#F1F5F9] dark:from-[#1E293B] to-transparent z-10 pointer-events-none"></div>
+
+                <div class="flex animate-marquee gap-6 w-max">
+                    <!-- Item 1 -->
+                    <article class="testimoni__card">
+                        <div class="card-body space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="testimoni__avatar">JS</div>
+                                <div>
+                                    <h3 class="testimoni__name">Joko Susilo</h3>
+                                    <p class="testimoni__role">CEO, TechStartup</p>
+                                </div>
+                            </div>
+                            <div class="testimoni__stars">★★★★★</div>
+                            <p class="testimoni__quote">"Pelayanan sangat memuaskan, website jadi lebih cepat dari jadwal. Sangat profesional!"</p>
+                        </div>
+                    </article>
+                    <!-- Item 2 -->
+                    <article class="testimoni__card">
+                        <div class="card-body space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="testimoni__avatar">AM</div>
+                                <div>
+                                    <h3 class="testimoni__name">Anita Maharani</h3>
+                                    <p class="testimoni__role">Owner, BeautyBrand</p>
+                                </div>
+                            </div>
+                            <div class="testimoni__stars">★★★★★</div>
+                            <p class="testimoni__quote">"Desainnya elegan dan sesuai dengan brand kami. Adminnya juga ramah dan fast respon."</p>
+                        </div>
+                    </article>
+                    <!-- Item 3 -->
+                    <article class="testimoni__card">
+                        <div class="card-body space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="testimoni__avatar">BP</div>
+                                <div>
+                                    <h3 class="testimoni__name">Budi Pratama</h3>
+                                    <p class="testimoni__role">Marketing Manager</p>
+                                </div>
+                            </div>
+                            <div class="testimoni__stars">★★★★★</div>
+                            <p class="testimoni__quote">"Hasil kerja rapi, kode bersih, dan mudah di-maintain. Recommended developer!"</p>
+                        </div>
+                    </article>
+                    <!-- Item 4 -->
+                    <article class="testimoni__card">
+                        <div class="card-body space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="testimoni__avatar">SR</div>
+                                <div>
+                                    <h3 class="testimoni__name">Siti Rahma</h3>
+                                    <p class="testimoni__role">UMKM Owner</p>
+                                </div>
+                            </div>
+                            <div class="testimoni__stars">★★★★☆</div>
+                            <p class="testimoni__quote">"Harganya terjangkau untuk UMKM tapi kualitasnya seperti agensi besar. Terima kasih!"</p>
+                        </div>
+                    </article>
+                    <!-- Item 5 -->
+                    <article class="testimoni__card">
+                        <div class="card-body space-y-4">
+                            <div class="flex items-center gap-3">
+                                <div class="testimoni__avatar">DK</div>
+                                <div>
+                                    <h3 class="testimoni__name">Dedi Kurniawan</h3>
+                                    <p class="testimoni__role">Freelancer</p>
+                                </div>
+                            </div>
+                            <div class="testimoni__stars">★★★★★</div>
+                            <p class="testimoni__quote">"Sangat terbantu dengan jasa content writing-nya. Traffic blog saya naik drastis."</p>
+                        </div>
+                    </article>
+
+                    <!-- Duplicated Items for Seamless Loop -->
                     <!-- Item 1 -->
                     <article class="testimoni__card">
                         <div class="card-body space-y-4">
@@ -359,108 +441,125 @@
                         </div>
                     </article>
                 </div>
-
-                <!-- Dots Indicators -->
-                <div class="testimoni__dots flex justify-center gap-2 mt-8">
-                    <button class="testimoni__dot w-3 h-3 rounded-full bg-primary/30 transition-all duration-300 testimoni__dot--active" data-index="0"></button>
-                    <button class="testimoni__dot w-3 h-3 rounded-full bg-primary/30 transition-all duration-300" data-index="1"></button>
-                    <button class="testimoni__dot w-3 h-3 rounded-full bg-primary/30 transition-all duration-300" data-index="2"></button>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Artikel (Placeholder) -->
-    <section id="artikel" class="relative bg-base-100">
+    <!-- Artikel -->
+    <section id="artikel" class="relative bg-section-light">
         <div class="max-w-7xl mx-auto px-4 lg:px-8 py-24 md:py-28 space-y-10">
-            <div class="text-center space-y-3 animate-fade-up">
+            <div class="text-center space-y-3 reveal-on-scroll">
                 <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-base-content">Artikel Terbaru</h2>
                 <p class="text-base md:text-lg text-base-content/70">Wawasan dan tips seputar teknologi dan bisnis</p>
             </div>
             <!-- Horizontal Scrollable List -->
-            <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 scrollbar-hide">
-                <!-- 6 Placeholder Items + 1 Blur Item -->
-                @for ($i = 1; $i <= 6; $i++)
-                    <div class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center">
-                    <figure class="px-4 pt-4">
-                        <div class="rounded-xl bg-base-200 h-40 w-full animate-pulse"></div>
+            <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 scrollbar-hide reveal-on-scroll">
+                <!-- Article 1 -->
+                <article class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center hover:shadow-lg transition-shadow duration-300">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80" alt="SEO Strategy" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy">
                     </figure>
-                    <div class="card-body">
-                        <div class="h-4 bg-base-200 rounded w-3/4 animate-pulse"></div>
-                        <div class="h-3 bg-base-200 rounded w-full animate-pulse mt-2"></div>
-                        <div class="h-3 bg-base-200 rounded w-2/3 animate-pulse mt-1"></div>
+                    <div class="card-body p-6">
+                        <div class="text-xs text-primary font-bold mb-2">10 Jan 2024</div>
+                        <h3 class="card-title text-lg mb-2 text-base-content">Cara Meningkatkan Traffic Website dengan SEO</h3>
+                        <p class="text-sm text-base-content/70 mb-4 line-clamp-3">Pelajari strategi SEO dasar hingga lanjut untuk mendatangkan pengunjung organik ke website Anda.</p>
+                        <div class="card-actions">
+                            <a href="{{ route('blog.index') }}" class="link link-primary no-underline text-sm font-semibold hover:underline">Baca Selengkapnya →</a>
+                        </div>
                     </div>
-            </div>
-            @endfor
-            <!-- Last Item: Blur & See More -->
-            <div class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center relative overflow-hidden group cursor-pointer">
-                <div class="absolute inset-0 bg-base-100/60 backdrop-blur-sm z-10 flex items-center justify-center">
-                    <a href="#" class="btn btn-primary">Lihat Lainnya</a>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center hover:shadow-lg transition-shadow duration-300">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1626785774573-4b799312afc2?auto=format&fit=crop&w=800&q=80" alt="Graphic Design Trends" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy">
+                    </figure>
+                    <div class="card-body p-6">
+                        <div class="text-xs text-primary font-bold mb-2">15 Jan 2024</div>
+                        <h3 class="card-title text-lg mb-2 text-base-content">Tren Desain Grafis 2024 yang Wajib Diketahui</h3>
+                        <p class="text-sm text-base-content/70 mb-4 line-clamp-3">Simak prediksi tren visual yang akan mendominasi industri kreatif tahun ini dan cara mengaplikasikannya.</p>
+                        <div class="card-actions">
+                            <a href="{{ route('blog.index') }}" class="link link-primary no-underline text-sm font-semibold hover:underline">Baca Selengkapnya →</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center hover:shadow-lg transition-shadow duration-300">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80" alt="Branding for UMKM" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy">
+                    </figure>
+                    <div class="card-body p-6">
+                        <div class="text-xs text-primary font-bold mb-2">20 Jan 2024</div>
+                        <h3 class="card-title text-lg mb-2 text-base-content">Pentingnya Branding untuk UMKM</h3>
+                        <p class="text-sm text-base-content/70 mb-4 line-clamp-3">Kenapa branding bukan hanya logo? Temukan jawabannya dan tips membangun brand yang kuat.</p>
+                        <div class="card-actions">
+                            <a href="{{ route('blog.index') }}" class="link link-primary no-underline text-sm font-semibold hover:underline">Baca Selengkapnya →</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center hover:shadow-lg transition-shadow duration-300">
+                    <figure class="h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="Web Development" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy">
+                    </figure>
+                    <div class="card-body p-6">
+                        <div class="text-xs text-primary font-bold mb-2">25 Jan 2024</div>
+                        <h3 class="card-title text-lg mb-2 text-base-content">Dasar-Dasar Web Development untuk Pemula</h3>
+                        <p class="text-sm text-base-content/70 mb-4 line-clamp-3">Panduan lengkap memulai karir sebagai web developer, dari HTML, CSS, hingga JavaScript.</p>
+                        <div class="card-actions">
+                            <a href="{{ route('blog.index') }}" class="link link-primary no-underline text-sm font-semibold hover:underline">Baca Selengkapnya →</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Last Item: See More -->
+                <div class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center relative overflow-hidden group cursor-pointer flex items-center justify-center">
+                    <div class="absolute inset-0 bg-base-200/50 backdrop-blur-sm z-0"></div>
+                    <div class="relative z-10 text-center p-6">
+                        <h3 class="text-xl font-bold text-base-content mb-4">Ingin membaca lebih banyak?</h3>
+                        <a href="{{ route('blog.index') }}" class="btn btn-primary text-white rounded-full px-8">Lihat Semua Artikel</a>
+                    </div>
                 </div>
-                <figure class="px-4 pt-4 blur-sm">
-                    <div class="rounded-xl bg-base-200 h-40 w-full"></div>
-                </figure>
-                <div class="card-body blur-sm">
-                    <div class="h-4 bg-base-200 rounded w-3/4"></div>
-                    <div class="h-3 bg-base-200 rounded w-full mt-2"></div>
-                    <div class="h-3 bg-base-200 rounded w-2/3 mt-1"></div>
-                </div>
             </div>
-        </div>
         </div>
     </section>
 
     <!-- Kontak -->
-    <section id="kontak" class="contact">
+    <section id="kontak" class="contact relative bg-section-secondary py-24 md:py-28">
         <div class="max-w-7xl mx-auto px-4 lg:px-8">
-            <h2 class="text-3xl font-bold mb-8 text-center text-base-content">Hubungi Kami</h2>
-            <div class="contact__grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Email -->
-                <article class="contact__card">
-                    <div class="flex items-center p-4">
-                        <div class="contact__icon mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
-                                <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
-                            </svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="contact__label">Email</span>
-                            <a href="mailto:info@kuukok.test" class="contact__link">info@kuukok.test</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- WhatsApp -->
-                <article class="contact__card">
-                    <div class="flex items-center p-4">
-                        <div class="contact__icon mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 5.25V4.5z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="contact__label">WhatsApp</span>
-                            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="contact__link">+62 812-3456-7890</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Instagram -->
-                <article class="contact__card">
-                    <div class="flex items-center p-4">
-                        <div class="contact__icon mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2.2c3.2 0 3.6 0 4.8.1a6.9 6.9 0 014.9 4.9c.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8a6.9 6.9 0 01-4.9 4.9c-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1a6.9 6.9 0 01-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8a6.9 6.9 0 014.9-4.9C8.4 2.2 8.8 2.2 12 2.2zm0 3a6.8 6.8 0 100 13.6 6.8 6.8 0 000-13.6zm0 2.4a4.4 4.4 0 11-4.4 4.4A4.4 4.4 0 0112 7.6z" />
-                            </svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="contact__label">Instagram</span>
-                            <a href="https://ig.me/@username_instagram" target="_blank" rel="noopener" class="contact__link">@username_instagram</a>
-                        </div>
-                    </div>
-                </article>
+            <div class="mx-auto mb-16 max-w-xl text-center reveal-on-scroll">
+                <h2 class="mb-4 text-3xl font-bold text-base-content sm:text-4xl lg:text-5xl">
+                    Hubungi Kami
+                </h2>
+                <p class="text-md font-medium text-base-content/70 md:text-lg">
+                    Anda bisa hubungi kami dengan memasukan form dibawah ini atau anda
+                    bisa mengunjungi sosial media saya untuk menghubungi saya.
+                </p>
             </div>
+
+            <form id="my-form" action="#" class="reveal-on-scroll">
+                <div class="w-full lg:mx-auto lg:w-2/3">
+                    <div class="mb-8 w-full">
+                        <label for="name" class="text-base font-bold text-primary block mb-2">Nama</label>
+                        <input name="Nama" type="text" id="name" class="input border-none w-full bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500" />
+                    </div>
+                    <div class="mb-8 w-full">
+                        <label for="email" class="text-base font-bold text-primary block mb-2">Email</label>
+                        <input name="Email" type="email" id="email" class="input border-none w-full bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500" />
+                    </div>
+                    <div class="mb-8 w-full">
+                        <label for="massage" class="text-base font-bold text-primary block mb-2">Pesan</label>
+                        <textarea name="Pesan" id="massage" class="textarea border-none w-full h-32 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500"></textarea>
+                    </div>
+                    <div class="w-full">
+                        <button type="submit" id="submit-button" class="btn btn-primary w-full rounded-full text-white font-semibold transition duration-500 hover:opacity-80 hover:shadow-lg">
+                            Kirim
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </section>
 

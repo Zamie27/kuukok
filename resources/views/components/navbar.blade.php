@@ -6,12 +6,11 @@
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1 text-base-content">
                 <li><a href="{{ route('home') }}">Home</a></li>
-                <li><a href="#tentang-kami">Tentang Kami</a></li>
+                <li><a href="{{ route('about.index') }}">Tentang Kami</a></li>
                 <li><a href="{{ route('portfolio.index') }}">Portofolio</a></li>
-                <li><a href="#pricing">Harga</a></li>
-                <li><a href="#testimoni">Testimoni</a></li>
-                <li><a href="#artikel">Artikel</a></li>
-                <li><a href="#kontak">Kontak</a></li>
+                <li><a href="{{ route('pricing.index') }}">Harga</a></li>
+                <li><a href="{{ route('blog.index') }}">Artikel</a></li>
+                <li><a href="{{ route('contact.index') }}">Kontak</a></li>
             </ul>
         </div>
         <div class="navbar-end gap-2">
@@ -30,12 +29,11 @@
                 </label>
                 <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                     <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="#tentang-kami">Tentang Kami</a></li>
+                    <li><a href="{{ route('about.index') }}">Tentang Kami</a></li>
                     <li><a href="{{ route('portfolio.index') }}">Portofolio</a></li>
-                    <li><a href="#pricing">Harga</a></li>
-                    <li><a href="#testimoni">Testimoni</a></li>
-                    <li><a href="#artikel">Artikel</a></li>
-                    <li><a href="#kontak">Kontak</a></li>
+                    <li><a href="{{ route('pricing.index') }}">Harga</a></li>
+                    <li><a href="{{ route('blog.index') }}">Artikel</a></li>
+                    <li><a href="{{ route('contact.index') }}">Kontak</a></li>
                 </ul>
             </div>
         </div>
