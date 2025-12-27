@@ -133,7 +133,7 @@ class ProfileController extends Controller
             if ($profile->avatar && Storage::disk('public')->exists($profile->avatar)) {
                 Storage::disk('public')->delete($profile->avatar);
             }
-            $profile->avatar = $request->file('avatar')->store('profile/' . auth()->id(), 'public');
+            $profile->avatar = $request->file('avatar')->store('profiles/' . auth()->id(), 'public');
         }
 
         $profile->save();
@@ -164,7 +164,7 @@ class ProfileController extends Controller
 
                 $path = null;
                 if (isset($certData['file']) && $certData['file'] instanceof \Illuminate\Http\UploadedFile) {
-                    $path = $certData['file']->store('certificates/' . auth()->id(), 'public');
+                    $path = $certData['file']->store('certifications/' . auth()->id(), 'public');
                 }
 
                 $profile->certifications()->create([

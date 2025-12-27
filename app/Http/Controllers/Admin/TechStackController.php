@@ -44,7 +44,7 @@ class TechStackController extends Controller
         $data = $request->only(['name', 'category']);
 
         if ($request->hasFile('logo')) {
-            $data['logo'] = $request->file('logo')->store('tech_stacks', 'public');
+            $data['logo'] = $request->file('logo')->store('tech-stacks', 'public');
         }
 
         TechStack::create($data);
@@ -79,7 +79,7 @@ class TechStackController extends Controller
             if ($techStack->logo && Storage::disk('public')->exists($techStack->logo)) {
                 Storage::disk('public')->delete($techStack->logo);
             }
-            $data['logo'] = $request->file('logo')->store('tech_stacks', 'public');
+            $data['logo'] = $request->file('logo')->store('tech-stacks', 'public');
         }
 
         $techStack->update($data);

@@ -148,6 +148,14 @@
                                 <input type="text" name="position" value="{{ old('position', $profile->position) }}" class="input input-bordered w-full" placeholder="Contoh: Lead Developer, UI Designer" />
                             </div>
                             <div class="form-control">
+                                <label class="label"><span class="label-text font-semibold">Jenis Kelamin</span></label>
+                                <select name="gender" class="select select-bordered w-full">
+                                    <option value="" disabled {{ old('gender', $profile->gender) ? '' : 'selected' }}>Pilih Gender</option>
+                                    <option value="male" {{ old('gender', $profile->gender) == 'male' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="female" {{ old('gender', $profile->gender) == 'female' ? 'selected' : '' }}>Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="form-control">
                                 <label class="label"><span class="label-text font-semibold">Kutipan / Motto</span></label>
                                 <textarea name="quote" class="textarea textarea-bordered h-24" placeholder="Tulis kutipan singkat atau motto kerja Anda (Maks 200 karakter)" maxlength="200">{{ old('quote', $profile->quote) }}</textarea>
                                 <label class="label"><span class="label-text-alt">Maksimal 200 karakter</span></label>

@@ -36,15 +36,15 @@ class PostController extends Controller
             abort(403);
         }
         $data = $request->validate([
-            'title' => ['required','string','max:160'],
-            'slug' => ['nullable','string','max:180','unique:posts,slug'],
-            'category' => ['nullable','string','max:80'],
-            'content' => ['required','string'],
-            'cover_image' => ['nullable','image','mimes:jpeg,png,webp','max:4096'],
-            'meta_title' => ['nullable','string','max:160'],
-            'meta_description' => ['nullable','string','max:300'],
-            'keywords' => ['nullable','string','max:300'],
-            'status' => ['required','in:draft,published'],
+            'title' => ['required', 'string', 'max:160'],
+            'slug' => ['nullable', 'string', 'max:180', 'unique:posts,slug'],
+            'category' => ['nullable', 'string', 'max:80'],
+            'content' => ['required', 'string'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:4096'],
+            'meta_title' => ['nullable', 'string', 'max:160'],
+            'meta_description' => ['nullable', 'string', 'max:300'],
+            'keywords' => ['nullable', 'string', 'max:300'],
+            'status' => ['required', 'in:draft,published'],
         ]);
 
         if (empty($data['slug'])) {
@@ -59,7 +59,7 @@ class PostController extends Controller
         $post->save();
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('articles/'.$post->id, 'public');
+            $path = $request->file('cover_image')->store('posts/' . $post->id, 'public');
             $post->cover_image = $path;
             $post->save();
         }
@@ -81,15 +81,15 @@ class PostController extends Controller
             abort(403);
         }
         $data = $request->validate([
-            'title' => ['required','string','max:160'],
-            'slug' => ['required','string','max:180','unique:posts,slug,'.$post->id],
-            'category' => ['nullable','string','max:80'],
-            'content' => ['required','string'],
-            'cover_image' => ['nullable','image','mimes:jpeg,png,webp','max:4096'],
-            'meta_title' => ['nullable','string','max:160'],
-            'meta_description' => ['nullable','string','max:300'],
-            'keywords' => ['nullable','string','max:300'],
-            'status' => ['required','in:draft,published'],
+            'title' => ['required', 'string', 'max:160'],
+            'slug' => ['required', 'string', 'max:180', 'unique:posts,slug,' . $post->id],
+            'category' => ['nullable', 'string', 'max:80'],
+            'content' => ['required', 'string'],
+            'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:4096'],
+            'meta_title' => ['nullable', 'string', 'max:160'],
+            'meta_description' => ['nullable', 'string', 'max:300'],
+            'keywords' => ['nullable', 'string', 'max:300'],
+            'status' => ['required', 'in:draft,published'],
         ]);
 
         $post->fill($data);
@@ -102,7 +102,7 @@ class PostController extends Controller
         $post->save();
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('articles/'.$post->id, 'public');
+            $path = $request->file('cover_image')->store('articles/' . $post->id, 'public');
             $post->cover_image = $path;
             $post->save();
         }

@@ -97,4 +97,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // User Management (Super Admin only)
     Route::middleware('can:manage-users')->resource('users', \App\Http\Controllers\Admin\UserController::class);
+
+    // Utility route for storage link (run once then remove if desired)
+    Route::get('/fix-storage', function () {
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+        return 'Storage link has been created/fixed. <a href="/admin/profile">Back to Profile</a>';
+    })->middleware('can:access-admin');
 });

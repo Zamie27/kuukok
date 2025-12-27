@@ -98,8 +98,14 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                                 <div>
                                     <div class="text-xs text-base-content/60 uppercase font-bold">Lokasi</div>
-                                    <div class="text-base font-medium">
+                                    <div class="font-medium">
                                         {{ collect([$profile->address_city, $profile->address_province, $profile->address_country])->filter()->join(', ') ?: '-' }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-base-content/60 uppercase font-bold">Gender</div>
+                                    <div class="font-medium">
+                                        {{ $profile->gender == 'male' ? 'Laki-laki' : ($profile->gender == 'female' ? 'Perempuan' : '-') }}
                                     </div>
                                 </div>
                                 <div>
