@@ -118,12 +118,7 @@
                                     <div class="text-xs text-base-content/60 uppercase font-bold">Email</div>
                                     <div class="text-base font-medium break-all">{{ $profile->user->email ?? '-' }}</div>
                                 </div>
-                                <div>
-                                    <div class="text-xs text-base-content/60 uppercase font-bold">Jenis Kelamin</div>
-                                    <div class="text-base font-medium">
-                                        {{ $profile->gender === 'male' ? 'Laki-laki' : ($profile->gender === 'female' ? 'Perempuan' : '-') }}
-                                    </div>
-                                </div>
+
                                 <div>
                                     <div class="text-xs text-base-content/60 uppercase font-bold">Spesialisasi</div>
                                     <div class="text-base font-medium">
