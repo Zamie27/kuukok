@@ -103,15 +103,35 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
         $target = storage_path('app/public');
         $link = public_path('storage');
 
-        if (file_exists($link)) {
-            return 'Link already exists. <a href="/admin/profile">Back to Profile</a>';
-        }
-
         try {
-            symlink($target, $link);
-            return 'Storage link has been created successfully (via symlink). <a href="/admin/profile">Back to Profile</a>';
+            // 1. Cek apakah link/folder sudah ada
+            if (file_exists($link)) {
+                // Jika is_link (symlink), hapus dengan unlink
+                if (is_link($link)) {
+                    unlink($link);
+                }
+                // Jika is_dir (folder asli), biarkan saja (jangan dihapus agar data aman)
+                // Kita akan menggunakan folder ini secara langsung berkat config filesystems baru
+                elseif (is_dir($link)) {
+                    return 'Storage folder detected (Directory Mode). Ready to use. <a href="/admin/profile">Back to Profile</a>';
+                }
+            }
+
+            // 2. Coba buat Symlink
+            try {
+                symlink($target, $link);
+                return 'Storage link RE-CREATED (Symlink Mode). <a href="/admin/profile">Back to Profile</a>';
+            } catch (\Throwable $e) {
+                // 3. Jika Symlink gagal (biasanya di shared hosting), buat Folder Biasa
+                // Karena kita sudah ubah config filesystems 'root' ke public_path('storage'),
+                // maka folder biasa pun akan berfungsi normal!
+                if (!is_dir($link)) {
+                    mkdir($link, 0755, true);
+                }
+                return 'Storage folder CREATED (Directory Mode - Fallback). <a href="/admin/profile">Back to Profile</a>';
+            }
         } catch (\Throwable $e) {
-            return 'Failed to create link: ' . $e->getMessage() . '<br>Try running command via terminal if possible.';
+            return 'Error: ' . $e->getMessage() . '<br>Please create "storage" folder manually in public_html.';
         }
     })->middleware('can:access-admin');
 });
