@@ -33,7 +33,11 @@
                     <li><a href="{{ route('blog.index') }}" class="hover:text-primary">Artikel</a></li>
                     <li><a href="{{ route('contact.index') }}" class="hover:text-primary">Kontak</a></li>
                     <li>
-                        <a href="{{ route('login') }}" class="hover:text-primary opacity-60">Login</a>
+                        @auth
+                            <a href="{{ route('admin.dashboard') }}" class="hover:text-primary opacity-60">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="hover:text-primary opacity-60">Login</a>
+                        @endauth
                     </li>
                 </ul>
             </div>

@@ -20,6 +20,9 @@
                     <path d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364 6.364-1.414-1.414M6.05 6.05 4.636 4.636m12.728 0-1.414 1.414M6.05 17.95l-1.414 1.414M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
                 </svg>
             </button>
+            @auth
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-ghost btn-sm">Dashboard</a>
+            @endauth
             <!-- Mobile menu -->
             <div class="dropdown dropdown-end lg:hidden">
                 <label tabindex="0" class="btn btn-ghost btn-circle">
