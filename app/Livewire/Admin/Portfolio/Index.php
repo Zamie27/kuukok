@@ -119,9 +119,14 @@ class Index extends Component
         $this->showModal = true;
     }
 
-    /** Persist a new portfolio with uploads. */
+    /** Persist a new or existing portfolio with uploads. */
     public function save(): void
     {
+        if ($this->editingId) {
+            $this->update();
+            return;
+        }
+
         $this->validate();
 
         $tags = $this->parseTags($this->tagsInput);
@@ -275,12 +280,36 @@ class Index extends Component
         [$this->gallery[$index + 1], $this->gallery[$index]] = [$this->gallery[$index], $this->gallery[$index + 1]];
     }
 
+    /** Remove gallery item from list. */
+    public function removeGalleryItem(int $index): void
+    {
+        if (isset($this->gallery[$index])) {
+            // We only remove from the array reference.
+            // Actual file deletion could happen here if we want immediate effect,
+            // or we rely on the user clicking "Save" to persist the new array.
+            // However, orphan files might remain.
+            // For now, let's just remove from the view list.
+            unset($this->gallery[$index]);
+            $this->gallery = array_values($this->gallery);
+        }
+    }
+
     /** Reset form state to defaults. */
     private function resetForm(): void
     {
         $this->reset([
-            'editingId', 'title', 'slug', 'excerpt', 'description', 'status', 'meta_title', 'meta_description',
-            'tagsInput', 'coverUpload', 'galleryUploads', 'gallery',
+            'editingId',
+            'title',
+            'slug',
+            'excerpt',
+            'description',
+            'status',
+            'meta_title',
+            'meta_description',
+            'tagsInput',
+            'coverUpload',
+            'galleryUploads',
+            'gallery',
         ]);
         $this->status = 'draft';
     }
@@ -346,4 +375,3 @@ class Index extends Component
         ]);
     }
 }
-

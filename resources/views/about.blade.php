@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="id" data-theme="light" class="scroll-smooth">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tentang Kami - Kuukok Creative Agency</title>
-    <meta name="description" content="Mengenal lebih dekat tim Kuukok Creative Agency, visi, misi, dan anggota tim kami.">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('components.head', [
+    'title' => 'Tentang Kami - Kuukok Creative Agency',
+    'meta_description' => 'Mengenal lebih dekat tim Kuukok Creative Agency, visi, misi, dan anggota tim kami.',
+    'keywords' => 'tentang Kuukok, tim kreatif, visi misi, agency digital',
+    'og_url' => route('about.index')
+    ])
 </head>
+
 <body class="bg-base-100 font-sans text-base-content antialiased">
 
     @include('components.navbar')
@@ -31,13 +34,10 @@
     <section class="py-16 px-4 bg-base-100">
         <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center reveal-on-scroll">
             <div class="space-y-6">
-                <h2 class="text-3xl font-bold text-base-content">Mitra Digital Terpercaya Anda</h2>
-                <p class="text-base-content/70 text-lg leading-relaxed">
-                    Kuukok Creative Agency lahir dari semangat untuk membantu bisnis dan individu bertransformasi di era digital. Kami percaya bahwa setiap brand memiliki cerita unik yang layak didengar, dan teknologi adalah jembatan terbaik untuk menyampaikannya.
-                </p>
-                <p class="text-base-content/70 text-lg leading-relaxed">
-                    Dengan tim yang berdedikasi dan berpengalaman, kami fokus memberikan solusi kreatif yang tidak hanya estetis, tetapi juga fungsional dan berdampak nyata bagi pertumbuhan bisnis Anda.
-                </p>
+                <h2 class="text-3xl font-bold text-base-content">{{ $settings['about_title'] ?? 'Mitra Digital Terpercaya Anda' }}</h2>
+                <div class="text-base-content/70 text-lg leading-relaxed whitespace-pre-line">
+                    {{ $settings['about_description'] ?? 'Kuukok Creative Agency lahir dari semangat untuk membantu bisnis dan individu bertransformasi di era digital.' }}
+                </div>
                 <div class="grid grid-cols-2 gap-6 pt-4">
                     <div>
                         <div class="text-3xl font-bold text-primary mb-1">5+</div>
@@ -59,7 +59,11 @@
             </div>
             <div class="relative">
                 <div class="absolute -inset-4 bg-primary/20 rounded-2xl -z-10 transform rotate-3"></div>
+                @if(isset($settings['about_image']) && $settings['about_image'])
+                <img src="{{ asset('storage/' . $settings['about_image']) }}" alt="Tim Kuukok" class="rounded-xl shadow-2xl w-full h-auto object-cover">
+                @else
                 <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" alt="Tim Kuukok" class="rounded-xl shadow-2xl w-full h-auto object-cover">
+                @endif
             </div>
         </div>
     </section>
@@ -77,7 +81,7 @@
                     </div>
                     <h3 class="card-title text-2xl mb-2">Visi Kami</h3>
                     <p class="text-base-content/70">
-                        Menjadi agensi kreatif digital terdepan yang memberdayakan UMKM dan bisnis di Indonesia melalui inovasi teknologi dan desain yang berdampak.
+                        {{ $settings['vision_text'] ?? 'Menjadi agensi kreatif digital terdepan yang memberdayakan UMKM dan bisnis di Indonesia melalui inovasi teknologi dan desain yang berdampak.' }}
                     </p>
                 </div>
             </div>
@@ -90,18 +94,18 @@
                     </div>
                     <h3 class="card-title text-2xl mb-2">Misi Kami</h3>
                     <ul class="space-y-2 text-base-content/70">
+                        @php
+                        $defaultMission = "Menyediakan solusi digital berkualitas tinggi dengan harga terjangkau.\nMembangun ekosistem digital yang ramah pengguna dan mudah dikelola.\nMemberikan edukasi dan dukungan teknis berkelanjutan bagi klien.";
+                        $missions = explode("\n", $settings['mission_text'] ?? $defaultMission);
+                        @endphp
+                        @foreach($missions as $mission)
+                        @if(trim($mission))
                         <li class="flex items-start gap-2">
                             <span class="text-primary mt-1">•</span>
-                            Menyediakan solusi digital berkualitas tinggi dengan harga terjangkau.
+                            {{ trim($mission) }}
                         </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-primary mt-1">•</span>
-                            Membangun ekosistem digital yang ramah pengguna dan mudah dikelola.
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-primary mt-1">•</span>
-                            Memberikan edukasi dan dukungan teknis berkelanjutan bagi klien.
-                        </li>
+                        @endif
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -118,66 +122,29 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 reveal-on-scroll">
-                <!-- Member 1 -->
-                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+            <div class="flex flex-wrap justify-center gap-8 reveal-on-scroll">
+                @foreach($team as $member)
+                <!-- Member {{ $loop->iteration }} -->
+                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group w-full md:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]">
                     <figure class="px-4 pt-4 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop" alt="Member" class="rounded-xl w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" />
+                        @if($member->avatar)
+                        <img src="{{ asset('storage/'.$member->avatar) }}" alt="{{ $member->user->name }}" class="rounded-xl w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" />
+                        @else
+                        <div class="w-full h-64 bg-neutral text-neutral-content rounded-xl flex items-center justify-center text-6xl font-bold transition-transform duration-500 group-hover:scale-110">
+                            {{ substr($member->user->name ?? 'U', 0, 1) }}
+                        </div>
+                        @endif
                     </figure>
                     <div class="card-body items-center text-center">
-                        <h3 class="card-title text-xl">Ahmad Rizky</h3>
-                        <p class="text-primary font-medium text-sm uppercase tracking-wide">Lead Developer</p>
-                        <p class="text-base-content/60 text-sm line-clamp-2">Full-stack wizard dengan passion di Laravel & Vue.js.</p>
+                        <h3 class="card-title text-xl">{{ $member->user->name }}</h3>
+                        <p class="text-primary font-medium text-sm uppercase tracking-wide">{{ $member->position ?? 'Team Member' }}</p>
+                        <p class="text-base-content/60 text-sm line-clamp-2">{{ $member->quote ?? 'No quote available.' }}</p>
                         <div class="card-actions mt-4">
-                            <a href="{{ route('team.show') }}" class="btn btn-outline btn-primary btn-sm rounded-full">Lihat Detail</a>
+                            <a href="{{ route('team.show', $member) }}" class="btn btn-outline btn-primary btn-sm rounded-full">Lihat Detail</a>
                         </div>
                     </div>
                 </div>
-
-                <!-- Member 2 -->
-                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
-                    <figure class="px-4 pt-4 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop" alt="Member" class="rounded-xl w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" />
-                    </figure>
-                    <div class="card-body items-center text-center">
-                        <h3 class="card-title text-xl">Sarah Putri</h3>
-                        <p class="text-primary font-medium text-sm uppercase tracking-wide">UI/UX Designer</p>
-                        <p class="text-base-content/60 text-sm line-clamp-2">Pencipta antarmuka yang indah dan pengalaman pengguna yang mulus.</p>
-                        <div class="card-actions mt-4">
-                            <a href="{{ route('team.show') }}" class="btn btn-outline btn-primary btn-sm rounded-full">Lihat Detail</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Member 3 -->
-                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
-                    <figure class="px-4 pt-4 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop" alt="Member" class="rounded-xl w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" />
-                    </figure>
-                    <div class="card-body items-center text-center">
-                        <h3 class="card-title text-xl">Budi Santoso</h3>
-                        <p class="text-primary font-medium text-sm uppercase tracking-wide">Project Manager</p>
-                        <p class="text-base-content/60 text-sm line-clamp-2">Menjaga proyek tetap on-track dan klien tetap bahagia.</p>
-                        <div class="card-actions mt-4">
-                            <a href="{{ route('team.show') }}" class="btn btn-outline btn-primary btn-sm rounded-full">Lihat Detail</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Member 4 -->
-                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group">
-                    <figure class="px-4 pt-4 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1888&auto=format&fit=crop" alt="Member" class="rounded-xl w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110" />
-                    </figure>
-                    <div class="card-body items-center text-center">
-                        <h3 class="card-title text-xl">Linda Wijaya</h3>
-                        <p class="text-primary font-medium text-sm uppercase tracking-wide">Content Strategist</p>
-                        <p class="text-base-content/60 text-sm line-clamp-2">Merangkai kata-kata yang memikat dan menjual.</p>
-                        <div class="card-actions mt-4">
-                            <a href="{{ route('team.show') }}" class="btn btn-outline btn-primary btn-sm rounded-full">Lihat Detail</a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -212,4 +179,5 @@
     @include('components.footer')
 
 </body>
+
 </html>

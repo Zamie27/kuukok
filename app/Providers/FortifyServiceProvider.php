@@ -50,8 +50,8 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::twoFactorChallengeView(fn () => view('livewire.auth.two-factor-challenge'));
         Fortify::confirmPasswordView(fn () => view('livewire.auth.confirm-password'));
         Fortify::registerView(fn () => view('livewire.auth.register'));
-        Fortify::resetPasswordView(fn () => view('livewire.auth.reset-password'));
-        Fortify::requestPasswordResetLinkView(fn () => view('livewire.auth.forgot-password'));
+        // Fortify::resetPasswordView(fn () => view('livewire.auth.reset-password'));
+        // Fortify::requestPasswordResetLinkView(fn () => view('livewire.auth.forgot-password'));
     }
 
     /**

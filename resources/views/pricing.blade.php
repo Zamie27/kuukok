@@ -2,11 +2,12 @@
 <html lang="id" data-theme="light" class="scroll-smooth">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pricing & Paket Layanan - Kuukok Creative Agency</title>
-    <meta name="description" content="Lihat paket harga layanan Kuukok untuk Web Development, Graphic Design, dan layanan digital lainnya.">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @include('components.head', [
+    'title' => 'Pricing & Paket Layanan - Kuukok Creative Agency',
+    'description' => 'Lihat paket harga layanan Kuukok untuk Web Development, Graphic Design, dan layanan digital lainnya.',
+    'keywords' => 'harga jasa website, paket layanan, graphic design, web development',
+    'ogUrl' => route('pricing.index')
+    ])
 </head>
 
 <body class="bg-base-100 font-sans text-base-content antialiased">
@@ -33,59 +34,34 @@
     <section id="pricing" class="relative bg-section-light">
         <div class="max-w-7xl mx-auto px-4 lg:px-8 py-16 space-y-10 pricing">
             <div class="pricing__grid reveal-on-scroll">
-                <!-- Basic -->
-                <article class="pricing__card interactive-transition">
+                @foreach($packages as $package)
+                <article class="pricing__card interactive-transition {{ $package->label === 'Paling Laris' || $package->label === 'Populer' ? 'pricing__card--recommended scale-105 z-10 shadow-2xl' : '' }}">
                     <div class="card-body p-8 space-y-6">
-                        <div class="badge badge-outline">Basic</div>
-                        <h3 class="text-2xl font-bold text-base-content">Web Development</h3>
-                        <div class="pricing__price text-4xl">Mulai dari Rp 100K</div>
-                        <p class="text-sm text-base-content/60">per proyek</p>
-                        <ul class="text-base text-base-content/70 space-y-3">
-                            <li class="flex items-center gap-3"><span class="i-[check] text-primary">✓</span> Landing page responsif</li>
-                            <li class="flex items-center gap-3">✓ Custom design minimalis</li>
-                            <li class="flex items-center gap-3">✓ SEO‑friendly structure</li>
-                            <li class="flex items-center gap-3">✓ Fast loading speed</li>
-                            <li class="flex items-center gap-3">✓ 2x revisi gratis</li>
-                        </ul>
-                        <a href="{{ route('home') }}#kontak" class="pricing__cta btn-lg text-lg">Hubungi Kami</a>
-                    </div>
-                </article>
+                        @if($package->label)
+                        <div class="badge {{ $package->label === 'Paling Laris' || $package->label === 'Populer' ? 'badge-primary badge-lg text-white mb-2' : 'badge-outline' }}">
+                            {{ $package->label }}
+                        </div>
+                        @endif
+                        <h3 class="text-2xl font-bold text-base-content">{{ $package->name }}</h3>
+                        <div class="pricing__price text-4xl">{{ $package->price_text }}</div>
+                        {{-- <p class="text-sm text-base-content/60">per proyek</p> --}}
 
-                <!-- Pro (Recommended) -->
-                <article class="pricing__card pricing__card--recommended interactive-transition scale-105 z-10 shadow-2xl">
-                    <div class="card-body p-8 space-y-6">
-                        <div class="badge badge-primary badge-lg text-white mb-2">Paling Laris</div>
-                        <h3 class="text-2xl font-bold text-base-content">Graphic Design</h3>
-                        <div class="pricing__price text-4xl">Mulai dari Rp 20K</div>
-                        <p class="text-sm text-base-content/60">per desain</p>
+                        @if(is_array($package->features))
                         <ul class="text-base text-base-content/70 space-y-3">
-                            <li class="flex items-center gap-3">✓ Logo design profesional</li>
-                            <li class="flex items-center gap-3">✓ Social media content</li>
-                            <li class="flex items-center gap-3">✓ Brand guidelines</li>
-                            <li class="flex items-center gap-3">✓ Source file (AI/EPS)</li>
-                            <li class="flex items-center gap-3">✓ Unlimited revisions</li>
+                            @foreach($package->features as $feature)
+                            <li class="flex items-center gap-3">
+                                <span class="text-primary">✓</span> {{ $feature }}
+                            </li>
+                            @endforeach
                         </ul>
-                        <a href="{{ route('home') }}#kontak" class="pricing__cta btn-lg text-lg">Hubungi Kami</a>
-                    </div>
-                </article>
+                        @endif
 
-                <!-- Enterprise -->
-                <article class="pricing__card interactive-transition">
-                    <div class="card-body p-8 space-y-6">
-                        <div class="badge badge-primary badge-outline">Enterprise</div>
-                        <h3 class="text-2xl font-bold text-base-content">Full Service</h3>
-                        <div class="pricing__price text-4xl">Custom</div>
-                        <p class="text-sm text-base-content/60">sesuai kebutuhan</p>
-                        <ul class="text-base text-base-content/70 space-y-3">
-                            <li class="flex items-center gap-3">✓ Web Development + Design</li>
-                            <li class="flex items-center gap-3">✓ Priority support 24/7</li>
-                            <li class="flex items-center gap-3">✓ Dedicated manager</li>
-                            <li class="flex items-center gap-3">✓ Maintenance bulanan</li>
-                            <li class="flex items-center gap-3">✓ Konsultasi bisnis</li>
-                        </ul>
-                        <a href="{{ route('home') }}#kontak" class="pricing__cta btn-lg text-lg">Hubungi Kami</a>
+                        <a href="{{ $package->cta_link ?? route('home') . '#kontak' }}" class="pricing__cta btn-lg text-lg">
+                            Hubungi Kami
+                        </a>
                     </div>
                 </article>
+                @endforeach
             </div>
         </div>
     </section>
@@ -281,148 +257,60 @@
                 <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#F1F5F9] dark:from-[#1E293B] to-transparent z-10 pointer-events-none"></div>
 
                 <div class="flex animate-marquee gap-6 w-max">
-                    <!-- Item 1 -->
+                    @foreach($testimonials as $testimonial)
                     <article class="testimoni__card">
                         <div class="card-body space-y-4">
                             <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">JS</div>
+                                <div class="testimoni__avatar">
+                                    @if($testimonial->photo)
+                                        <img src="{{ asset('storage/' . $testimonial->photo) }}" alt="{{ $testimonial->name }}" class="w-full h-full object-cover">
+                                    @else
+                                        {{ substr($testimonial->display_name, 0, 1) }}
+                                    @endif
+                                </div>
                                 <div>
-                                    <h3 class="testimoni__name">Joko Susilo</h3>
-                                    <p class="testimoni__role">CEO, TechStartup</p>
+                                    <h3 class="testimoni__name">{{ $testimonial->display_name }}</h3>
+                                    <p class="testimoni__role">{{ $testimonial->role ?? 'Client' }}</p>
+                                    <span class="text-xs text-base-content/50">{{ $testimonial->created_at->translatedFormat('d F Y') }}</span>
                                 </div>
                             </div>
-                            <div class="testimoni__stars">★★★★★</div>
-                            <p class="testimoni__quote">"Pelayanan sangat memuaskan, website jadi lebih cepat dari jadwal. Sangat profesional!"</p>
+                            <div class="testimoni__stars">
+                                @for($i = 0; $i < $testimonial->rating; $i++)
+                                    ★
+                                @endfor
+                            </div>
+                            <p class="testimoni__quote">"{{ $testimonial->content }}"</p>
                         </div>
                     </article>
-                    <!-- Item 2 -->
+                    @endforeach
+                    
+                    <!-- Duplicate for infinite scroll -->
+                    @foreach($testimonials as $testimonial)
                     <article class="testimoni__card">
                         <div class="card-body space-y-4">
                             <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">AM</div>
+                                <div class="testimoni__avatar">
+                                    @if($testimonial->photo)
+                                        <img src="{{ asset('storage/' . $testimonial->photo) }}" alt="{{ $testimonial->name }}" class="w-full h-full object-cover">
+                                    @else
+                                        {{ substr($testimonial->display_name, 0, 1) }}
+                                    @endif
+                                </div>
                                 <div>
-                                    <h3 class="testimoni__name">Anita Maharani</h3>
-                                    <p class="testimoni__role">Owner, BeautyBrand</p>
+                                    <h3 class="testimoni__name">{{ $testimonial->display_name }}</h3>
+                                    <p class="testimoni__role">{{ $testimonial->role ?? 'Client' }}</p>
+                                    <span class="text-xs text-base-content/50">{{ $testimonial->created_at->translatedFormat('d F Y') }}</span>
                                 </div>
                             </div>
-                            <div class="testimoni__stars">★★★★★</div>
-                            <p class="testimoni__quote">"Desainnya elegan dan sesuai dengan brand kami. Adminnya juga ramah dan fast respon."</p>
-                        </div>
-                    </article>
-                    <!-- Item 3 -->
-                    <article class="testimoni__card">
-                        <div class="card-body space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">BP</div>
-                                <div>
-                                    <h3 class="testimoni__name">Budi Pratama</h3>
-                                    <p class="testimoni__role">Marketing Manager</p>
-                                </div>
+                            <div class="testimoni__stars">
+                                @for($i = 0; $i < $testimonial->rating; $i++)
+                                    ★
+                                @endfor
                             </div>
-                            <div class="testimoni__stars">★★★★★</div>
-                            <p class="testimoni__quote">"Hasil kerja rapi, kode bersih, dan mudah di-maintain. Recommended developer!"</p>
+                            <p class="testimoni__quote">"{{ $testimonial->content }}"</p>
                         </div>
                     </article>
-                    <!-- Item 4 -->
-                    <article class="testimoni__card">
-                        <div class="card-body space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">SR</div>
-                                <div>
-                                    <h3 class="testimoni__name">Siti Rahma</h3>
-                                    <p class="testimoni__role">UMKM Owner</p>
-                                </div>
-                            </div>
-                            <div class="testimoni__stars">★★★★☆</div>
-                            <p class="testimoni__quote">"Harganya terjangkau untuk UMKM tapi kualitasnya seperti agensi besar. Terima kasih!"</p>
-                        </div>
-                    </article>
-                    <!-- Item 5 -->
-                    <article class="testimoni__card">
-                        <div class="card-body space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">DK</div>
-                                <div>
-                                    <h3 class="testimoni__name">Dedi Kurniawan</h3>
-                                    <p class="testimoni__role">Freelancer</p>
-                                </div>
-                            </div>
-                            <div class="testimoni__stars">★★★★★</div>
-                            <p class="testimoni__quote">"Sangat terbantu dengan jasa content writing-nya. Traffic blog saya naik drastis."</p>
-                        </div>
-                    </article>
-
-                    <!-- Duplicated Items for Seamless Loop -->
-                    <!-- Item 1 -->
-                    <article class="testimoni__card">
-                        <div class="card-body space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">JS</div>
-                                <div>
-                                    <h3 class="testimoni__name">Joko Susilo</h3>
-                                    <p class="testimoni__role">CEO, TechStartup</p>
-                                </div>
-                            </div>
-                            <div class="testimoni__stars">★★★★★</div>
-                            <p class="testimoni__quote">"Pelayanan sangat memuaskan, website jadi lebih cepat dari jadwal. Sangat profesional!"</p>
-                        </div>
-                    </article>
-                    <!-- Item 2 -->
-                    <article class="testimoni__card">
-                        <div class="card-body space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">AM</div>
-                                <div>
-                                    <h3 class="testimoni__name">Anita Maharani</h3>
-                                    <p class="testimoni__role">Owner, BeautyBrand</p>
-                                </div>
-                            </div>
-                            <div class="testimoni__stars">★★★★★</div>
-                            <p class="testimoni__quote">"Desainnya elegan dan sesuai dengan brand kami. Adminnya juga ramah dan fast respon."</p>
-                        </div>
-                    </article>
-                    <!-- Item 3 -->
-                    <article class="testimoni__card">
-                        <div class="card-body space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">BP</div>
-                                <div>
-                                    <h3 class="testimoni__name">Budi Pratama</h3>
-                                    <p class="testimoni__role">Marketing Manager</p>
-                                </div>
-                            </div>
-                            <div class="testimoni__stars">★★★★★</div>
-                            <p class="testimoni__quote">"Hasil kerja rapi, kode bersih, dan mudah di-maintain. Recommended developer!"</p>
-                        </div>
-                    </article>
-                    <!-- Item 4 -->
-                    <article class="testimoni__card">
-                        <div class="card-body space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">SR</div>
-                                <div>
-                                    <h3 class="testimoni__name">Siti Rahma</h3>
-                                    <p class="testimoni__role">UMKM Owner</p>
-                                </div>
-                            </div>
-                            <div class="testimoni__stars">★★★★☆</div>
-                            <p class="testimoni__quote">"Harganya terjangkau untuk UMKM tapi kualitasnya seperti agensi besar. Terima kasih!"</p>
-                        </div>
-                    </article>
-                    <!-- Item 5 -->
-                    <article class="testimoni__card">
-                        <div class="card-body space-y-4">
-                            <div class="flex items-center gap-3">
-                                <div class="testimoni__avatar">DK</div>
-                                <div>
-                                    <h3 class="testimoni__name">Dedi Kurniawan</h3>
-                                    <p class="testimoni__role">Freelancer</p>
-                                </div>
-                            </div>
-                            <div class="testimoni__stars">★★★★★</div>
-                            <p class="testimoni__quote">"Sangat terbantu dengan jasa content writing-nya. Traffic blog saya naik drastis."</p>
-                        </div>
-                    </article>
+                    @endforeach
                 </div>
             </div>
         </div>

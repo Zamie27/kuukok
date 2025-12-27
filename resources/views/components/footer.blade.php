@@ -32,6 +32,9 @@
                     <li><a href="{{ route('pricing.index') }}" class="hover:text-primary">Harga</a></li>
                     <li><a href="{{ route('blog.index') }}" class="hover:text-primary">Artikel</a></li>
                     <li><a href="{{ route('contact.index') }}" class="hover:text-primary">Kontak</a></li>
+                    <li>
+                        <a href="{{ route('login') }}" class="hover:text-primary opacity-60">Login</a>
+                    </li>
                 </ul>
             </div>
         </div>

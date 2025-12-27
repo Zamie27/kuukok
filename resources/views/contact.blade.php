@@ -2,8 +2,10 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
 
 <head>
-    @include('components.head', ['title' => 'Kontak - Kuukok | Hubungi Kami'])
-    <meta name="description" content="Hubungi tim Kuukok untuk konsultasi proyek web development, design, atau kerjasama lainnya.">
+    @include('components.head', [
+        'title' => 'Kontak - Kuukok | Hubungi Kami',
+        'meta_description' => 'Hubungi tim Kuukok untuk konsultasi proyek web development, design, atau kerjasama lainnya.'
+    ])
 </head>
 
 <body class="bg-base-100 font-sans min-h-screen flex flex-col">
@@ -93,13 +95,19 @@
                         <h3 class="font-bold text-lg mb-4">Ikuti Kami</h3>
                         <div class="flex gap-4">
                             <a href="#" class="btn btn-circle btn-ghost bg-base-200 hover:bg-primary hover:text-white transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                                </svg>
                             </a>
                             <a href="#" class="btn btn-circle btn-ghost bg-base-200 hover:bg-primary hover:text-white transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.072 3.252.158 4.777 1.691 4.935 4.935.06 1.266.072 1.646.072 4.85s-.012 3.584-.072 4.85c-.158 3.252-1.683 4.777-4.935 4.935-1.266.06-1.646.072-4.85.072s-3.584-.012-4.85-.072c-3.252-.158-4.777-1.691-4.935-4.935-.06-1.266-.072-1.646-.072-4.85s.012-3.584.072-4.85c.158-3.252 1.683-4.777 4.935-4.935 1.266-.06 1.646-.072 4.85-.072zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.072 3.252.158 4.777 1.691 4.935 4.935.06 1.266.072 1.646.072 4.85s-.012 3.584-.072 4.85c-.158 3.252-1.683 4.777-4.935 4.935-1.266.06-1.646.072-4.85.072s-3.584-.012-4.85-.072c-3.252-.158-4.777-1.691-4.935-4.935-.06-1.266-.072-1.646-.072-4.85s.012-3.584.072-4.85c.158-3.252 1.683-4.777 4.935-4.935 1.266-.06 1.646-.072 4.85-.072zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                </svg>
                             </a>
                             <a href="#" class="btn btn-circle btn-ghost bg-base-200 hover:bg-primary hover:text-white transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                </svg>
                             </a>
                         </div>
                     </div>
@@ -110,26 +118,32 @@
                     <div class="card bg-base-100 shadow-2xl border border-base-200">
                         <div class="card-body">
                             <h2 class="card-title text-2xl mb-4">Kirim Pesan</h2>
-                            <form action="#" method="POST">
+                            @if (session('status'))
+                            <div class="alert alert-success mb-4">
+                                <div><span>{{ session('status') }}</span></div>
+                            </div>
+                            @endif
+                            <form action="{{ route('contact.store') }}" method="POST">
+                                @csrf
                                 <div class="form-control w-full mb-4">
                                     <label class="label">
                                         <span class="label-text font-medium">Nama Lengkap</span>
                                     </label>
-                                    <input type="text" placeholder="Masukkan nama Anda" class="input input-bordered w-full focus:input-primary" />
+                                    <input type="text" name="name" placeholder="Masukkan nama Anda" class="input input-bordered w-full focus:input-primary" required />
                                 </div>
 
                                 <div class="form-control w-full mb-4">
                                     <label class="label">
                                         <span class="label-text font-medium">Email</span>
                                     </label>
-                                    <input type="email" placeholder="contoh@email.com" class="input input-bordered w-full focus:input-primary" />
+                                    <input type="email" name="email" placeholder="contoh@email.com" class="input input-bordered w-full focus:input-primary" required />
                                 </div>
 
                                 <div class="form-control w-full mb-4">
                                     <label class="label">
                                         <span class="label-text font-medium">Subjek</span>
                                     </label>
-                                    <select class="select select-bordered w-full focus:select-primary">
+                                    <select name="subject" class="select select-bordered w-full focus:select-primary">
                                         <option disabled selected>Pilih subjek pesan</option>
                                         <option>Penawaran Proyek</option>
                                         <option>Konsultasi</option>
@@ -142,7 +156,7 @@
                                     <label class="label">
                                         <span class="label-text font-medium">Pesan</span>
                                     </label>
-                                    <textarea class="textarea textarea-bordered h-32 focus:textarea-primary" placeholder="Tuliskan pesan Anda di sini..."></textarea>
+                                    <textarea name="body" class="textarea textarea-bordered h-32 focus:textarea-primary" placeholder="Tuliskan pesan Anda di sini..." required></textarea>
                                 </div>
 
                                 <div class="card-actions justify-end">

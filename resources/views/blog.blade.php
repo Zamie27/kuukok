@@ -44,46 +44,60 @@
             <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
                 <!-- Main Blog Content -->
                 <div class="lg:col-span-2">
+                    @if($posts->count() > 0)
+                    @php
+                    $featured = $posts->first();
+                    $others = $posts->skip(1);
+                    @endphp
+
                     <!-- Featured Post -->
                     <div class="card bg-base-200 blog-card mb-8 shadow-2xl reveal-on-scroll">
-                        <figure class="to-primary-dark h-80 overflow-hidden bg-gradient-to-br from-primary">
+                        <figure class="to-primary-dark h-80 overflow-hidden bg-gradient-to-br from-primary relative">
+                            @if($featured->cover_image)
+                            <img src="{{ asset('storage/' . $featured->cover_image) }}" alt="{{ $featured->title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                            @else
                             <div class="flex h-full w-full items-center justify-center text-8xl text-white">
                                 🚀
                             </div>
+                            @endif
                         </figure>
                         <div class="card-body">
                             <div class="mb-2 flex gap-2">
                                 <div class="badge badge-primary">Featured</div>
-                                <div class="badge badge-outline">Tutorial</div>
+                                @if($featured->category)
+                                <div class="badge badge-outline">{{ $featured->category }}</div>
+                                @endif
                             </div>
                             <h2 class="card-title text-2xl md:text-3xl text-base-content">
-                                Panduan Lengkap Membuat Website Modern dengan TailwindCSS dan DaisyUI
+                                {{ $featured->title }}
                             </h2>
                             <div class="mb-4 flex items-center gap-4 text-sm text-base-content/70">
                                 <span class="flex items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
-                                    8 Desember 2025
+                                    {{ $featured->published_at?->translatedFormat('d F Y') ?? 'Draft' }}
                                 </span>
                                 <span class="flex items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    10 menit baca
+                                    {{ ceil(str_word_count(strip_tags($featured->content)) / 200) }} menit baca
                                 </span>
+                                @if($featured->author)
                                 <span class="flex items-center gap-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
-                                    Andi Pratama
+                                    {{ $featured->author->name }}
                                 </span>
+                                @endif
                             </div>
                             <p class="mb-6 text-base-content/70">
-                                Pelajari cara membuat website yang responsif, modern, dan profesional menggunakan framework TailwindCSS dan komponen library DaisyUI. Tutorial ini mencakup setup project, konfigurasi, dan best practices untuk development.
+                                {{ Str::limit(strip_tags($featured->content), 150) }}
                             </p>
                             <div class="card-actions">
-                                <a href="{{ route('blog.show') }}" class="btn btn-primary text-white">
+                                <a href="{{ route('blog.show', $featured) }}" class="btn btn-primary text-white">
                                     Baca Selengkapnya
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -95,184 +109,54 @@
 
                     <!-- Blog Posts Grid -->
                     <div class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 reveal-on-scroll">
-                        <!-- Blog Post 1 -->
+                        @foreach($others as $post)
                         <div class="card bg-base-200 blog-card shadow-xl">
-                            <figure class="from-accent h-48 overflow-hidden bg-gradient-to-br to-yellow-600">
-                                <div class="text-neutral flex h-full w-full items-center justify-center text-6xl">
-                                    💡
-                                </div>
-                            </figure>
-                            <div class="card-body">
-                                <div class="badge badge-accent mb-2">Tips</div>
-                                <h3 class="card-title text-lg text-base-content">
-                                    10 Tips Desain UI/UX untuk Pemula
-                                </h3>
-                                <div class="mb-2 flex items-center gap-2 text-xs text-base-content/70">
-                                    <span>7 Des 2025</span>
-                                    <span>•</span>
-                                    <span>7 menit</span>
-                                </div>
-                                <p class="text-sm text-base-content/70">
-                                    Temukan prinsip-prinsip dasar desain UI/UX yang akan meningkatkan kualitas produk digital Anda...
-                                </p>
-                                <div class="card-actions mt-4">
-                                    <a href="{{ route('blog.show') }}" class="btn btn-ghost btn-sm text-primary">
-                                        Baca Selengkapnya →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Blog Post 2 -->
-                        <div class="card bg-base-200 blog-card shadow-xl">
-                            <figure class="h-48 overflow-hidden bg-gradient-to-br from-secondary to-slate-700">
+                            <figure class="h-48 overflow-hidden bg-gradient-to-br from-secondary to-slate-700 relative">
+                                @if($post->cover_image)
+                                <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                                @else
                                 <div class="flex h-full w-full items-center justify-center text-6xl text-white">
-                                    📊
+                                    📝
                                 </div>
+                                @endif
                             </figure>
                             <div class="card-body">
-                                <div class="badge badge-secondary mb-2">Insight</div>
-                                <h3 class="card-title text-lg text-base-content">Tren Web Development 2025</h3>
-                                <div class="mb-2 flex items-center gap-2 text-xs text-base-content/70">
-                                    <span>5 Des 2025</span>
-                                    <span>•</span>
-                                    <span>6 menit</span>
-                                </div>
-                                <p class="text-sm text-base-content/70">
-                                    Simak tren teknologi web terbaru yang akan mendominasi industri di tahun 2025...
-                                </p>
-                                <div class="card-actions mt-4">
-                                    <a href="{{ route('blog.show') }}" class="btn btn-ghost btn-sm text-primary">
-                                        Baca Selengkapnya →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Blog Post 3 -->
-                        <div class="card bg-base-200 blog-card shadow-xl">
-                            <figure class="h-48 overflow-hidden bg-gradient-to-br from-primary to-blue-800">
-                                <div class="flex h-full w-full items-center justify-center text-6xl text-white">
-                                    🎨
-                                </div>
-                            </figure>
-                            <div class="card-body">
-                                <div class="badge badge-primary mb-2">Design</div>
+                                @if($post->category)
+                                <div class="badge badge-secondary mb-2">{{ $post->category }}</div>
+                                @endif
                                 <h3 class="card-title text-lg text-base-content">
-                                    Cara Memilih Color Palette yang Tepat
+                                    {{ $post->title }}
                                 </h3>
                                 <div class="mb-2 flex items-center gap-2 text-xs text-base-content/70">
-                                    <span>3 Des 2025</span>
+                                    <span>{{ $post->published_at?->translatedFormat('d M Y') }}</span>
                                     <span>•</span>
-                                    <span>5 menit</span>
+                                    <span>{{ ceil(str_word_count(strip_tags($post->content)) / 200) }} menit</span>
                                 </div>
                                 <p class="text-sm text-base-content/70">
-                                    Panduan lengkap memilih kombinasi warna yang harmonis untuk website dan aplikasi Anda...
+                                    {{ Str::limit(strip_tags($post->content), 100) }}
                                 </p>
                                 <div class="card-actions mt-4">
-                                    <a href="{{ route('blog.show') }}" class="btn btn-ghost btn-sm text-primary">
+                                    <a href="{{ route('blog.show', $post) }}" class="btn btn-ghost btn-sm text-primary">
                                         Baca Selengkapnya →
                                     </a>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Blog Post 4 -->
-                        <div class="card bg-base-200 blog-card shadow-xl">
-                            <figure class="from-accent h-48 overflow-hidden bg-gradient-to-br to-orange-500">
-                                <div class="text-neutral flex h-full w-full items-center justify-center text-6xl">
-                                    ⚡
-                                </div>
-                            </figure>
-                            <div class="card-body">
-                                <div class="badge badge-accent mb-2">Performance</div>
-                                <h3 class="card-title text-lg text-base-content">
-                                    Optimasi Loading Speed Website
-                                </h3>
-                                <div class="mb-2 flex items-center gap-2 text-xs text-base-content/70">
-                                    <span>1 Des 2025</span>
-                                    <span>•</span>
-                                    <span>8 menit</span>
-                                </div>
-                                <p class="text-sm text-base-content/70">
-                                    Teknik-teknik efektif untuk meningkatkan performa website Anda dan memberikan pengalaman terbaik...
-                                </p>
-                                <div class="card-actions mt-4">
-                                    <a href="{{ route('blog.show') }}" class="btn btn-ghost btn-sm text-primary">
-                                        Baca Selengkapnya →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Blog Post 5 -->
-                        <div class="card bg-base-200 blog-card shadow-xl">
-                            <figure class="h-48 overflow-hidden bg-gradient-to-br from-secondary to-indigo-700">
-                                <div class="flex h-full w-full items-center justify-center text-6xl text-white">
-                                    🔒
-                                </div>
-                            </figure>
-                            <div class="card-body">
-                                <div class="badge badge-secondary mb-2">Security</div>
-                                <h3 class="card-title text-lg text-base-content">
-                                    Web Security Best Practices 2025
-                                </h3>
-                                <div class="mb-2 flex items-center gap-2 text-xs text-base-content/70">
-                                    <span>28 Nov 2025</span>
-                                    <span>•</span>
-                                    <span>9 menit</span>
-                                </div>
-                                <p class="text-sm text-base-content/70">
-                                    Pelajari cara mengamankan website Anda dari berbagai ancaman cyber...
-                                </p>
-                                <div class="card-actions mt-4">
-                                    <a href="{{ route('blog.show') }}" class="btn btn-ghost btn-sm text-primary">
-                                        Baca Selengkapnya →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Blog Post 6 -->
-                        <div class="card bg-base-200 blog-card shadow-xl">
-                            <figure class="h-48 overflow-hidden bg-gradient-to-br from-primary to-cyan-600">
-                                <div class="flex h-full w-full items-center justify-center text-6xl text-white">
-                                    📱
-                                </div>
-                            </figure>
-                            <div class="card-body">
-                                <div class="badge badge-primary mb-2">Mobile</div>
-                                <h3 class="card-title text-lg text-base-content">
-                                    Mobile-First Design Strategy
-                                </h3>
-                                <div class="mb-2 flex items-center gap-2 text-xs text-base-content/70">
-                                    <span>25 Nov 2025</span>
-                                    <span>•</span>
-                                    <span>6 menit</span>
-                                </div>
-                                <p class="text-sm text-base-content/70">
-                                    Mengapa mobile-first approach penting dan bagaimana mengimplementasikannya...
-                                </p>
-                                <div class="card-actions mt-4">
-                                    <a href="{{ route('blog.show') }}" class="btn btn-ghost btn-sm text-primary">
-                                        Baca Selengkapnya →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
 
                     <!-- Pagination -->
                     <div class="mt-8 flex justify-center reveal-on-scroll">
-                        <div class="join">
-                            <button class="join-item btn btn-disabled">«</button>
-                            <button class="join-item btn btn-active btn-primary text-white">1</button>
-                            <button class="join-item btn bg-base-100">2</button>
-                            <button class="join-item btn bg-base-100">3</button>
-                            <button class="join-item btn bg-base-100">4</button>
-                            <button class="join-item btn bg-base-100">»</button>
-                        </div>
+                        {{ $posts->links() }}
                     </div>
+
+                    @else
+                    <div class="text-center py-12">
+                        <div class="text-6xl mb-4">📭</div>
+                        <h3 class="text-2xl font-bold mb-2">Belum ada artikel</h3>
+                        <p class="text-base-content/70">Nantikan artikel menarik dari kami segera.</p>
+                    </div>
+                    @endif
                 </div>
 
                 <!-- Sidebar -->
@@ -300,60 +184,20 @@
                             <div class="card-body">
                                 <h3 class="card-title mb-4 text-lg text-base-content">Kategori</h3>
                                 <ul class="space-y-3">
+                                    @foreach($categories as $cat)
                                     <li class="category-item">
-                                        <a href="#" class="flex items-center justify-between hover:text-primary text-base-content/70 transition-colors">
+                                        <a href="{{ route('blog.index', ['q' => $cat->category]) }}" class="flex items-center justify-between hover:text-primary text-base-content/70 transition-colors">
                                             <span class="flex items-center gap-2">
                                                 <div class="h-2 w-2 rounded-full bg-primary"></div>
-                                                Tutorial
+                                                {{ $cat->category }}
                                             </span>
-                                            <span class="badge badge-sm">12</span>
+                                            <span class="badge badge-sm">{{ $cat->total }}</span>
                                         </a>
                                     </li>
-                                    <li class="category-item">
-                                        <a href="#" class="flex items-center justify-between hover:text-primary text-base-content/70 transition-colors">
-                                            <span class="flex items-center gap-2">
-                                                <div class="bg-accent h-2 w-2 rounded-full"></div>
-                                                Tips & Tricks
-                                            </span>
-                                            <span class="badge badge-sm">8</span>
-                                        </a>
-                                    </li>
-                                    <li class="category-item">
-                                        <a href="#" class="flex items-center justify-between hover:text-primary text-base-content/70 transition-colors">
-                                            <span class="flex items-center gap-2">
-                                                <div class="h-2 w-2 rounded-full bg-secondary"></div>
-                                                Insight
-                                            </span>
-                                            <span class="badge badge-sm">15</span>
-                                        </a>
-                                    </li>
-                                    <li class="category-item">
-                                        <a href="#" class="flex items-center justify-between hover:text-primary text-base-content/70 transition-colors">
-                                            <span class="flex items-center gap-2">
-                                                <div class="h-2 w-2 rounded-full bg-primary"></div>
-                                                Web Development
-                                            </span>
-                                            <span class="badge badge-sm">20</span>
-                                        </a>
-                                    </li>
-                                    <li class="category-item">
-                                        <a href="#" class="flex items-center justify-between hover:text-primary text-base-content/70 transition-colors">
-                                            <span class="flex items-center gap-2">
-                                                <div class="bg-accent h-2 w-2 rounded-full"></div>
-                                                UI/UX Design
-                                            </span>
-                                            <span class="badge badge-sm">10</span>
-                                        </a>
-                                    </li>
-                                    <li class="category-item">
-                                        <a href="#" class="flex items-center justify-between hover:text-primary text-base-content/70 transition-colors">
-                                            <span class="flex items-center gap-2">
-                                                <div class="h-2 w-2 rounded-full bg-secondary"></div>
-                                                Digital Marketing
-                                            </span>
-                                            <span class="badge badge-sm">7</span>
-                                        </a>
-                                    </li>
+                                    @endforeach
+                                    @if($categories->isEmpty())
+                                    <li class="text-sm text-base-content/60 italic">Belum ada kategori</li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -363,58 +207,27 @@
                             <div class="card-body">
                                 <h3 class="card-title mb-4 text-lg text-base-content">Artikel Terbaru</h3>
                                 <ul class="space-y-4">
+                                    @foreach($recent_posts as $recent)
                                     <li>
-                                        <a href="{{ route('blog.show') }}" class="group flex gap-3">
-                                            <div class="to-primary-focus flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary text-2xl text-white">
-                                                🚀
+                                        <a href="{{ route('blog.show', $recent) }}" class="group flex gap-3">
+                                            <div class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary-focus overflow-hidden">
+                                                @if($recent->cover_image)
+                                                <img src="{{ asset('storage/' . $recent->cover_image) }}" alt="{{ $recent->title }}" class="w-full h-full object-cover" />
+                                                @else
+                                                <span class="text-2xl text-white">📝</span>
+                                                @endif
                                             </div>
                                             <div class="flex-1">
                                                 <h4 class="line-clamp-2 text-sm font-semibold transition-colors group-hover:text-primary text-base-content">
-                                                    Panduan TailwindCSS dan DaisyUI
+                                                    {{ $recent->title }}
                                                 </h4>
-                                                <p class="mt-1 text-xs text-base-content/70">8 Des 2025</p>
+                                                <p class="mt-1 text-xs text-base-content/70">
+                                                    {{ $recent->published_at?->translatedFormat('d M Y') }}
+                                                </p>
                                             </div>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="{{ route('blog.show') }}" class="group flex gap-3">
-                                            <div class="from-accent flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br to-yellow-600 text-2xl text-white">
-                                                💡
-                                            </div>
-                                            <div class="flex-1">
-                                                <h4 class="line-clamp-2 text-sm font-semibold transition-colors group-hover:text-primary text-base-content">
-                                                    10 Tips Desain UI/UX
-                                                </h4>
-                                                <p class="mt-1 text-xs text-base-content/70">7 Des 2025</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('blog.show') }}" class="group flex gap-3">
-                                            <div class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-secondary to-slate-700 text-2xl text-white">
-                                                📊
-                                            </div>
-                                            <div class="flex-1">
-                                                <h4 class="line-clamp-2 text-sm font-semibold transition-colors group-hover:text-primary text-base-content">
-                                                    Tren Web Development 2025
-                                                </h4>
-                                                <p class="mt-1 text-xs text-base-content/70">5 Des 2025</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('blog.show') }}" class="group flex gap-3">
-                                            <div class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-blue-800 text-2xl text-white">
-                                                🎨
-                                            </div>
-                                            <div class="flex-1">
-                                                <h4 class="line-clamp-2 text-sm font-semibold transition-colors group-hover:text-primary text-base-content">
-                                                    Memilih Color Palette
-                                                </h4>
-                                                <p class="mt-1 text-xs text-base-content/70">3 Des 2025</p>
-                                            </div>
-                                        </a>
-                                    </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
