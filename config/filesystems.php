@@ -40,10 +40,9 @@ return [
 
         'public' => [
             'driver' => 'local',
-            // Gunakan public_path('storage') agar kompatibel dengan hosting tanpa symlink
-            // Jika di local (ada symlink), tetap berjalan normal karena menulis ke symlink = menulis ke target
-            'root' => public_path('storage'), 
-            'url' => env('APP_URL').'/storage',
+            // Gunakan path absolut ke public_html/storage jika di production
+            'root' => env('FILESYSTEM_PUBLIC_ROOT', storage_path('app/public')),
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
