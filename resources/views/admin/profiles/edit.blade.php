@@ -286,7 +286,15 @@
                             <div class="label"><span class="label-text-alt text-info">Tips: Gunakan baris baru untuk paragraf. Mendukung format teks sederhana.</span></div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-semibold">Jenis Kelamin</span></label>
+                                <select name="gender" class="select select-bordered w-full">
+                                    <option value="" disabled {{ !$profile->gender ? 'selected' : '' }}>Pilih Gender</option>
+                                    <option value="male" {{ old('gender', $profile->gender) === 'male' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="female" {{ old('gender', $profile->gender) === 'female' ? 'selected' : '' }}>Perempuan</option>
+                                </select>
+                            </div>
                             <div class="form-control">
                                 <label class="label"><span class="label-text font-semibold">Email Publik</span></label>
                                 <input type="email" name="email" value="{{ old('email', $profile->user->email) }}" class="input input-bordered w-full" required />

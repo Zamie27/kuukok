@@ -42,6 +42,7 @@ class ProfileController extends Controller
         $rules = [
             'name' => ['required', 'string', 'max:255'],
             'position' => ['nullable', 'string', 'max:120'],
+            'gender' => ['nullable', 'string', 'in:male,female'],
             'quote' => ['nullable', 'string', 'max:200'],
             'social_links' => ['nullable', 'array'],
             'social_links.*' => ['nullable', 'string'],

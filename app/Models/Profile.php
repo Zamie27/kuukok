@@ -37,6 +37,7 @@ class Profile extends Model
         'user_id',
         'slug',
         'position',
+        'gender',
         'bio',
         'quote',
         'about_me',
