@@ -22,6 +22,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
+
     /**
      * The attributes that are mass assignable.
      *
