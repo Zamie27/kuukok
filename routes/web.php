@@ -98,9 +98,20 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // User Management (Super Admin only)
     Route::middleware('can:manage-users')->resource('users', \App\Http\Controllers\Admin\UserController::class);
 
-    // Utility route for storage link (run once then remove if desired)
+    // Utility route for storage link (alternative for hosting with disabled functions)
     Route::get('/fix-storage', function () {
-        \Illuminate\Support\Facades\Artisan::call('storage:link');
-        return 'Storage link has been created/fixed. <a href="/admin/profile">Back to Profile</a>';
+        $target = storage_path('app/public');
+        $link = public_path('storage');
+
+        if (file_exists($link)) {
+            return 'Link already exists. <a href="/admin/profile">Back to Profile</a>';
+        }
+
+        try {
+            symlink($target, $link);
+            return 'Storage link has been created successfully (via symlink). <a href="/admin/profile">Back to Profile</a>';
+        } catch (\Throwable $e) {
+            return 'Failed to create link: ' . $e->getMessage() . '<br>Try running command via terminal if possible.';
+        }
     })->middleware('can:access-admin');
 });
