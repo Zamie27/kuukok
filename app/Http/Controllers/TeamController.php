@@ -10,7 +10,7 @@ class TeamController extends Controller
 {
     public function show(Profile $profile)
     {
-        $profile->load(['user', 'techStacks', 'certifications']);
+        $profile->load(['user', 'techStacks', 'certifications', 'portfolios']);
 
         $techStacks = $profile->techStacks
             ? $profile->techStacks->sortBy('name')->groupBy('category')->sortKeys()

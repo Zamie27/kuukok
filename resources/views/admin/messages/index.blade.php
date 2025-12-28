@@ -7,6 +7,7 @@
                     <tr>
                         <th>Nama</th>
                         <th>Email</th>
+                        <th>Subjek</th>
                         <th>Status</th>
                         <th>Waktu</th>
                         <th></th>
@@ -17,6 +18,7 @@
                     <tr>
                         <td>{{ $message->name }}</td>
                         <td>{{ $message->email }}</td>
+                        <td>{{ Str::limit($message->subject, 30) }}</td>
                         <td>{{ $message->status }}</td>
                         <td>{{ $message->created_at->diffForHumans() }}</td>
                         <td class="flex gap-2">

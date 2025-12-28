@@ -75,4 +75,13 @@ class Profile extends Model
     {
         return $this->hasMany(Certification::class);
     }
+
+    public function portfolios(): BelongsToMany
+    {
+        return $this->belongsToMany(Portfolio::class, 'portfolio_team_member')
+            ->withPivot('role')
+            ->withTimestamps()
+            ->where('status', 'published')
+            ->orderByDesc('published_at');
+    }
 }

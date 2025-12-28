@@ -17,4 +17,9 @@ class Faq extends Model
         'active',
         'sort_order',
     ];
+
+    protected $casts = [
+        'active' => 'boolean',
+        'sort_order' => 'integer',
+    ];
 }

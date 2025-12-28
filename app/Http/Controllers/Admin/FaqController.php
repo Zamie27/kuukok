@@ -34,12 +34,13 @@ class FaqController extends Controller
             abort(403);
         }
         $data = $request->validate([
-            'question' => ['required','string','max:200'],
-            'answer' => ['required','string'],
-            'active' => ['nullable','boolean'],
-            'sort_order' => ['nullable','integer','min:0'],
+            'question' => ['required', 'string', 'max:200'],
+            'answer' => ['required', 'string'],
+            'active' => ['nullable', 'boolean'],
+            'sort_order' => ['nullable', 'integer', 'min:0', 'unique:faqs,sort_order'],
+        ], [
+            'sort_order.unique' => 'Order sudah ada active',
         ]);
-        $data['active'] = (bool) ($data['active'] ?? true);
         Faq::create($data);
         return redirect()->route('admin.faqs.index');
     }
@@ -58,12 +59,22 @@ class FaqController extends Controller
             abort(403);
         }
         $data = $request->validate([
-            'question' => ['required','string','max:200'],
-            'answer' => ['required','string'],
-            'active' => ['nullable','boolean'],
-            'sort_order' => ['nullable','integer','min:0'],
+            'question' => ['required', 'string', 'max:200'],
+            'answer' => ['required', 'string'],
+            'active' => ['nullable', 'boolean'],
+            'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
-        $data['active'] = (bool) ($data['active'] ?? true);
+
+        // Check for order swap
+        if (isset($data['sort_order']) && $data['sort_order'] != $faq->sort_order) {
+            $existing = Faq::where('sort_order', $data['sort_order'])->first();
+            if ($existing) {
+                // Swap the sort orders
+                $existing->sort_order = $faq->sort_order;
+                $existing->save();
+            }
+        }
+
         $faq->fill($data)->save();
         return redirect()->route('admin.faqs.index');
     }

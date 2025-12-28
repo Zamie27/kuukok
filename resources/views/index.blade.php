@@ -45,87 +45,38 @@
     <!-- Tentang Kami -->
     <section id="tentang-kami" class="relative bg-section-light">
         <div class="max-w-7xl mx-auto px-4 lg:px-8 flex flex-col gap-12 md:gap-16 py-24 md:py-32">
+
             <!-- Title -->
             <div class="text-center space-y-3 reveal-on-scroll">
-                <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-base-content">Tentang Kami</h2>
-                <p class="text-base md:text-lg text-base-content/70">Solusi digital profesional dengan fokus pada kualitas, konsistensi, dan hasil nyata</p>
-            </div>
-
-            <div class="divider"></div>
-
-            <!-- Feature grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-on-scroll">
-                <div class="card bg-base-100 border border-base-300 shadow-sm">
-                    <div class="card-body">
-                        <div class="flex items-center gap-3 mb-2">
-                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M3 5h18M3 12h18M3 19h18" />
-                                </svg>
-                            </span>
-                            <h3 class="text-base font-semibold text-base-content">Web Development</h3>
-                        </div>
-                        <p class="text-sm text-base-content/70">Website modern, responsif, dan SEO-friendly dengan teknologi terkini.</p>
-                    </div>
-                </div>
-                <div class="card bg-base-100 border border-base-300 shadow-sm">
-                    <div class="card-body">
-                        <div class="flex items-center gap-3 mb-2">
-                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M4 4h9v9H4zM13 13l7 7" />
-                                </svg>
-                            </span>
-                            <h3 class="text-base font-semibold text-base-content">Graphic Design</h3>
-                        </div>
-                        <p class="text-sm text-base-content/70">Desain visual menarik dan konsisten dengan brand identity.</p>
-                    </div>
-                </div>
-                <div class="card bg-base-100 border border-base-300 shadow-sm">
-                    <div class="card-body">
-                        <div class="flex items-center gap-3 mb-2">
-                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M5 5h14v14H5zM7 7h10M7 11h10M7 15h10" />
-                                </svg>
-                            </span>
-                            <h3 class="text-base font-semibold text-base-content">Content Writing</h3>
-                        </div>
-                        <p class="text-sm text-base-content/70">Konten berkualitas yang engaging dan dioptimasi untuk konversi.</p>
-                    </div>
-                </div>
-                <div class="card bg-base-100 border border-base-300 shadow-sm">
-                    <div class="card-body">
-                        <div class="flex items-center gap-3 mb-2">
-                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M12 6v6l4 2M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-                                </svg>
-                            </span>
-                            <h3 class="text-base font-semibold text-base-content">Support 24/7</h3>
-                        </div>
-                        <p class="text-sm text-base-content/70">Dukungan teknis dan konsultasi kapan saja Anda butuhkan.</p>
-                    </div>
+                <h2 class="text-3xl md:text-4xl font-semibold tracking-tight text-base-content">{{ $settings['about_title'] ?? 'Tentang Kami' }}</h2>
+                <div class="text-base md:text-lg text-base-content/90 font-medium whitespace-pre-line max-w-3xl mx-auto">
+                    {{ $settings['about_description'] ?? 'Solusi digital profesional dengan fokus pada kualitas, konsistensi, dan hasil nyata.' }}
                 </div>
             </div>
+
 
             <!-- Centered stats strip -->
             <div class="reveal-on-scroll flex justify-center">
-                <div class="stats stats-vertical sm:stats-horizontal w-full max-w-full sm:max-w-3xl shadow-sm bg-base-100/80 backdrop-blur-sm border border-base-300 rounded-2xl text-center">
+                <div class="stats stats-vertical sm:stats-horizontal w-full max-w-full sm:max-w-3xl shadow-sm bg-base-100/90 backdrop-blur-md border border-base-300 rounded-2xl text-center">
                     <div class="stat">
-                        <div class="stat-title text-base-content/70">Projects Completed</div>
-                        <div class="stat-value text-primary">50+</div>
-                        <div class="stat-desc text-base-content/60">Proyek selesai dengan sukses</div>
+                        <div class="stat-title text-base-content font-semibold">Years Experience</div>
+                        <div class="stat-value text-primary">{{ $yearsText }}</div>
+                        <div class="stat-desc text-base-content/80 font-medium">Sejak 2020</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-title text-base-content/70">Happy Clients</div>
-                        <div class="stat-value text-primary">40+</div>
-                        <div class="stat-desc text-base-content/60">Kepuasan klien tinggi</div>
+                        <div class="stat-title text-base-content font-semibold">Projects Completed</div>
+                        <div class="stat-value text-primary">{{ $projectCountText }}</div>
+                        <div class="stat-desc text-base-content/80 font-medium">Proyek selesai dengan sukses</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-title text-base-content/70">Response Time</div>
+                        <div class="stat-title text-base-content font-semibold">Happy Clients</div>
+                        <div class="stat-value text-primary">{{ $clientCountText }}</div>
+                        <div class="stat-desc text-base-content/80 font-medium">Kepuasan klien tinggi</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-title text-base-content font-semibold">Response Time</div>
                         <div class="stat-value text-primary">24/7</div>
-                        <div class="stat-desc text-base-content/60">Support cepat setiap saat</div>
+                        <div class="stat-desc text-base-content/80 font-medium">Support cepat setiap saat</div>
                     </div>
                 </div>
             </div>
@@ -371,24 +322,56 @@
                 </p>
             </div>
 
-            <form id="my-form" action="#" class="reveal-on-scroll">
+            <form id="contact-form" action="{{ route('contact.store') }}" method="POST" class="reveal-on-scroll">
+                @csrf
                 <div class="w-full lg:mx-auto lg:w-2/3">
+                    <!-- Success Message -->
+                    @if (session('status'))
+                    <div class="alert alert-success mb-6 text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{{ session('status') }}</span>
+                    </div>
+                    @endif
+
+                    <!-- Validation Errors -->
+                    @if ($errors->any())
+                    <div class="alert alert-error mb-6 text-white">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
                     <div class="mb-8 w-full">
                         <label for="name" class="text-base font-bold text-primary block mb-2">Nama</label>
-                        <input name="Nama" type="text" id="name" class="input border-none w-full bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500" />
+                        <input name="name" type="text" id="name" value="{{ old('name') }}" class="input border-none w-full bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500" required />
                     </div>
                     <div class="mb-8 w-full">
                         <label for="email" class="text-base font-bold text-primary block mb-2">Email</label>
-                        <input name="Email" type="email" id="email" class="input border-none w-full bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500" />
+                        <input name="email" type="email" id="email" value="{{ old('email') }}" class="input border-none w-full bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500" required />
                     </div>
                     <div class="mb-8 w-full">
-                        <label for="massage" class="text-base font-bold text-primary block mb-2">Pesan</label>
-                        <textarea name="Pesan" id="massage" class="textarea border-none w-full h-32 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500"></textarea>
+                        <label for="subject" class="text-base font-bold text-primary block mb-2">Subjek</label>
+                        @php
+                        $subjects = array_filter(array_map('trim', explode("\n", $settings['contact_subjects'] ?? "Penawaran Proyek\nKonsultasi\nKerjasama\nLainnya")));
+                        @endphp
+                        <select name="subject" id="subject" class="select border-none w-full bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500">
+                            <option value="" disabled selected>Pilih Subjek Pesan</option>
+                            @foreach($subjects as $subj)
+                            <option value="{{ $subj }}" {{ old('subject') == $subj ? 'selected' : '' }}>{{ $subj }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-8 w-full">
+                        <label for="body" class="text-base font-bold text-primary block mb-2">Pesan</label>
+                        <textarea name="body" id="body" class="textarea border-none w-full h-32 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary placeholder-slate-500" required>{{ old('body') }}</textarea>
                     </div>
                     <div class="w-full">
-                        <button type="submit" id="submit-button" class="btn btn-primary w-full rounded-full text-white font-semibold transition duration-500 hover:opacity-80 hover:shadow-lg">
-                            Kirim
-                        </button>
+                        <button type="submit" class="btn btn-primary w-full text-white">Kirim Pesan</button>
                     </div>
                 </div>
             </form>

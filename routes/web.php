@@ -28,7 +28,19 @@ Route::get('/', function () {
     $testimonials = \App\Models\Testimonial::where('status', 'active')->orderBy('sort_order')->orderByDesc('created_at')->get();
     $packages = \App\Models\Package::where('status', 'active')->orderBy('sort_order')->get();
     $portfolios = \App\Models\Portfolio::where('status', 'published')->orderByDesc('published_at')->take(6)->get();
-    return view('index', compact('testimonials', 'packages', 'portfolios'));
+    $settings = \App\Models\Setting::where('group', 'about')->pluck('value', 'key');
+
+    // Stats Logic
+    $projectCount = \App\Models\Portfolio::count(); // Count all created projects as per request "berdasarkan di halaman projek yang dibuat"
+    $projectCountText = $projectCount < 10 ? $projectCount : (floor($projectCount / 10) * 10 . '+');
+
+    $clientCount = \App\Models\Testimonial::count(); // "menampilkan berdasarkan data testimoni"
+    $clientCountText = $clientCount < 10 ? $clientCount : (floor($clientCount / 10) * 10 . '+');
+
+    $years = date('Y') - 2020;
+    $yearsText = $years . '+';
+
+    return view('index', compact('testimonials', 'packages', 'portfolios', 'settings', 'projectCountText', 'clientCountText', 'yearsText'));
 })->name('home');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
@@ -40,7 +52,9 @@ Route::get('/portfolio/{portfolio:slug}', [PortfolioController::class, 'show'])-
 Route::get('/pricing', function () {
     $packages = \App\Models\Package::where('status', 'active')->orderBy('sort_order')->get();
     $testimonials = \App\Models\Testimonial::where('status', 'active')->orderBy('sort_order')->orderByDesc('created_at')->get();
-    return view('pricing', compact('packages', 'testimonials'));
+    $faqs = \App\Models\Faq::where('active', true)->orderBy('sort_order')->get();
+    $settings = \App\Models\Setting::where('group', 'pricing')->pluck('value', 'key');
+    return view('pricing', compact('packages', 'testimonials', 'faqs', 'settings'));
 })->name('pricing.index');
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -60,11 +74,22 @@ Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword']
 Route::get('/about', function () {
     $team = \App\Models\Profile::with('user')->get();
     $settings = \App\Models\Setting::where('group', 'about')->pluck('value', 'key');
-    return view('about', compact('team', 'settings'));
+
+    // Stats Logic (Consistent with Home)
+    $projectCount = \App\Models\Portfolio::count();
+    $projectCountText = $projectCount < 10 ? $projectCount : (floor($projectCount / 10) * 10 . '+');
+
+    $clientCount = \App\Models\Testimonial::count();
+    $clientCountText = $clientCount < 10 ? $clientCount : (floor($clientCount / 10) * 10 . '+');
+
+    $years = date('Y') - 2020;
+    $yearsText = $years . '+';
+
+    return view('about', compact('team', 'settings', 'projectCountText', 'clientCountText', 'yearsText'));
 })->name('about.index');
 Route::get('/team/{profile}', [App\Http\Controllers\TeamController::class, 'show'])->name('team.show');
 
-Route::view('/contact', 'contact')->name('contact.index');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 // Admin routes

@@ -63,6 +63,94 @@
                         </div>
                     </div>
 
+                    <!-- Contact Page Settings -->
+                    <div class="space-y-4 pt-8 mt-8 border-t">
+                        <h2 class="text-xl font-semibold border-b pb-2">Halaman Kontak</h2>
+
+                        <div class="form-control">
+                            <label class="label"><span class="label-text font-bold">Opsi Subjek Pesan (Satu per baris)</span></label>
+                            <textarea name="contact_subjects" rows="4" class="textarea textarea-bordered w-full" placeholder="Contoh:&#10;Penawaran Proyek&#10;Konsultasi&#10;Kerjasama">{{ $settings['contact_subjects'] ?? '' }}</textarea>
+                            <label class="label"><span class="label-text-alt text-base-content/60">Daftar ini akan muncul sebagai pilihan di formulir kontak.</span></label>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Email Kontak</span></label>
+                                <input type="email" name="contact_email" value="{{ $settings['contact_email'] ?? '' }}" class="input input-bordered w-full" />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Nomor Telepon</span></label>
+                                <input type="text" name="contact_phone" value="{{ $settings['contact_phone'] ?? '' }}" class="input input-bordered w-full" />
+                            </div>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Alamat Lengkap</span></label>
+                            <textarea name="contact_address" rows="3" class="textarea textarea-bordered w-full">{{ $settings['contact_address'] ?? '' }}</textarea>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Google Maps Embed Code</span></label>
+                            <textarea name="contact_maps" rows="3" class="textarea textarea-bordered w-full font-mono text-xs">{{ $settings['contact_maps'] ?? '' }}</textarea>
+                            <label class="label"><span class="label-text-alt text-base-content/60">Paste kode iframe dari Google Maps di sini.</span></label>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Section Settings -->
+                    <div class="space-y-4 pt-8 mt-8 border-t">
+                        <h2 class="text-xl font-semibold border-b pb-2">Pengaturan FAQ</h2>
+
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Judul Section FAQ</span></label>
+                            <input type="text" name="faq_title" value="{{ $settings['faq_title'] ?? 'Pertanyaan Umum' }}" class="input input-bordered w-full" />
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Deskripsi Section FAQ</span></label>
+                            <textarea name="faq_description" rows="2" class="textarea textarea-bordered w-full">{{ $settings['faq_description'] ?? 'Beberapa pertanyaan yang sering diajukan oleh klien kami.' }}</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Portfolio Settings -->
+                    <div class="space-y-4 pt-8 mt-8 border-t">
+                        <h2 class="text-xl font-semibold border-b pb-2">Pengaturan Portfolio</h2>
+
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Portfolio Tags / Categories</span></label>
+                            <textarea name="portfolio_tags" rows="3" class="textarea textarea-bordered w-full" placeholder="Web Development, Mobile App, Design">{{ $settings['portfolio_tags'] ?? '' }}</textarea>
+                            <label class="label"><span class="label-text-alt text-base-content/60">Pisahkan dengan koma (,). Tags ini akan muncul sebagai pilihan saat membuat portfolio baru.</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Social Media Settings -->
+                    <div class="space-y-4 pt-4">
+                        <h2 class="text-xl font-semibold border-b pb-2">Sosial Media (Ikuti Kami)</h2>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Facebook URL</span></label>
+                                <input type="url" name="social_facebook" value="{{ $settings['social_facebook'] ?? '' }}" class="input input-bordered w-full" placeholder="https://facebook.com/..." />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Twitter / X URL</span></label>
+                                <input type="url" name="social_twitter" value="{{ $settings['social_twitter'] ?? '' }}" class="input input-bordered w-full" placeholder="https://twitter.com/..." />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">Instagram URL</span></label>
+                                <input type="url" name="social_instagram" value="{{ $settings['social_instagram'] ?? '' }}" class="input input-bordered w-full" placeholder="https://instagram.com/..." />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">LinkedIn URL</span></label>
+                                <input type="url" name="social_linkedin" value="{{ $settings['social_linkedin'] ?? '' }}" class="input input-bordered w-full" placeholder="https://linkedin.com/in/..." />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text">GitHub URL</span></label>
+                                <input type="url" name="social_github" value="{{ $settings['social_github'] ?? '' }}" class="input input-bordered w-full" placeholder="https://github.com/..." />
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="pt-4">
                         <button type="submit" class="btn btn-primary text-white w-full sm:w-auto">Simpan Pengaturan</button>
                     </div>

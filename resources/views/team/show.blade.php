@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light" class="scroll-smooth">
+<html lang="id" class="scroll-smooth">
 
 <head>
     @include('components.head', [
@@ -163,6 +163,41 @@
                         </div>
                     </div>
                     @endif
+
+                    <!-- Projects Involved -->
+                    @if($profile->portfolios->count() > 0)
+                    <div class="card bg-base-100 shadow-xl">
+                        <div class="card-body">
+                            <h2 class="card-title text-2xl mb-6 border-b pb-2 border-base-200">Proyek yang Diikuti</h2>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                @foreach($profile->portfolios as $portfolio)
+                                <a href="{{ route('portfolio.show', $portfolio->slug) }}" class="card bg-base-200 hover:shadow-lg transition-all duration-300 group border border-transparent hover:border-primary/20">
+                                    <figure class="px-4 pt-4 overflow-hidden">
+                                        @if($portfolio->cover_image)
+                                        <img src="{{ asset('storage/'.$portfolio->cover_image) }}" alt="{{ $portfolio->title }}" class="rounded-xl h-48 w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        @else
+                                        <div class="h-48 w-full bg-neutral text-neutral-content rounded-xl flex items-center justify-center">
+                                            <span class="text-2xl font-bold opacity-20">{{ substr($portfolio->title, 0, 2) }}</span>
+                                        </div>
+                                        @endif
+                                    </figure>
+                                    <div class="card-body p-4">
+                                        <h3 class="card-title text-lg group-hover:text-primary transition-colors line-clamp-1">
+                                            {{ $portfolio->title }}
+                                        </h3>
+                                        <div class="flex items-center justify-between mt-2">
+                                            <div class="badge badge-sm badge-secondary badge-outline">{{ $portfolio->pivot->role ?: 'Member' }}</div>
+                                            <span class="text-xs text-base-content/60">{{ $portfolio->published_at ? $portfolio->published_at->year : $portfolio->created_at->year }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
 
                     <!-- Sertifikat -->
                     @if($profile->certifications->count() > 0)

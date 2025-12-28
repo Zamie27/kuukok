@@ -280,6 +280,23 @@ class Index extends Component
         [$this->gallery[$index + 1], $this->gallery[$index]] = [$this->gallery[$index], $this->gallery[$index + 1]];
     }
 
+    /** Move gallery item from one position to another. */
+    public function moveGalleryItem(int $fromIndex, int $toIndex): void
+    {
+        if (!isset($this->gallery[$fromIndex]) || $fromIndex === $toIndex) {
+            return;
+        }
+
+        // Adjust toIndex if we are moving down, because removing the item shifts indices
+        // Actually array_splice handles this if we do remove then insert.
+        // But if we just want to "place at index", we need to be careful.
+        // Let's use array manipulation.
+
+        $item = $this->gallery[$fromIndex];
+        array_splice($this->gallery, $fromIndex, 1);
+        array_splice($this->gallery, $toIndex, 0, $item);
+    }
+
     /** Remove gallery item from list. */
     public function removeGalleryItem(int $index): void
     {

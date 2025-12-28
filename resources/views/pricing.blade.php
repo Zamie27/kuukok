@@ -70,8 +70,8 @@
     <section class="py-16 px-4 bg-base-100">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-12 reveal-on-scroll">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Kelebihan & Pertimbangan Web Development</h2>
-                <p class="text-base-content/70 text-lg">Transparansi layanan untuk keputusan terbaik bisnis Anda</p>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">{{ $settings['pricing_comparison_title'] ?? 'Kelebihan & Pertimbangan Web Development' }}</h2>
+                <p class="text-base-content/70 text-lg">{{ $settings['pricing_comparison_subtitle'] ?? 'Transparansi layanan untuk keputusan terbaik bisnis Anda' }}</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 reveal-on-scroll">
@@ -82,29 +82,28 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            Kelebihan
+                            {{ $settings['pricing_pros_title'] ?? 'Kelebihan' }}
                         </h3>
                         <ul class="space-y-3">
+                            @php
+                            $pros = isset($settings['pricing_pros_items'])
+                            ? explode("\n", $settings['pricing_pros_items'])
+                            : [
+                            'Profesional & kredibel untuk bisnis Anda',
+                            'Dapat diakses 24/7 dari mana saja',
+                            'Meningkatkan jangkauan pasar secara online',
+                            'Mudah di-update dan dikelola',
+                            'Dapat terintegrasi dengan berbagai tools & API'
+                            ];
+                            @endphp
+                            @foreach($pros as $item)
+                            @if(trim($item))
                             <li class="flex items-start gap-3">
                                 <span class="mt-1 text-success">✓</span>
-                                <span>Profesional & kredibel untuk bisnis Anda</span>
+                                <span>{{ trim($item) }}</span>
                             </li>
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 text-success">✓</span>
-                                <span>Dapat diakses 24/7 dari mana saja</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 text-success">✓</span>
-                                <span>Meningkatkan jangkauan pasar secara online</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 text-success">✓</span>
-                                <span>Mudah di-update dan dikelola</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 text-success">✓</span>
-                                <span>Dapat terintegrasi dengan berbagai tools & API</span>
-                            </li>
+                            @endif
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -116,131 +115,33 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
-                            Pertimbangan
+                            {{ $settings['pricing_cons_title'] ?? 'Pertimbangan' }}
                         </h3>
                         <ul class="space-y-3">
+                            @php
+                            $cons = isset($settings['pricing_cons_items'])
+                            ? explode("\n", $settings['pricing_cons_items'])
+                            : [
+                            'Memerlukan hosting dan domain (biaya tahunan)',
+                            'Butuh maintenance dan security update berkala',
+                            'Waktu pengerjaan beberapa minggu tergantung kompleksitas',
+                            'Perlu konten dan materi yang jelas sebelum mulai'
+                            ];
+                            @endphp
+                            @foreach($cons as $item)
+                            @if(trim($item))
                             <li class="flex items-start gap-3">
                                 <span class="mt-1 text-warning">!</span>
-                                <span>Memerlukan hosting dan domain (biaya tahunan)</span>
+                                <span>{{ trim($item) }}</span>
                             </li>
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 text-warning">!</span>
-                                <span>Butuh maintenance dan security update berkala</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 text-warning">!</span>
-                                <span>Waktu pengerjaan beberapa minggu tergantung kompleksitas</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <span class="mt-1 text-warning">!</span>
-                                <span>Perlu konten dan materi yang jelas sebelum mulai</span>
-                            </li>
+                            @endif
+                            @endforeach
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- FAQ Section -->
-    <div class="py-16 px-4 bg-base-200">
-        <div class="max-w-4xl mx-auto reveal-on-scroll">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
-                <p class="text-base-content/70">Pertanyaan yang sering ditanyakan seputar harga dan layanan kami</p>
-            </div>
-
-            <div class="space-y-4">
-                <!-- FAQ 1 -->
-                <div class="collapse collapse-plus bg-base-100 shadow">
-                    <input type="radio" name="faq-accordion" checked />
-                    <div class="collapse-title text-xl font-medium">
-                        Apakah harga sudah termasuk revisi?
-                    </div>
-                    <div class="collapse-content">
-                        <p class="text-base-content/70">Ya, setiap paket sudah termasuk revisi sesuai yang tertera di deskripsi paket. Untuk paket Starter web development mendapat 2x revisi, Professional 3x revisi, dan seterusnya. Revisi dilakukan sesuai scope awal yang disepakati.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 2 -->
-                <div class="collapse collapse-plus bg-base-100 shadow">
-                    <input type="radio" name="faq-accordion" />
-                    <div class="collapse-title text-xl font-medium">
-                        Bagaimana sistem pembayaran?
-                    </div>
-                    <div class="collapse-content">
-                        <p class="text-base-content/70">Kami menggunakan sistem pembayaran 2 tahap: DP 50% di awal project untuk memulai pengerjaan, dan pelunasan 50% setelah project selesai dan disetujui klien. Pembayaran dapat melalui transfer bank atau e-wallet.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 3 -->
-                <div class="collapse collapse-plus bg-base-100 shadow">
-                    <input type="radio" name="faq-accordion" />
-                    <div class="collapse-title text-xl font-medium">
-                        Apakah ada garansi untuk layanan yang diberikan?
-                    </div>
-                    <div class="collapse-content">
-                        <p class="text-base-content/70">Ya, kami memberikan garansi 100% kepuasan. Jika hasil tidak sesuai brief awal, kami akan melakukan revisi hingga Anda puas. Untuk web development, kami juga memberikan support gratis untuk bug fixing sesuai durasi yang tertera di paket (1-6 bulan).</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 4 -->
-                <div class="collapse collapse-plus bg-base-100 shadow">
-                    <input type="radio" name="faq-accordion" />
-                    <div class="collapse-title text-xl font-medium">
-                        Apa yang didapat dalam paket Professional web development?
-                    </div>
-                    <div class="collapse-content">
-                        <p class="text-base-content/70">Paket Professional mencakup website hingga 15 halaman dengan custom CMS dashboard untuk management konten, database integration, user authentication system, advanced SEO optimization, responsive design, dan 3 bulan support gratis. Cocok untuk bisnis yang membutuhkan website dinamis dengan database.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 5 -->
-                <div class="collapse collapse-plus bg-base-100 shadow">
-                    <input type="radio" name="faq-accordion" />
-                    <div class="collapse-title text-xl font-medium">
-                        Berapa lama waktu pengerjaan project?
-                    </div>
-                    <div class="collapse-content">
-                        <p class="text-base-content/70">Waktu pengerjaan berbeda-beda tergantung paket: Starter Web (2 minggu), Professional Web (1 bulan), Enterprise Web (2-3 bulan), Logo Design (5 hari), Brand Identity (2 minggu). Timeline dapat lebih cepat dengan additional rush fee atau lebih lama jika ada permintaan perubahan major dari klien.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 6 -->
-                <div class="collapse collapse-plus bg-base-100 shadow">
-                    <input type="radio" name="faq-accordion" />
-                    <div class="collapse-title text-xl font-medium">
-                        Apakah bisa request custom paket sesuai kebutuhan?
-                    </div>
-                    <div class="collapse-content">
-                        <p class="text-base-content/70">Tentu saja! Paket yang kami tampilkan adalah paket standard. Kami sangat terbuka untuk diskusi custom package sesuai kebutuhan spesifik Anda. Silakan hubungi tim kami untuk konsultasi gratis dan kami akan buatkan penawaran khusus untuk Anda.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 7 -->
-                <div class="collapse collapse-plus bg-base-100 shadow">
-                    <input type="radio" name="faq-accordion" />
-                    <div class="collapse-title text-xl font-medium">
-                        Apakah ada biaya maintenance setelah project selesai?
-                    </div>
-                    <div class="collapse-content">
-                        <p class="text-base-content/70">Untuk periode support gratis (1-6 bulan tergantung paket), tidak ada biaya tambahan untuk bug fixing dan minor update. Setelah periode tersebut, kami menawarkan paket maintenance mulai dari Rp 500.000/bulan yang mencakup update konten, security patch, backup, dan technical support.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 8 -->
-                <div class="collapse collapse-plus bg-base-100 shadow">
-                    <input type="radio" name="faq-accordion" />
-                    <div class="collapse-title text-xl font-medium">
-                        File apa saja yang akan saya terima setelah project selesai?
-                    </div>
-                    <div class="collapse-content">
-                        <p class="text-base-content/70">Untuk web development: source code, database backup, dokumentasi, dan akses ke hosting/domain. Untuk graphic design: file vector (AI/EPS), PNG, JPG, SVG, dan PDF. Untuk brand identity: lengkap dengan brand guidelines PDF. Semua file adalah hak milik Anda sepenuhnya setelah pelunasan.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Testimoni Section (From Home) -->
     <section id="testimoni" class="relative bg-section-secondary">
@@ -263,9 +164,9 @@
                             <div class="flex items-center gap-3">
                                 <div class="testimoni__avatar">
                                     @if($testimonial->photo)
-                                        <img src="{{ asset('storage/' . $testimonial->photo) }}" alt="{{ $testimonial->name }}" class="w-full h-full object-cover">
+                                    <img src="{{ asset('storage/' . $testimonial->photo) }}" alt="{{ $testimonial->name }}" class="w-full h-full object-cover">
                                     @else
-                                        {{ substr($testimonial->display_name, 0, 1) }}
+                                    {{ substr($testimonial->display_name, 0, 1) }}
                                     @endif
                                 </div>
                                 <div>
@@ -277,13 +178,13 @@
                             <div class="testimoni__stars">
                                 @for($i = 0; $i < $testimonial->rating; $i++)
                                     ★
-                                @endfor
+                                    @endfor
                             </div>
                             <p class="testimoni__quote">"{{ $testimonial->content }}"</p>
                         </div>
                     </article>
                     @endforeach
-                    
+
                     <!-- Duplicate for infinite scroll -->
                     @foreach($testimonials as $testimonial)
                     <article class="testimoni__card">
@@ -291,9 +192,9 @@
                             <div class="flex items-center gap-3">
                                 <div class="testimoni__avatar">
                                     @if($testimonial->photo)
-                                        <img src="{{ asset('storage/' . $testimonial->photo) }}" alt="{{ $testimonial->name }}" class="w-full h-full object-cover">
+                                    <img src="{{ asset('storage/' . $testimonial->photo) }}" alt="{{ $testimonial->name }}" class="w-full h-full object-cover">
                                     @else
-                                        {{ substr($testimonial->display_name, 0, 1) }}
+                                    {{ substr($testimonial->display_name, 0, 1) }}
                                     @endif
                                 </div>
                                 <div>
@@ -305,7 +206,7 @@
                             <div class="testimoni__stars">
                                 @for($i = 0; $i < $testimonial->rating; $i++)
                                     ★
-                                @endfor
+                                    @endfor
                             </div>
                             <p class="testimoni__quote">"{{ $testimonial->content }}"</p>
                         </div>
@@ -315,6 +216,31 @@
             </div>
         </div>
     </section>
+
+    <!-- FAQ Section -->
+    <div class="py-16 px-4 bg-base-200">
+        <div class="max-w-4xl mx-auto reveal-on-scroll">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">{{ $settings['faq_title'] ?? 'Frequently Asked Questions' }}</h2>
+                <p class="text-base-content/70">{{ $settings['faq_description'] ?? 'Pertanyaan yang sering ditanyakan seputar harga dan layanan kami' }}</p>
+            </div>
+
+            <div class="space-y-4">
+                @foreach($faqs as $faq)
+                <div class="collapse collapse-plus bg-base-100 shadow">
+                    <input type="radio" name="faq-accordion" @checked($loop->first) />
+                    <div class="collapse-title text-xl font-medium">
+                        {{ $faq->question }}
+                    </div>
+                    <div class="collapse-content">
+                        <p class="text-base-content/70">{{ $faq->answer }}</p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
 
     <!-- CTA Section -->
     <div class="bg-base-200 px-4 py-20 reveal-on-scroll">
@@ -328,7 +254,7 @@
                         Konsultasikan kebutuhan bisnis Anda dengan kami secara gratis
                     </p>
                     <div class="flex flex-col justify-center gap-4 sm:flex-row">
-                        <a href="{{ route('home') }}#kontak" class="btn btn-accent btn-lg text-neutral font-bold border-none">
+                        <a href="{{ route('home') }}/contact" class="btn btn-accent btn-lg text-neutral font-bold border-none">
                             Konsultasi Gratis
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.686 8-8 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 3.686-8 8-8s8 3.582 8 8z" />

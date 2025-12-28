@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Package;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,7 +18,8 @@ class PackageController extends Controller
             abort(403);
         }
         $items = Package::orderBy('sort_order')->get();
-        return view('admin.packages.index', compact('items'));
+        $settings = Setting::whereIn('group', ['pricing', 'contact'])->pluck('value', 'key');
+        return view('admin.packages.index', compact('items', 'settings'));
     }
 
     public function create()

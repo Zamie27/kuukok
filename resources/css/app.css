@@ -302,10 +302,10 @@ body {
 
 /* Pricing */
 .pricing__grid {
-    @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+    @apply flex flex-wrap justify-center gap-8;
 }
 .pricing__card {
-    @apply card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 border border-base-200 relative overflow-hidden h-full;
+    @apply card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 border border-base-200 relative overflow-hidden h-full w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.34rem)];
 }
 .pricing__card:hover {
     @apply -translate-y-2;

@@ -40,15 +40,15 @@
                 </div>
                 <div class="grid grid-cols-2 gap-6 pt-4">
                     <div>
-                        <div class="text-3xl font-bold text-primary mb-1">5+</div>
+                        <div class="text-3xl font-bold text-primary mb-1">{{ $yearsText }}</div>
                         <div class="text-sm text-base-content/60">Tahun Pengalaman</div>
                     </div>
                     <div>
-                        <div class="text-3xl font-bold text-primary mb-1">100+</div>
+                        <div class="text-3xl font-bold text-primary mb-1">{{ $projectCountText }}</div>
                         <div class="text-sm text-base-content/60">Proyek Selesai</div>
                     </div>
                     <div>
-                        <div class="text-3xl font-bold text-primary mb-1">50+</div>
+                        <div class="text-3xl font-bold text-primary mb-1">{{ $clientCountText }}</div>
                         <div class="text-sm text-base-content/60">Klien Puas</div>
                     </div>
                     <div>

@@ -7,6 +7,15 @@
 <meta name="author" content="Kuukok">
 <meta name="robots" content="index, follow">
 
+<script>
+    // Theme Initialization
+    if (localStorage.getItem('kuukok-theme') === 'dark' || (!('kuukok-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+</script>
+
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="{{ $og_type ?? 'website' }}">
 <meta property="og:url" content="{{ $og_url ?? url()->current() }}">

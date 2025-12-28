@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 /**
@@ -23,6 +24,11 @@ use Illuminate\Support\Str;
  * @property array|null $gallery
  * @property array|null $tags
  * @property string $status
+ * @property string|null $client_name
+ * @property \Illuminate\Support\Carbon|null $start_date
+ * @property \Illuminate\Support\Carbon|null $end_date
+ * @property string|null $project_status
+ * @property string|null $live_demo_link
  * @property \Illuminate\Support\Carbon $created_at
  * @property \Illuminate\Support\Carbon $updated_at
  * @property \Illuminate\Support\Carbon|null $published_at
@@ -52,6 +58,14 @@ class Portfolio extends Model
         'meta_title',
         'meta_description',
         'author_id',
+        'client_name',
+        'start_date',
+        'end_date',
+        'project_status',
+        'live_demo_link',
+        'team_size',
+        'is_personal_project',
+        'project_roles',
     ];
 
     /**
@@ -62,8 +76,64 @@ class Portfolio extends Model
     protected $casts = [
         'gallery' => 'array',
         'tags' => 'array',
+        'project_roles' => 'array',
+        'is_personal_project' => 'boolean',
         'published_at' => 'datetime',
+        'start_date' => 'date',
+        'end_date' => 'date',
     ];
+
+    /**
+     * Get the timeline label (e.g., "Januari - Februari 2025").
+     */
+    public function getTimelineLabelAttribute(): string
+    {
+        if (!$this->start_date) {
+            return '-';
+        }
+
+        $start = $this->start_date->locale('id')->isoFormat('MMMM YYYY');
+
+        if (!$this->end_date) {
+            return $start . ' - Sekarang';
+        }
+
+        $end = $this->end_date->locale('id')->isoFormat('MMMM YYYY');
+
+        if ($start === $end) {
+            return $start;
+        }
+
+        return $start . ' - ' . $end;
+    }
+
+    /**
+     * Get the duration label (e.g., "2 Bulan Pengerjaan").
+     */
+    public function getDurationLabelAttribute(): string
+    {
+        if (!$this->start_date) {
+            return '';
+        }
+
+        $end = $this->end_date ?? now();
+
+        // Calculate difference in months, adding 1 to include the starting month partial
+        // using float diff in months can be tricky, so let's try strict month diff
+        $months = $this->start_date->diffInMonths($end);
+
+        // If less than a month, say "< 1 Bulan" or "1 Bulan"
+        if ($months < 1) {
+            $days = $this->start_date->diffInDays($end);
+            if ($days < 30) {
+                // For very short projects
+                return $days . ' Hari Pengerjaan';
+            }
+            return '1 Bulan Pengerjaan';
+        }
+
+        return round($months) . ' Bulan Pengerjaan';
+    }
 
     /**
      * Automatically generate a slug when setting the title if slug is not set.
@@ -95,6 +165,66 @@ class Portfolio extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    /**
+     * Tech Stacks used in the project
+     */
+    public function techStacks(): BelongsToMany
+    {
+        return $this->belongsToMany(TechStack::class, 'portfolio_tech_stack');
+    }
+
+    /**
+     * Team members who worked on the project
+     */
+    public function teamMembers(): BelongsToMany
+    {
+        return $this->belongsToMany(Profile::class, 'portfolio_team_member')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
+    /**
+     * Get formatted timeline string (e.g., "Januari - Februari 2025")
+     */
+    public function getTimelineAttribute(): string
+    {
+        if (!$this->start_date) return '-';
+
+        $start = $this->start_date->translatedFormat('F');
+        // If end_date is null, assume 'Present' or similar, but for now let's use logic:
+        // User requested "Januari - Februari 2025"
+
+        if (!$this->end_date) {
+            return $this->start_date->translatedFormat('F Y') . ' - Sekarang';
+        }
+
+        $end = $this->end_date->translatedFormat('F Y');
+
+        // If same year, don't repeat year in start? User example "Januari - Februari 2025" suggests this.
+        if ($this->start_date->year === $this->end_date->year) {
+            return $this->start_date->translatedFormat('F') . ' - ' . $end;
+        }
+
+        return $this->start_date->translatedFormat('F Y') . ' - ' . $end;
+    }
+
+    /**
+     * Get formatted duration string (e.g., "2 Bulan Pengerjaan")
+     */
+    public function getDurationAttribute(): string
+    {
+        if (!$this->start_date || !$this->end_date) return '';
+
+        // Calculate calendar months spanned
+        $start = $this->start_date->copy()->startOfMonth();
+        $end = $this->end_date->copy()->endOfMonth(); // Use end of month to be safe, or just startOfMonth for both
+
+        // Actually, just comparing start of months is cleaner for "Jan - Feb" logic
+        $diff = $this->start_date->copy()->startOfMonth()->diffInMonths($this->end_date->copy()->startOfMonth()) + 1;
+
+        return $diff . ' Bulan Pengerjaan';
     }
 
     /**
@@ -131,11 +261,10 @@ class Portfolio extends Model
         $original = $slug;
         $i = 1;
         while (static::where('slug', $slug)->exists()) {
-            $slug = $original.'-'.$i;
+            $slug = $original . '-' . $i;
             $i++;
         }
 
         return $slug;
     }
 }
-
