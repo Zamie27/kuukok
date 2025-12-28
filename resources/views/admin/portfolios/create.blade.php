@@ -288,18 +288,7 @@
                         </div>
                     </div>
 
-                    <div class="divider">SEO Settings</div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="form-control">
-                            <label class="label"><span class="label-text">Meta Title</span></label>
-                            <input type="text" name="meta_title" class="input input-bordered w-full" value="{{ old('meta_title') }}" />
-                        </div>
-                        <div class="form-control">
-                            <label class="label"><span class="label-text">Meta Description</span></label>
-                            <input type="text" name="meta_description" class="input input-bordered w-full" value="{{ old('meta_description') }}" />
-                        </div>
-                    </div>
 
                     <div class="flex justify-end gap-4 mt-6">
                         <a href="{{ route('admin.portfolios.index') }}" class="btn btn-ghost">Cancel</a>

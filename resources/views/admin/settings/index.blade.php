@@ -96,21 +96,6 @@
                         </div>
                     </div>
 
-                    <!-- FAQ Section Settings -->
-                    <div class="space-y-4 pt-8 mt-8 border-t">
-                        <h2 class="text-xl font-semibold border-b pb-2">Pengaturan FAQ</h2>
-
-                        <div class="form-control">
-                            <label class="label"><span class="label-text">Judul Section FAQ</span></label>
-                            <input type="text" name="faq_title" value="{{ $settings['faq_title'] ?? 'Pertanyaan Umum' }}" class="input input-bordered w-full" />
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label"><span class="label-text">Deskripsi Section FAQ</span></label>
-                            <textarea name="faq_description" rows="2" class="textarea textarea-bordered w-full">{{ $settings['faq_description'] ?? 'Beberapa pertanyaan yang sering diajukan oleh klien kami.' }}</textarea>
-                        </div>
-                    </div>
-
                     <!-- Portfolio Settings -->
                     <div class="space-y-4 pt-8 mt-8 border-t">
                         <h2 class="text-xl font-semibold border-b pb-2">Pengaturan Portfolio</h2>

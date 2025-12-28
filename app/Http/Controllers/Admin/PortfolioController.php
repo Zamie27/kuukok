@@ -109,6 +109,16 @@ class PortfolioController extends Controller
             $data['slug'] = Portfolio::generateUniqueSlug($data['title']);
         }
 
+        // Auto-generate SEO fields if empty
+        if (empty($data['meta_title'])) {
+            $data['meta_title'] = Str::limit($data['title'], 60);
+        }
+        if (empty($data['meta_description'])) {
+            // Prefer excerpt, fallback to description (stripped tags)
+            $source = !empty($data['excerpt']) ? $data['excerpt'] : strip_tags($data['description'] ?? '');
+            $data['meta_description'] = Str::limit($source, 160);
+        }
+
         $data['author_id'] = auth()->id();
         $data['is_personal_project'] = $request->boolean('is_personal_project');
 
@@ -291,6 +301,16 @@ class PortfolioController extends Controller
 
         if (empty($data['slug'])) {
             $data['slug'] = Portfolio::generateUniqueSlug($data['title'], true);
+        }
+
+        // Auto-generate SEO fields if empty
+        if (empty($data['meta_title'])) {
+            $data['meta_title'] = Str::limit($data['title'], 60);
+        }
+        if (empty($data['meta_description'])) {
+            // Prefer excerpt, fallback to description (stripped tags)
+            $source = !empty($data['excerpt']) ? $data['excerpt'] : strip_tags($data['description'] ?? '');
+            $data['meta_description'] = Str::limit($source, 160);
         }
 
         $data['is_personal_project'] = $request->boolean('is_personal_project');
