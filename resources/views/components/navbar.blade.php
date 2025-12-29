@@ -1,7 +1,7 @@
-<nav class="custom-navbar w-full z-[9999] bg-gradient-to-b from-base-100/70 to-transparent border-b border-base-300">
+<nav class="custom-navbar w-full z-[9999]">
     <div class="navbar container mx-auto px-4 lg:px-8">
         <div class="navbar-start">
-            <a href="{{ route('home') }}" class="btn btn-ghost text-xl font-bold text-white mix-blend-difference">{{ config('app.name') }}</a>
+            <a href="{{ route('home') }}" class="btn btn-ghost text-xl font-bold text-primary">{{ config('app.name') }}</a>
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1 text-white mix-blend-difference">
