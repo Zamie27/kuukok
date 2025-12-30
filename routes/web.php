@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SitemapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +58,9 @@ Route::get('/pricing', function () {
     $settings = \App\Models\Setting::where('group', 'pricing')->pluck('value', 'key');
     return view('pricing', compact('packages', 'testimonials', 'faqs', 'settings'));
 })->name('pricing.index');
+
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 

@@ -4,7 +4,8 @@
 <head>
     @include('components.head', [
     'title' => 'Kuukok - Solusi Digital Profesional',
-    'meta_description' => 'Kami membantu bisnis Anda tumbuh dengan layanan web development, desain grafis, dan penulisan konten berkualitas tinggi.'
+    'meta_description' => 'Kuukok di Subang: jasa website, desain grafis, UI/UX, hosting, dan layanan digital untuk mahasiswa, UMKM, dan bisnis lokal. Murah, cepat, profesional.',
+    'keywords' => 'Kuukok, jasa desain Subang, desain grafis, website Subang, hosting, jasa website murah, mahasiswa unsub, universitas subang, UMKM, jasa joki, makalah, jurnal'
     ])
 </head>
 
