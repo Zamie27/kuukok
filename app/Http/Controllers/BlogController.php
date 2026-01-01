@@ -130,6 +130,12 @@ class BlogController extends Controller
             $post->increment('whatsapp_clicks');
         } elseif ($type === 'share') {
             $post->increment('share_clicks');
+        } elseif ($type === 'time') {
+            // Validate seconds to prevent abuse (e.g., max 60s per request)
+            $seconds = (int) $request->input('seconds', 30);
+            if ($seconds > 0 && $seconds <= 60) {
+                $post->increment('total_seconds_read', $seconds);
+            }
         }
 
         return response()->json(['success' => true]);
