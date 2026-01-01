@@ -47,6 +47,7 @@ Route::get('/', function () {
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::post('/blog/{post}/track', [BlogController::class, 'trackClick'])->name('blog.track');
 
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
 Route::get('/portfolio/{portfolio:slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
@@ -102,6 +103,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::redirect('/', '/admin/dashboard');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
+    Route::post('posts/upload-image', [PostController::class, 'uploadImage'])->name('posts.upload-image');
     Route::resource('posts', PostController::class);
     Route::resource('packages', PackageController::class);
     Route::resource('faqs', FaqController::class);

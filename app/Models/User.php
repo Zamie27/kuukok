@@ -24,6 +24,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the posts for the user.
+     */
+    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>

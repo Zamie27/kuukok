@@ -40,6 +40,7 @@ class PostController extends Controller
             'slug' => ['nullable', 'string', 'max:180', 'unique:posts,slug'],
             'category' => ['nullable', 'string', 'max:80'],
             'content' => ['required', 'string'],
+            'content_blocks' => ['nullable', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:4096'],
             'meta_title' => ['nullable', 'string', 'max:160'],
             'meta_description' => ['nullable', 'string', 'max:300'],
@@ -51,6 +52,10 @@ class PostController extends Controller
             $data['slug'] = Post::generateUniqueSlug($data['title']);
         }
         $data['author_id'] = auth()->id();
+
+        if (isset($data['content_blocks'])) {
+            $data['content_blocks'] = json_decode($data['content_blocks'], true);
+        }
 
         $post = new Post($data);
         if ($data['status'] === 'published') {
@@ -85,12 +90,17 @@ class PostController extends Controller
             'slug' => ['required', 'string', 'max:180', 'unique:posts,slug,' . $post->id],
             'category' => ['nullable', 'string', 'max:80'],
             'content' => ['required', 'string'],
+            'content_blocks' => ['nullable', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:4096'],
             'meta_title' => ['nullable', 'string', 'max:160'],
             'meta_description' => ['nullable', 'string', 'max:300'],
             'keywords' => ['nullable', 'string', 'max:300'],
             'status' => ['required', 'in:draft,published'],
         ]);
+
+        if (isset($data['content_blocks'])) {
+            $data['content_blocks'] = json_decode($data['content_blocks'], true);
+        }
 
         $post->fill($data);
         if ($post->status === 'published' && !$post->published_at) {
@@ -117,5 +127,23 @@ class PostController extends Controller
         }
         $post->delete();
         return redirect()->route('admin.posts.index');
+    }
+
+    public function uploadImage(Request $request)
+    {
+        if (!Gate::allows('access-admin')) {
+            abort(403);
+        }
+
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,webp,jpg|max:5120',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('uploads/posts', 'public');
+            return response()->json(['url' => asset('storage/' . $path)]);
+        }
+
+        return response()->json(['error' => 'No image uploaded'], 400);
     }
 }

@@ -237,16 +237,17 @@
                             <div class="card-body">
                                 <h3 class="card-title mb-4 text-lg text-base-content">Tags Populer</h3>
                                 <div class="flex flex-wrap gap-2">
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">TailwindCSS</a>
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">DaisyUI</a>
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">React</a>
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">UI/UX</a>
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">JavaScript</a>
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">CSS</a>
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">Design</a>
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">Frontend</a>
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">SEO</a>
-                                    <a href="#" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300">Performance</a>
+                                    @foreach($popular_tags as $tag => $count)
+                                    <a href="{{ route('blog.index', array_merge(request()->query(), ['tag' => $tag])) }}" class="badge badge-lg hover:badge-primary transition-colors bg-base-100 border-base-300 {{ request('tag') == $tag ? 'badge-primary text-white' : '' }}">
+                                        {{ $tag }}
+                                        @if($count > 1)
+                                        <span class="ml-1 text-xs opacity-70">({{ $count }})</span>
+                                        @endif
+                                    </a>
+                                    @endforeach
+                                    @if($popular_tags->isEmpty())
+                                    <span class="text-sm text-base-content/60 italic">Belum ada tags</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
