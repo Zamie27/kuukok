@@ -22,11 +22,15 @@
                         </div>
                     </div>
 
-                    <!-- Category & Status -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Category, Tags & Status -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="form-control">
                             <label class="label"><span class="label-text">Category</span></label>
                             <input type="text" name="category" class="input input-bordered w-full" placeholder="e.g. Technology" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Tags</span></label>
+                            <input type="text" name="tags" class="input input-bordered w-full" placeholder="comma, separated, tags" />
                         </div>
                         <div class="form-control">
                             <label class="label"><span class="label-text">Status</span></label>

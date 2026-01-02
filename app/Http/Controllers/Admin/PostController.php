@@ -46,6 +46,7 @@ class PostController extends Controller
             'meta_description' => ['nullable', 'string', 'max:300'],
             'keywords' => ['nullable', 'string', 'max:300'],
             'status' => ['required', 'in:draft,published'],
+            'tags' => ['nullable', 'string'],
         ]);
 
         if (empty($data['slug'])) {
@@ -55,6 +56,10 @@ class PostController extends Controller
 
         if (isset($data['content_blocks'])) {
             $data['content_blocks'] = json_decode($data['content_blocks'], true);
+        }
+
+        if (isset($data['tags'])) {
+            $data['tags'] = array_filter(array_map('trim', explode(',', $data['tags'])));
         }
 
         $post = new Post($data);
@@ -96,10 +101,15 @@ class PostController extends Controller
             'meta_description' => ['nullable', 'string', 'max:300'],
             'keywords' => ['nullable', 'string', 'max:300'],
             'status' => ['required', 'in:draft,published'],
+            'tags' => ['nullable', 'string'],
         ]);
 
         if (isset($data['content_blocks'])) {
             $data['content_blocks'] = json_decode($data['content_blocks'], true);
+        }
+
+        if (isset($data['tags'])) {
+            $data['tags'] = array_filter(array_map('trim', explode(',', $data['tags'])));
         }
 
         $post->fill($data);
