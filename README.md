@@ -163,6 +163,60 @@ Run the test suite to ensure system stability:
 php artisan test
 ```
 
+## 🛠️ Cara Instalasi & Menjalankan Project
+
+Ikuti langkah-langkah berikut untuk menjalankan project ini di komputer lokal Anda:
+
+### Prasyarat
+Pastikan Anda telah menginstal:
+*   PHP >= 8.1
+*   Composer
+*   Node.js & NPM
+
+### Langkah Instalasi
+
+1.  **Clone Repository**
+    ```bash
+    git clone https://github.com/username/kuukok.git
+    cd kuukok
+    ```
+
+2.  **Install Dependencies**
+    Install dependensi PHP dan JavaScript:
+    ```bash
+    composer install
+    npm install
+    ```
+
+3.  **Konfigurasi Environment**
+    Salin file konfigurasi `.env`:
+    ```bash
+    cp .env.example .env
+    ```
+    Generate application key:
+    ```bash
+    php artisan key:generate
+    ```
+
+4.  **Jalankan Frontend Build**
+    Untuk development (hot reload):
+    ```bash
+    npm run dev
+    ```
+    Atau untuk production build:
+    ```bash
+    npm run build
+    ```
+
+5.  **Jalankan Server**
+    Jika menggunakan `php artisan serve`:
+    ```bash
+    php artisan serve
+    ```
+    Akses website di `http://localhost:8000`.
+
+    *Jika menggunakan Laravel Herd, cukup buka folder project di browser melalui domain `.test` yang dikonfigurasi (misal: `http://kuukok.test`).*
+
 ### Custom Configuration
 *   **Theme:** Dark/Light mode persisted via `localStorage` (`kuukok-theme`).
 *   **Storage:** Ensure `public/storage` is linked.
@@ -170,3 +224,12 @@ php artisan test
 ---
 
 **Kuukok CMS** - Built with ❤️ and Code.
+
+## 📝 Catatan Pengembang
+
+*   **Custom Styling:** Project ini menggunakan utility classes Tailwind CSS secara ekstensif. Untuk style kustom tambahan, cek file `resources/css/app.css`.
+*   **Assets:** Gambar dan aset statis disimpan di folder `public/`.
+
+## 📄 Lisensi
+
+Project ini bersifat open-source dan dilisensikan di bawah [MIT license](https://opensource.org/licenses/MIT).
