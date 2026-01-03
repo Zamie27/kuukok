@@ -201,13 +201,38 @@
     </div>
     @endif
 
+    @if(count($post->toc) > 0)
+    <div class="px-4 pt-4 bg-base-100 md:hidden">
+        <div class="max-w-4xl mx-auto">
+            <div class="card bg-base-200 shadow-xl">
+                <div class="card-body p-6">
+                    <h3 class="font-bold text-lg mb-4 border-b border-base-300 pb-2">Daftar Isi</h3>
+                    <nav>
+                        <ul class="space-y-1 text-sm">
+                            @foreach($post->toc as $item)
+                            <li>
+                                <a href="#{{ $item['id'] }}"
+                                   class="toc-link block border-l-4 border-transparent py-2 hover:border-base-content/30 hover:text-base-content transition-all duration-200 text-base-content/60 {{ $item['level'] === 'h3' ? 'pl-6 text-xs' : 'pl-3' }}"
+                                   data-target="{{ $item['id'] }}">
+                                    {{ $item['text'] }}
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Main Content -->
     <div class="py-12 px-4 bg-base-100">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
                 <!-- Sidebar (TOC) -->
-                <div class="lg:col-span-1 order-1 lg:order-1 space-y-8">
+                <div class="lg:col-span-1 space-y-8 hidden lg:block">
 
                     <!-- Table of Contents -->
                     @if(count($post->toc) > 0)
