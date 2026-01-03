@@ -17,6 +17,7 @@
     <!-- Syntax Highlighting -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script>
         hljs.highlightAll();
     </script>
@@ -34,9 +35,9 @@
         <div class="max-w-7xl mx-auto">
             <div class="text-sm breadcrumbs">
                 <ul>
-                    <li><a href="{{ route('home') }}" class="text-primary">Home</a></li>
-                    <li><a href="{{ route('blog.index') }}" class="text-primary">Blog</a></li>
-                    <li class="line-clamp-1 max-w-xs">{{ $post->title }}</li>
+                    <li><a href="{{ route('home') }}" class="text-primary no-underline hover:underline">Home</a></li>
+                    <li><a href="{{ route('blog.index') }}" class="text-primary no-underline hover:underline">Blog</a></li>
+                    <li><span class="opacity-70 line-clamp-1 max-w-[150px] md:max-w-xs" title="{{ $post->title }}">{{ $post->title }}</span></li>
                 </ul>
             </div>
         </div>
@@ -48,47 +49,49 @@
             <!-- Category Badge -->
             <div class="flex gap-2 mb-4">
                 @if($post->category)
-                <div class="badge badge-lg text-white border-none" style="background-color: var(--{{ $post->category_color ?? 'primary' }})">
+                <div class="badge text-white border-none text-xs md:text-sm px-2 md:px-3" style="background-color: var(--{{ $post->category_color ?? 'primary' }})">
                     {{ $post->category }}
                 </div>
                 @endif
-                <div class="badge badge-outline badge-lg">Article</div>
+                <div class="badge badge-outline text-xs md:text-sm px-2 md:px-3">Article</div>
             </div>
 
             <!-- Title -->
-            <h1 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">
                 {{ $post->title }}
             </h1>
 
-            <!-- Meta Info -->
-            <div class="flex flex-wrap items-center gap-6 text-base-content/70 mb-6">
+            <div class="mb-3">
                 @if($post->author)
                 <div class="flex items-center gap-2">
                     <div class="avatar">
                         @if($post->author->profile && $post->author->profile->avatar)
-                        <div class="w-10 rounded-full">
+                        <div class="w-8 md:w-10 rounded-full">
                             <img src="{{ Storage::url($post->author->profile->avatar) }}" alt="{{ $post->author->name }}" />
                         </div>
                         @else
-                        <div class="w-10 rounded-full bg-gradient-to-br from-primary to-primary-focus flex items-center justify-center text-white font-bold text-sm">
+                        <div class="w-8 md:w-10 rounded-full bg-gradient-to-br from-primary to-primary-focus flex items-center justify-center text-white font-bold text-xs md:text-sm">
                             {{ substr($post->author->name, 0, 2) }}
                         </div>
                         @endif
                     </div>
                     <div>
-                        <p class="font-semibold text-base-content">{{ $post->author->name }}</p>
-                        <p class="text-xs">{{ $post->author->profile->position ?? ucwords(str_replace('_', ' ', $post->author->role ?? 'Author')) }}</p>
+                        <p class="font-semibold text-base-content text-sm md:text-base">{{ $post->author->name }}</p>
+                        <p class="text-[10px] md:text-xs">{{ $post->author->profile->position ?? ucwords(str_replace('_', ' ', $post->author->role ?? 'Author')) }}</p>
                     </div>
                 </div>
                 @endif
-                <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 md:gap-6 text-xs md:text-sm text-base-content/70 mb-6">
+                <div class="flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <span>{{ $post->published_at?->translatedFormat('d F Y') }}</span>
+                    <span>{{ $post->published_at?->translatedFormat('d M Y') }}</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     @php
@@ -96,16 +99,16 @@
                         if ($totalSeconds > 3600) {
                             $hours = floor($totalSeconds / 3600);
                             $minutes = floor(($totalSeconds % 3600) / 60);
-                            $timeText = "{$hours} Jam {$minutes} Menit dibaca";
+                            $timeText = "{$hours} Jam {$minutes} Menit";
                         } else {
                             $minutes = ceil($totalSeconds / 60);
-                            $timeText = "{$minutes} Menit dibaca";
+                            $timeText = "{$minutes} Menit";
                         }
                     @endphp
-                    <span>{{ $timeText }}</span>
+                    <span>{{ $timeText }} dibaca</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div class="flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
@@ -143,13 +146,34 @@
                     </svg>
                 </a>
                 <button x-data @click="
-                    navigator.clipboard.writeText(window.location.href).then(() => {
-                        alert('Link berhasil disalin!');
-                        trackClick('share');
-                    }).catch(err => {
-                        console.error('Failed to copy: ', err);
-                        alert('Gagal menyalin link.');
-                    })
+                    const url = window.location.href;
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(url).then(() => {
+                            alert('Link berhasil disalin!');
+                            trackClick('share');
+                        }).catch(err => {
+                            console.error('Failed to copy: ', err);
+                            alert('Gagal menyalin link.');
+                        });
+                    } else {
+                        // Fallback for insecure context
+                        const textArea = document.createElement('textarea');
+                        textArea.value = url;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-9999px';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        try {
+                            document.execCommand('copy');
+                            alert('Link berhasil disalin!');
+                            trackClick('share');
+                        } catch (err) {
+                            console.error('Fallback copy failed', err);
+                            alert('Gagal menyalin link.');
+                        }
+                        document.body.removeChild(textArea);
+                    }
                 "
                     class="btn btn-circle btn-sm btn-ghost bg-base-300 hover:bg-base-300/80"
                     title="Salin Link">
@@ -183,11 +207,11 @@
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
                 <!-- Sidebar (TOC) -->
-                <div class="lg:col-span-1 order-2 lg:order-1 space-y-8">
+                <div class="lg:col-span-1 order-1 lg:order-1 space-y-8">
 
                     <!-- Table of Contents -->
                     @if(count($post->toc) > 0)
-                    <div class="card bg-base-200 shadow-xl sticky top-24">
+                    <div class="card bg-base-200 shadow-xl lg:sticky lg:top-24">
                         <div class="card-body p-6">
                             <h3 class="font-bold text-lg mb-4 border-b border-base-300 pb-2">Daftar Isi</h3>
                             <nav>
@@ -208,15 +232,15 @@
                     @endif
                 </div>
 
-                <!-- Article Content -->
-                <div class="lg:col-span-3 order-1 lg:order-2">
+                  <!-- Article Content -->
+                <div class="lg:col-span-3">
                     <div class="card bg-base-200 shadow-xl">
-                        <div class="card-body article-content prose prose-lg max-w-none">
+                        <div class="card-body article-content prose prose-sm md:prose-lg max-w-none">
                             @if(!empty($post->content_blocks) && is_array($post->content_blocks))
                             @foreach($post->content_blocks as $block)
                             @switch($block['type'])
                             @case('paragraph')
-                            <p class="mb-4">{{ $block['data']['text'] }}</p>
+                            <p class="mb-4 leading-relaxed text-[12px] md:text-base">{{ $block['data']['text'] }}</p>
                             @break
                             @case('heading')
                             @php
@@ -224,20 +248,20 @@
                             $text = $block['data']['text'];
                             $slug = \Illuminate\Support\Str::slug(strip_tags($text));
                             @endphp
-                            <{{ $level }} id="{{ $slug }}" class="font-bold {{ $level === 'h2' ? 'text-2xl mt-8 mb-4' : 'text-xl mt-6 mb-3' }}">
+                            <{{ $level }} id="{{ $slug }}" class="font-bold {{ $level === 'h2' ? 'text-base md:text-3xl mt-8 mb-4' : 'text-sm md:text-2xl mt-6 mb-3' }}">
                                 {{ $text }}
                             </{{ $level }}>
                             @break
                             @case('quote')
-                            <blockquote class="italic border-l-4 border-primary pl-4 my-6 bg-base-200/50 p-4 rounded-r-lg">
+                            <blockquote class="italic border-l-4 border-primary pl-4 my-6 bg-base-200/50 p-4 rounded-r-lg text-[12px] md:text-base">
                                 "{{ $block['data']['text'] }}"
                                 @if(!empty($block['data']['cite']))
-                                <cite class="block text-sm not-italic text-base-content/60 mt-2 font-semibold">— {{ $block['data']['cite'] }}</cite>
+                                <cite class="block text-xs md:text-sm not-italic text-base-content/60 mt-2 font-semibold">— {{ $block['data']['cite'] }}</cite>
                                 @endif
                             </blockquote>
                             @break
                             @case('code')
-                            <div class="mockup-code my-6 bg-[#282c34] text-neutral-content p-0 overflow-hidden">
+                            <div class="mockup-code my-6 bg-[#282c34] text-neutral-content p-0 overflow-hidden text-xs md:text-sm">
                                 <pre class="p-0"><code class="language-{{ $block['data']['language'] ?? 'php' }} block p-4">{{ $block['data']['code'] }}</code></pre>
                             </div>
                             @break
@@ -245,7 +269,7 @@
                             <figure class="my-8 flex flex-col items-center w-full">
                                 <img src="{{ $block['data']['url'] }}" alt="{{ $block['data']['caption'] ?? '' }}" class="rounded-xl shadow-lg w-full object-cover bg-base-200" loading="lazy">
                                 @if(!empty($block['data']['caption']))
-                                <figcaption class="text-center text-sm text-base-content/60 mt-2 italic w-full block">{{ $block['data']['caption'] }}</figcaption>
+                                <figcaption class="text-center text-[11px] md:text-sm text-base-content/60 mt-2 italic w-full block">{{ $block['data']['caption'] }}</figcaption>
                                 @endif
                             </figure>
                             @break
@@ -288,7 +312,7 @@
                     @if($post->tags)
                     <div class="mt-8 flex flex-wrap gap-2">
                         @foreach($post->tags as $tag)
-                        <a href="{{ route('blog.index', ['q' => $tag]) }}" class="badge badge-lg badge-outline hover:badge-primary cursor-pointer transition-colors">#{{ $tag }}</a>
+                        <a href="{{ route('blog.index', ['q' => $tag]) }}" class="badge badge-outline text-xs md:text-sm px-2 md:px-3 hover:badge-primary cursor-pointer transition-colors">#{{ $tag }}</a>
                         @endforeach
                     </div>
                     @endif

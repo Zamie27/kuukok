@@ -98,26 +98,55 @@ $socials = array_values(array_filter($socials));
         "@@type": "WebSite",
         "url": "{{ url('/') }}",
         "name": "{{ config('app.name', 'Kuukok') }}",
+        "image": "{{ asset('image/icon.png') }}",
         "potentialAction": {
             "@@type": "SearchAction",
-            "target": "{{ route('search.index') }}?q={search_term_string}",
+            "target": "{{ url('/blog') }}?search={search_term_string}",
             "query-input": "required name=search_term_string"
         }
     }
-</script>
+    </script>
 
-<script type="application/ld+json">
+    <script type="application/ld+json">
     {
         "@@context": "https://schema.org",
-        "@@type": "SiteNavigationElement",
-        "name": ["Home", "Tentang Kami", "Portofolio", "Harga", "Artikel", "Kontak"],
-        "url": [
-            "{{ route('home') }}",
-            "{{ route('about.index') }}",
-            "{{ route('portfolio.index') }}",
-            "{{ route('pricing.index') }}",
-            "{{ route('blog.index') }}",
-            "{{ route('contact.index') }}"
+        "@@type": "ItemList",
+        "itemListElement": [
+            {
+                "@@type": "SiteNavigationElement",
+                "position": 1,
+                "name": "Tentang Kami",
+                "description": "Pelajari lebih lanjut tentang tim dan visi Kuukok.",
+                "url": "{{ route('about.index') }}"
+            },
+            {
+                "@@type": "SiteNavigationElement",
+                "position": 2,
+                "name": "Portofolio",
+                "description": "Lihat hasil karya dan proyek terbaik kami.",
+                "url": "{{ route('portfolio.index') }}"
+            },
+            {
+                "@@type": "SiteNavigationElement",
+                "position": 3,
+                "name": "Harga",
+                "description": "Daftar paket layanan dan penawaran harga terbaik.",
+                "url": "{{ route('pricing.index') }}"
+            },
+            {
+                "@@type": "SiteNavigationElement",
+                "position": 4,
+                "name": "Artikel",
+                "description": "Baca artikel terbaru seputar teknologi dan desain.",
+                "url": "{{ route('blog.index') }}"
+            },
+            {
+                "@@type": "SiteNavigationElement",
+                "position": 5,
+                "name": "Kontak",
+                "description": "Hubungi kami untuk konsultasi dan kerjasama.",
+                "url": "{{ route('contact.index') }}"
+            }
         ]
     }
-</script>
+    </script>
