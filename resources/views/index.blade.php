@@ -238,65 +238,33 @@
             </div>
             <!-- Horizontal Scrollable List -->
             <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 scrollbar-hide reveal-on-scroll">
-                <!-- Article 1 -->
+                @forelse($latest_posts as $post)
                 <article class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center hover:shadow-lg transition-shadow duration-300">
-                    <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80" alt="SEO Strategy" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy">
+                    <figure class="h-48 overflow-hidden bg-gradient-to-br from-secondary to-slate-700 relative">
+                        @if($post->cover_image)
+                        <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy" />
+                        @else
+                        <div class="w-full h-full flex items-center justify-center text-5xl text-white">📝</div>
+                        @endif
                     </figure>
                     <div class="card-body p-6">
-                        <div class="text-xs text-primary font-bold mb-2">10 Jan 2024</div>
-                        <h3 class="card-title text-lg mb-2 text-base-content">Cara Meningkatkan Traffic Website dengan SEO</h3>
-                        <p class="text-sm text-base-content/70 mb-4 line-clamp-3">Pelajari strategi SEO dasar hingga lanjut untuk mendatangkan pengunjung organik ke website Anda.</p>
+                        <div class="text-xs text-primary font-bold mb-2">{{ $post->published_at?->translatedFormat('d M Y') }}</div>
+                        <h3 class="card-title text-lg mb-2 text-base-content line-clamp-2">
+                            <a href="{{ route('blog.show', $post) }}" class="hover:text-primary transition-colors">{{ $post->title }}</a>
+                        </h3>
+                        <p class="text-sm text-base-content/70 mb-4 line-clamp-3">{{ $post->excerpt }}</p>
                         <div class="card-actions">
-                            <a href="{{ route('blog.index') }}" class="link link-primary no-underline text-sm font-semibold hover:underline">Baca Selengkapnya →</a>
+                            <a href="{{ route('blog.show', $post) }}" class="link link-primary no-underline text-sm font-semibold hover:underline">Baca Selengkapnya →</a>
                         </div>
                     </div>
                 </article>
-
-                <!-- Article 2 -->
-                <article class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center hover:shadow-lg transition-shadow duration-300">
-                    <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1626785774573-4b799312afc2?auto=format&fit=crop&w=800&q=80" alt="Graphic Design Trends" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy">
-                    </figure>
-                    <div class="card-body p-6">
-                        <div class="text-xs text-primary font-bold mb-2">15 Jan 2024</div>
-                        <h3 class="card-title text-lg mb-2 text-base-content">Tren Desain Grafis 2024 yang Wajib Diketahui</h3>
-                        <p class="text-sm text-base-content/70 mb-4 line-clamp-3">Simak prediksi tren visual yang akan mendominasi industri kreatif tahun ini dan cara mengaplikasikannya.</p>
-                        <div class="card-actions">
-                            <a href="{{ route('blog.index') }}" class="link link-primary no-underline text-sm font-semibold hover:underline">Baca Selengkapnya →</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Article 3 -->
-                <article class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center hover:shadow-lg transition-shadow duration-300">
-                    <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80" alt="Branding for UMKM" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy">
-                    </figure>
-                    <div class="card-body p-6">
-                        <div class="text-xs text-primary font-bold mb-2">20 Jan 2024</div>
-                        <h3 class="card-title text-lg mb-2 text-base-content">Pentingnya Branding untuk UMKM</h3>
-                        <p class="text-sm text-base-content/70 mb-4 line-clamp-3">Kenapa branding bukan hanya logo? Temukan jawabannya dan tips membangun brand yang kuat.</p>
-                        <div class="card-actions">
-                            <a href="{{ route('blog.index') }}" class="link link-primary no-underline text-sm font-semibold hover:underline">Baca Selengkapnya →</a>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Article 4 -->
-                <article class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center hover:shadow-lg transition-shadow duration-300">
-                    <figure class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="Web Development" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" loading="lazy">
-                    </figure>
-                    <div class="card-body p-6">
-                        <div class="text-xs text-primary font-bold mb-2">25 Jan 2024</div>
-                        <h3 class="card-title text-lg mb-2 text-base-content">Dasar-Dasar Web Development untuk Pemula</h3>
-                        <p class="text-sm text-base-content/70 mb-4 line-clamp-3">Panduan lengkap memulai karir sebagai web developer, dari HTML, CSS, hingga JavaScript.</p>
-                        <div class="card-actions">
-                            <a href="{{ route('blog.index') }}" class="link link-primary no-underline text-sm font-semibold hover:underline">Baca Selengkapnya →</a>
-                        </div>
-                    </div>
-                </article>
+                @empty
+                <div class="text-center py-12 w-full">
+                    <div class="text-6xl mb-4">📭</div>
+                    <h3 class="text-2xl font-bold mb-2">Belum ada artikel</h3>
+                    <p class="text-base-content/70">Nantikan artikel menarik dari kami segera.</p>
+                </div>
+                @endforelse
 
                 <!-- Last Item: See More -->
                 <div class="card bg-base-100 border border-base-300 shadow-sm min-w-[280px] md:min-w-[320px] snap-center relative overflow-hidden group cursor-pointer flex items-center justify-center">

@@ -30,6 +30,7 @@ Route::get('/', function () {
     $testimonials = \App\Models\Testimonial::where('status', 'active')->orderBy('sort_order')->orderByDesc('created_at')->get();
     $packages = \App\Models\Package::where('status', 'active')->orderBy('sort_order')->get();
     $portfolios = \App\Models\Portfolio::where('status', 'published')->orderByDesc('published_at')->take(6)->get();
+    $latest_posts = \App\Models\Post::published()->orderByDesc('published_at')->take(8)->get();
     $settings = \App\Models\Setting::where('group', 'about')->pluck('value', 'key');
 
     // Stats Logic
@@ -42,7 +43,7 @@ Route::get('/', function () {
     $years = date('Y') - 2020;
     $yearsText = $years . '+';
 
-    return view('index', compact('testimonials', 'packages', 'portfolios', 'settings', 'projectCountText', 'clientCountText', 'yearsText'));
+    return view('index', compact('testimonials', 'packages', 'portfolios', 'latest_posts', 'settings', 'projectCountText', 'clientCountText', 'yearsText'));
 })->name('home');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
