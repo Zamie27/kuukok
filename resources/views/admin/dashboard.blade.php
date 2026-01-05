@@ -60,10 +60,10 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <div class="stat-title">Pengunjung Hari Ini</div>
-                            <div class="stat-value text-neutral">{{ number_format($stats['today_visitors']) }}</div>
-                            <div class="stat-desc">Total: {{ number_format($stats['total_visitors']) }} (Unique IP/Day)</div>
+                            <div class="stat-value" style="color: oklch(var(--bc));">{{ number_format($stats['today_visitors']) }}</div>
+                            <div class="stat-desc" style="color: oklch(var(--bc) / 0.7)">Total: {{ number_format($stats['total_visitors']) }} (Unique IP/Day)</div>
                         </div>
-                        <div class="text-neutral">
+                        <div style="color: oklch(var(--bc));">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>

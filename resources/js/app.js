@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initArticleFeatures();
     initPortfolioFilter();
     initLightbox();
+    initTestimonialMarquee();
 });
 
 /**
@@ -82,6 +83,26 @@ function initScrollAnimations() {
     );
 
     revealElements.forEach((el) => revealObserver.observe(el));
+}
+
+function initTestimonialMarquee() {
+    const marquees = document.querySelectorAll('.animate-marquee');
+    if (marquees.length === 0) return;
+    const SPEED_PX_PER_SEC = 120;
+    const compute = () => {
+        marquees.forEach((el) => {
+            const width = el.scrollWidth || el.offsetWidth;
+            const distance = width * 0.5;
+            const MIN_DURATION = 45;
+            const MAX_DURATION = 180;
+            const raw = Math.round(distance / SPEED_PX_PER_SEC);
+            const duration = Math.min(MAX_DURATION, Math.max(MIN_DURATION, raw));
+            el.style.setProperty('--marquee-duration', duration + 's');
+        });
+    };
+    compute();
+    window.addEventListener('resize', compute, { passive: true });
+    window.addEventListener('load', compute, { once: true });
 }
 
 /**
