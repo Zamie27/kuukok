@@ -98,9 +98,9 @@
                 <div class="card-body">
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="stat-title">Total Estimasi Baca</div>
+                            <div class="stat-title">Total Lama Baca</div>
                             <div class="stat-value">{{ number_format($stats['total_read_time']) }}</div>
-                            <div class="stat-desc">Menit (Views × Estimasi)</div>
+                            <div class="stat-desc">Menit (akumulasi waktu dibaca)</div>
                         </div>
                         <div class="text-warning">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current">
@@ -201,7 +201,18 @@
                             <li class="flex items-start gap-3 p-2 hover:bg-base-200 rounded-lg transition-colors">
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-medium truncate">{{ $post->title }}</p>
-                                    <p class="text-xs text-base-content/60">~{{ $post->read_time }} menit</p>
+                                    @php
+                                        $totalSeconds = (int) ($post->total_seconds_read ?? 0);
+                                        if ($totalSeconds > 3600) {
+                                            $hours = floor($totalSeconds / 3600);
+                                            $minutes = floor(($totalSeconds % 3600) / 60);
+                                            $timeText = "{$hours} Jam {$minutes} Menit";
+                                        } else {
+                                            $minutes = ceil($totalSeconds / 60);
+                                            $timeText = "{$minutes} Menit";
+                                        }
+                                    @endphp
+                                    <p class="text-xs text-base-content/60">~{{ $timeText }}</p>
                                 </div>
                                 <a href="{{ route('blog.show', $post) }}" target="_blank" class="btn btn-ghost btn-xs btn-square">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -275,7 +286,18 @@
                                         {{ $post->total_cta ?? ($post->whatsapp_clicks + $post->share_clicks) }}
                                     </div>
                                 </td>
-                                <td>{{ $post->read_time }} min</td>
+                                @php
+                                    $totalSeconds = (int) ($post->total_seconds_read ?? 0);
+                                    if ($totalSeconds > 3600) {
+                                        $hours = floor($totalSeconds / 3600);
+                                        $minutes = floor(($totalSeconds % 3600) / 60);
+                                        $timeText = "{$hours} Jam {$minutes} Menit";
+                                    } else {
+                                        $minutes = ceil($totalSeconds / 60);
+                                        $timeText = "{$minutes} Menit";
+                                    }
+                                @endphp
+                                <td>{{ $timeText }}</td>
                                 <td>{{ $post->created_at->format('d M Y') }}</td>
                                 <td>
                                     <a href="{{ route('blog.show', $post) }}" target="_blank" class="btn btn-ghost btn-xs">View</a>

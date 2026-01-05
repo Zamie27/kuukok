@@ -30,14 +30,16 @@ class DashboardController extends Controller
             'messages_unread' => Message::where('status', 'unread')->count(),
             'total_views' => Post::sum('views'),
             'total_cta' => Post::sum('whatsapp_clicks') + Post::sum('share_clicks'),
-            'total_read_time' => Post::sum(\DB::raw('views * read_time')),
+            // Use actual tracked reading time from total_seconds_read, converted to minutes
+            'total_read_time' => (int) ceil(Post::sum('total_seconds_read') / 60),
             'today_visitors' => $todayVisitors,
             'total_visitors' => $totalVisitors,
         ];
 
         // Top Lists (kept for quick widgets)
         $popularPosts = Post::orderByDesc('views')->take(5)->get();
-        $longestReadPosts = Post::orderByDesc('read_time')->take(5)->get();
+        // Longest read based on accumulated tracked seconds
+        $longestReadPosts = Post::orderByDesc('total_seconds_read')->take(5)->get();
         $mostCtaPosts = Post::select('*')
             ->selectRaw('whatsapp_clicks + share_clicks as total_cta')
             ->orderByDesc('total_cta')
@@ -64,6 +66,9 @@ class DashboardController extends Controller
             $analyticsQuery->select('*')
                 ->selectRaw('whatsapp_clicks + share_clicks as total_cta')
                 ->orderBy('total_cta', $direction);
+        } elseif ($sort === 'read_time') {
+            // Sort by actual accumulated seconds when user sorts by Durasi Baca
+            $analyticsQuery->orderBy('total_seconds_read', $direction);
         } else {
             $analyticsQuery->orderBy($sort, $direction);
         }

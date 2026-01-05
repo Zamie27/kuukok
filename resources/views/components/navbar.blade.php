@@ -21,7 +21,7 @@
                 </svg>
             </button>
             @auth
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-ghost btn-sm font-medium text-white mix-blend-difference">Dashboard</a>
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-ghost btn-sm font-medium text-dark dark:text-white mix-blend-difference">Dashboard</a>
             @endauth
             <!-- Mobile menu -->
             <div class="dropdown dropdown-end lg:hidden">

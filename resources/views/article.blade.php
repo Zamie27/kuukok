@@ -49,7 +49,7 @@
             <!-- Category Badge -->
             <div class="flex gap-2 mb-4">
                 @if($post->category)
-                <div class="badge text-white border-none text-xs md:text-sm px-2 md:px-3" style="background-color: var(--{{ $post->category_color ?? 'primary' }})">
+                <div class="badge dark:text-white text-dark border-none text-xs md:text-sm px-2 md:px-3" style="background-color: var(--{{ $post->category_color ?? 'primary' }})">
                     {{ $post->category }}
                 </div>
                 @endif
@@ -302,7 +302,19 @@
                                     @endforeach
                                 </ul>
                             @else
-                                <p class="mb-3 leading-relaxed text-[12px] md:text-base">{{ $text }}</p>
+                                @php $paragraphs = preg_split('/\r?\n+/', trim($text)); @endphp
+                                @foreach($paragraphs as $p)
+                                    @php
+                                        $safe = e($p);
+                                        $safe = preg_replace('/\*\*(.+?)\*\*/s', '<strong>$1</strong>', $safe);
+                                        $safe = preg_replace('/_([^_]+)_/s', '<em>$1</em>', $safe);
+                                        $safe = preg_replace('/`([^`]+?)`/s', '<code>$1</code>', $safe);
+                                        $safe = preg_replace('/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/s', '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>', $safe);
+                                    @endphp
+                                    @if(strlen(trim($safe)) > 0)
+                                    <p class="mb-3 leading-relaxed text-[12px] md:text-base">{!! $safe !!}</p>
+                                    @endif
+                                @endforeach
                             @endif
                             @break
                             @case('heading')
