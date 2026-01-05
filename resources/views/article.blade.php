@@ -187,13 +187,13 @@
 
     <!-- Featured Image -->
     @if($post->cover_image)
-    <div class="px-4 bg-base-200 pb-8">
+    <div class="px-4 bg-base-200 pb-6">
         <div class="max-w-4xl mx-auto">
             <figure class="rounded-2xl overflow-hidden shadow-2xl h-96 relative">
                 <img src="{{ asset('storage/' . $post->cover_image) }}" alt="{{ $post->title }}" class="w-full h-full object-cover" />
             </figure>
             @if($post->excerpt)
-            <p class="text-center text-sm text-base-content/60 mt-4 italic">
+            <p class="text-center text-sm text-base-content/60 mt-3 italic">
                 {{ $post->excerpt }}
             </p>
             @endif
@@ -205,7 +205,7 @@
     <div class="px-4 pt-4 bg-base-100 md:hidden">
         <div class="max-w-4xl mx-auto">
             <div class="card bg-base-200 shadow-xl">
-                <div class="card-body p-6">
+                <div class="card-body p-4">
                     <h3 class="font-bold text-lg mb-4 border-b border-base-300 pb-2">Daftar Isi</h3>
                     <nav>
                         <ul class="space-y-1 text-sm">
@@ -229,7 +229,7 @@
     <!-- Main Content -->
     <div class="py-12 px-4 bg-base-100">
         <div class="max-w-7xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
                 <!-- Sidebar (TOC) -->
                 <div class="lg:col-span-1 space-y-8 hidden lg:block">
@@ -237,7 +237,7 @@
                     <!-- Table of Contents -->
                     @if(count($post->toc) > 0)
                     <div class="card bg-base-200 shadow-xl lg:sticky lg:top-24">
-                        <div class="card-body p-6">
+                        <div class="card-body p-4">
                             <h3 class="font-bold text-lg mb-4 border-b border-base-300 pb-2">Daftar Isi</h3>
                             <nav>
                                 <ul class="space-y-1 text-sm">
@@ -260,25 +260,63 @@
                   <!-- Article Content -->
                 <div class="lg:col-span-3">
                     <div class="card bg-base-200 shadow-xl">
-                        <div class="card-body article-content prose prose-sm md:prose-lg max-w-none">
+                        <div class="card-body p-4 md:p-6 article-content prose prose-sm md:prose-lg max-w-none">
                             @if(!empty($post->content_blocks) && is_array($post->content_blocks))
                             @foreach($post->content_blocks as $block)
                             @switch($block['type'])
                             @case('paragraph')
-                            <p class="mb-4 leading-relaxed text-[12px] md:text-base">{{ $block['data']['text'] }}</p>
+                            @php
+                                $text = $block['data']['text'];
+                                $lines = preg_split("/\r?\n/", trim($text));
+                                $isMultilineNumbered = count($lines) > 1 && array_reduce($lines, function($c,$l){return $c && preg_match('/^\s*\d+\.\s+.+/',$l);}, true);
+                                $isMultilineBulleted = count($lines) > 1 && array_reduce($lines, function($c,$l){return $c && preg_match('/^\s*[-*]\s+.+/',$l);}, true);
+                                $inlineNumberedMatches = [];
+                                $inlineBulletedMatches = [];
+                                if(!$isMultilineNumbered && !$isMultilineBulleted){
+                                    preg_match_all('/\s*(\d+)\.\s+([^\n]+?)(?=\s+\d+\.\s|$)/u', $text, $inlineNumberedMatches, PREG_SET_ORDER);
+                                    preg_match_all('/\s*[-*]\s+([^\n]+?)(?=\s+[-*]\s|$)/u', $text, $inlineBulletedMatches, PREG_SET_ORDER);
+                                }
+                            @endphp
+                            @if($isMultilineNumbered)
+                                <ol class="list-decimal pl-5 space-y-1 text-[12px] md:text-base mb-3">
+                                    @foreach($lines as $l)
+                                        <li>{{ preg_replace('/^\s*\d+\.\s+/', '', $l) }}</li>
+                                    @endforeach
+                                </ol>
+                            @elseif($isMultilineBulleted)
+                                <ul class="list-disc pl-5 space-y-1 text-[12px] md:text-base mb-3">
+                                    @foreach($lines as $l)
+                                        <li>{{ preg_replace('/^\s*[-*]\s+/', '', $l) }}</li>
+                                    @endforeach
+                                </ul>
+                            @elseif(count($inlineNumberedMatches) >= 2)
+                                <ol class="list-decimal pl-5 space-y-1 text-[12px] md:text-base mb-3">
+                                    @foreach($inlineNumberedMatches as $m)
+                                        <li>{{ trim($m[2]) }}</li>
+                                    @endforeach
+                                </ol>
+                            @elseif(count($inlineBulletedMatches) >= 2)
+                                <ul class="list-disc pl-5 space-y-1 text-[12px] md:text-base mb-3">
+                                    @foreach($inlineBulletedMatches as $m)
+                                        <li>{{ trim($m[1]) }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="mb-3 leading-relaxed text-[12px] md:text-base">{{ $text }}</p>
+                            @endif
                             @break
                             @case('heading')
                             @php
-                            $level = $block['data']['level'] ?? 'h2';
-                            $text = $block['data']['text'];
-                            $slug = \Illuminate\Support\Str::slug(strip_tags($text));
+                                $level = $block['data']['level'] ?? 'h2';
+                                $text = $block['data']['text'];
+                                $slug = \Illuminate\Support\Str::slug(strip_tags($text));
                             @endphp
-                            <{{ $level }} id="{{ $slug }}" class="font-bold {{ $level === 'h2' ? 'text-base md:text-3xl mt-8 mb-4' : 'text-sm md:text-2xl mt-6 mb-3' }}">
+                            <{{ $level }} id="{{ $slug }}" class="font-bold {{ $level === 'h2' ? 'text-base md:text-3xl mt-6 mb-3' : 'text-sm md:text-2xl mt-5 mb-2' }}">
                                 {{ $text }}
                             </{{ $level }}>
                             @break
                             @case('quote')
-                            <blockquote class="italic border-l-4 border-primary pl-4 my-6 bg-base-200/50 p-4 rounded-r-lg text-[12px] md:text-base">
+                            <blockquote class="italic border-l-4 border-primary pl-4 my-4 bg-base-200/50 p-3 rounded-r-lg text-[12px] md:text-base">
                                 "{{ $block['data']['text'] }}"
                                 @if(!empty($block['data']['cite']))
                                 <cite class="block text-xs md:text-sm not-italic text-base-content/60 mt-2 font-semibold">— {{ $block['data']['cite'] }}</cite>
@@ -286,12 +324,12 @@
                             </blockquote>
                             @break
                             @case('code')
-                            <div class="mockup-code my-6 bg-[#282c34] text-neutral-content p-0 overflow-hidden text-xs md:text-sm">
+                            <div class="mockup-code my-4 bg-[#282c34] text-neutral-content p-0 overflow-hidden text-xs md:text-sm">
                                 <pre class="p-0"><code class="language-{{ $block['data']['language'] ?? 'php' }} block p-4">{{ $block['data']['code'] }}</code></pre>
                             </div>
                             @break
                             @case('image')
-                            <figure class="my-8 flex flex-col items-center w-full">
+                            <figure class="my-6 flex flex-col items-center w-full">
                                 <img src="{{ $block['data']['url'] }}" alt="{{ $block['data']['caption'] ?? '' }}" class="rounded-xl shadow-lg w-full object-cover bg-base-200" loading="lazy">
                                 @if(!empty($block['data']['caption']))
                                 <figcaption class="text-center text-[11px] md:text-sm text-base-content/60 mt-2 italic w-full block">{{ $block['data']['caption'] }}</figcaption>
@@ -300,25 +338,25 @@
                             @break
                             @case('alert')
                             @php
-                            $alertType = $block['data']['type'] ?? 'info';
-                            $alertClass = match($alertType) {
-                                'success' => 'alert-success',
-                                'warning' => 'alert-warning',
-                                'error' => 'alert-error',
-                                default => 'alert-info',
-                            };
-                            $alertIcon = match($alertType) {
-                            'success' => '
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />',
-                            'warning' => '
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />',
-                            'error' => '
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />',
-                            default => '
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />',
-                            };
+                                $alertType = $block['data']['type'] ?? 'info';
+                                $alertClass = match($alertType) {
+                                    'success' => 'alert-success',
+                                    'warning' => 'alert-warning',
+                                    'error' => 'alert-error',
+                                    default => 'alert-info',
+                                };
+                                $alertIcon = match($alertType) {
+                                    'success' => '
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />',
+                                    'warning' => '
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />',
+                                    'error' => '
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />',
+                                    default => '
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />',
+                                };
                             @endphp
-                            <div role="alert" class="alert {{ $alertClass }} my-6 shadow-md text-start">
+                            <div role="alert" class="alert {{ $alertClass }} my-4 shadow-md text-start">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
                                     {!! $alertIcon !!}
                                 </svg>
@@ -512,7 +550,6 @@
                 const id = link.getAttribute('data-target');
                 return document.getElementById(id);
             }).filter(h => h);
-
             if (headings.length === 0) return;
 
             const callback = (entries) => {
@@ -520,15 +557,15 @@
                     if (entry.isIntersecting) {
                         // Remove active class from all
                         tocLinks.forEach(link => {
-                            link.classList.remove('border-primary', 'text-primary', 'font-bold');
-                            link.classList.add('border-transparent', 'text-base-content/60');
+                            link.classList.remove('border-primary', 'text-primary', 'font-bold', 'bg-primary/10', 'rounded-md');
+                            link.classList.add('border-transparent', 'text-base-content/70');
                         });
 
                         // Add active class to current
                         const activeLink = document.querySelector(`.toc-link[data-target="${entry.target.id}"]`);
                         if (activeLink) {
-                            activeLink.classList.remove('border-transparent', 'text-base-content/60');
-                            activeLink.classList.add('border-primary', 'text-primary', 'font-bold');
+                            activeLink.classList.remove('border-transparent', 'text-base-content/70');
+                            activeLink.classList.add('border-primary', 'text-primary', 'font-semibold', 'bg-primary/10', 'rounded-md');
                         }
                     }
                 });
