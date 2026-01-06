@@ -70,7 +70,7 @@ class PortfolioController extends Controller
             'description' => ['nullable', 'string'],
             'excerpt' => ['nullable', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:5120'], // 5MB
-            'gallery.*' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:5120'],
+            'gallery.*' => ['nullable', 'file', 'mimes:jpeg,png,webp,mp4,webm,mov', 'max:51200'],
             'tags' => ['nullable', 'array'], // Now array from multi-select
             'status' => ['required', 'in:draft,published,archived'],
             'meta_title' => ['nullable', 'string', 'max:255'],
@@ -201,7 +201,7 @@ class PortfolioController extends Controller
                     $path = $file->storeAs($directory, $filename, 'public');
 
                     if (!$path) {
-                        throw new \Exception('Failed to store gallery image ' . $file->getClientOriginalName());
+                        throw new \Exception('Failed to store gallery file ' . $file->getClientOriginalName());
                     }
 
                     $galleryPaths[] = $path;
@@ -210,7 +210,7 @@ class PortfolioController extends Controller
                 $portfolio->save();
             } catch (\Exception $e) {
                 \Log::error('Portfolio Gallery Upload Error: ' . $e->getMessage());
-                return back()->withErrors(['gallery' => 'Failed to upload gallery images. Please try again.'])->withInput();
+                return back()->withErrors(['gallery' => 'Failed to upload gallery files. Please try again.'])->withInput();
             }
         }
 
@@ -265,7 +265,7 @@ class PortfolioController extends Controller
             'description' => ['nullable', 'string'],
             'excerpt' => ['nullable', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:5120'], // 5MB
-            'gallery.*' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:5120'],
+            'gallery.*' => ['nullable', 'file', 'mimes:jpeg,png,webp,mp4,webm,mov', 'max:51200'],
             'tags' => ['nullable', 'array'],
             'status' => ['required', 'in:draft,published,archived'],
             'meta_title' => ['nullable', 'string', 'max:255'],
@@ -439,7 +439,7 @@ class PortfolioController extends Controller
                     $path = $file->storeAs($directory, $filename, 'public');
 
                     if (!$path) {
-                        throw new \Exception('Failed to store gallery image.');
+                        throw new \Exception('Failed to store gallery file.');
                     }
 
                     $currentGallery[] = $path;
@@ -448,7 +448,7 @@ class PortfolioController extends Controller
                 $portfolio->save();
             } catch (\Exception $e) {
                 \Log::error('Portfolio Update Gallery Error: ' . $e->getMessage());
-                return back()->withErrors(['gallery' => 'Failed to add gallery images.'])->withInput();
+                return back()->withErrors(['gallery' => 'Failed to add gallery files.'])->withInput();
             }
         }
 

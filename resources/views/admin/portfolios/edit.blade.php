@@ -175,8 +175,8 @@
                             </div>
 
                             <div class="form-control">
-                                <label class="label"><span class="label-text">Add Gallery Images</span> <span class="label-text-alt">(Multiple, Max 5MB each)</span></label>
-                                <input type="file" name="gallery[]" multiple class="file-input file-input-bordered w-full" accept="image/jpeg,image/png,image/webp" />
+                                <label class="label"><span class="label-text">Add Gallery Media (Images/Videos)</span> <span class="label-text-alt">(Multiple, Max 50MB each)</span></label>
+                                <input type="file" name="gallery[]" multiple class="file-input file-input-bordered w-full" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime" />
                                 @error('gallery.*') <span class="text-error text-sm mt-1">{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -259,13 +259,20 @@
                     @if(!empty($portfolio->gallery))
                     <div class="divider">Current Gallery</div>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4" x-data="{ sortable: null }" x-init="sortable = new Sortable($el, { animation: 150 })">
-                        @foreach($portfolio->gallery as $image)
+                        @foreach($portfolio->gallery as $media)
+                        @php $ext = strtolower(pathinfo($media, PATHINFO_EXTENSION)); $isVideo = in_array($ext, ['mp4','webm','mov']); @endphp
                         <div class="relative group cursor-move">
-                            <input type="hidden" name="gallery_order[]" value="{{ $image }}">
-                            <img src="{{ asset('storage/'.$image) }}" class="w-full h-32 object-cover rounded border border-base-300">
+                            <input type="hidden" name="gallery_order[]" value="{{ $media }}">
+                            @if(!$isVideo)
+                                <img src="{{ asset('storage/'.$media) }}" class="w-full h-32 object-cover rounded border border-base-300">
+                            @else
+                                <video class="w-full h-32 object-cover rounded border border-base-300" preload="metadata" muted>
+                                    <source src="{{ asset('storage/'.$media) }}">
+                                </video>
+                            @endif
                             <div class="absolute top-1 right-1">
                                 <label class="label cursor-pointer bg-base-100/80 rounded p-1">
-                                    <input type="checkbox" name="remove_gallery_images[]" value="{{ $image }}" class="checkbox checkbox-error checkbox-xs" />
+                                    <input type="checkbox" name="remove_gallery_images[]" value="{{ $media }}" class="checkbox checkbox-error checkbox-xs" />
                                     <span class="label-text ml-1 text-xs text-error font-bold">Delete</span>
                                 </label>
                             </div>

@@ -225,16 +225,30 @@
                 <div>
                     <h2 class="text-2xl font-bold mb-6">Gallery</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @foreach($portfolio->gallery as $image)
+                        @foreach($portfolio->gallery as $media)
+                        @php $ext = strtolower(pathinfo($media, PATHINFO_EXTENSION)); $isVideo = in_array($ext, ['mp4','webm','mov']); $mimeMap = ['mp4' => 'video/mp4', 'webm' => 'video/webm', 'mov' => 'video/quicktime']; $mimeType = $mimeMap[$ext] ?? null; @endphp
+                        @if(!$isVideo)
                         <div class="relative group overflow-hidden rounded-xl cursor-pointer"
-                            @click="lightboxOpen = true; lightboxImage = '{{ asset('storage/'.$image) }}'">
-                            <img src="{{ asset('storage/'.$image) }}" alt="Gallery Image" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105">
+                            @click="lightboxOpen = true; lightboxImage = '{{ asset('storage/'.$media) }}'">
+                            <img src="{{ asset('storage/'.$media) }}" alt="Gallery Image" class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105">
                             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                                 </svg>
                             </div>
                         </div>
+                        @else
+                        <div class="relative group overflow-hidden rounded-xl">
+                            <video class="w-full h-64 object-cover" controls preload="metadata">
+                                @if($mimeType)
+                                <source src="{{ asset('storage/'.$media) }}" type="{{ $mimeType }}">
+                                @else
+                                <source src="{{ asset('storage/'.$media) }}">
+                                @endif
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        @endif
                         @endforeach
                     </div>
                 </div>

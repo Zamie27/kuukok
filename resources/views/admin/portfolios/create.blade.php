@@ -161,8 +161,8 @@
                             </div>
 
                             <div class="form-control">
-                                <label class="label"><span class="label-text">Gallery Images</span> <span class="label-text-alt">(Multiple, Max 5MB each)</span></label>
-                                <input type="file" name="gallery[]" multiple class="file-input file-input-bordered w-full" accept="image/jpeg,image/png,image/webp" />
+                                <label class="label"><span class="label-text">Gallery Media (Images/Videos)</span> <span class="label-text-alt">(Multiple, Max 50MB each)</span></label>
+                                <input type="file" name="gallery[]" multiple class="file-input file-input-bordered w-full" accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,video/quicktime" />
                                 @error('gallery.*') <span class="text-error text-sm mt-1">{{ $message }}</span> @enderror
                             </div>
                         </div>
