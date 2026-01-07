@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    // Google Analytics (GA4)
+    'ga4' => [
+        'enabled' => env('GA_ENABLED', true),
+        'measurement_id' => env('GA_MEASUREMENT_ID'),
+        'anonymize_ip' => env('GA_ANONYMIZE_IP', true),
+        'debug' => env('GA_DEBUG', false),
+        'domain' => env('GA_DOMAIN'),
+    ],
+
 ];

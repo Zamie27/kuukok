@@ -107,6 +107,23 @@ $socials = array_values(array_filter($socials));
     }
     </script>
 
+    @if(app()->environment('production') && config('services.ga4.enabled') && config('services.ga4.measurement_id') && (!config('services.ga4.domain') || request()->getHost() === config('services.ga4.domain')))
+        <!-- Google Analytics (GA4) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.ga4.measurement_id') }}"></script>
+        <script>
+            // GA4: Initialize dataLayer and gtag
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            // GA4: Config with optional anonymize_ip and debug_mode
+            gtag('config', '{{ config('services.ga4.measurement_id') }}', {
+                anonymize_ip: {{ config('services.ga4.anonymize_ip') ? 'true' : 'false' }},
+                debug_mode: {{ config('services.ga4.debug') ? 'true' : 'false' }}
+            });
+        </script>
+    @endif
+
     <script type="application/ld+json">
     {
         "@@context": "https://schema.org",
