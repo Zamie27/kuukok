@@ -31,11 +31,19 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
+        $otp = rand(100000, 999999);
         $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
+            'role' => 'user',
+            'otp_code' => $otp,
+            'otp_expires_at' => now()->addMinutes(10),
+            'is_active' => false,
         ]);
+
+        // Send OTP Notification
+        $user->notify(new \App\Notifications\VerifyEmailOtp($otp, $user->name));
 
         // Create empty profile with auto-generated slug
         Profile::create([

@@ -29,6 +29,8 @@
             @guest
                 <a href="{{ route('login') }}"
                     class="btn btn-ghost btn-sm font-medium text-dark dark:text-white mix-blend-difference">Login</a>
+                <a href="{{ route('register') }}"
+                    class="btn btn-primary btn-sm font-bold text-white px-6">Daftar</a>
             @endguest
             @auth
                 <a href="{{ route('admin.dashboard') }}"

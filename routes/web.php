@@ -13,6 +13,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\Auth\OtpVerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -214,4 +215,11 @@ Route::middleware(['auth', 'verified'])->prefix('user/hosting')->name('user.host
 Route::middleware(['auth', 'verified'])->prefix('user/cashback')->name('user.cashback.')->group(function () {
     Route::get('/', [\App\Http\Controllers\User\CashbackController::class, 'index'])->name('index');
     Route::post('/', [\App\Http\Controllers\User\CashbackController::class, 'store'])->name('store');
+});
+
+// OTP Verification Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/verify-otp', [OtpVerificationController::class, 'show'])->name('otp.view');
+    Route::post('/verify-otp', [OtpVerificationController::class, 'verify'])->name('otp.verify');
+    Route::post('/resend-otp', [OtpVerificationController::class, 'resend'])->name('otp.resend');
 });

@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
+class VerifyEmailOtp extends Notification
+{
+    use Queueable;
+
+    protected $otp;
+    protected $userName;
+
+    /**
+     * Create a new notification instance.
+     */
+    public function __construct($otp, $userName)
+    {
+        $this->otp = $otp;
+        $this->userName = $userName;
+    }
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array<int, string>
+     */
+    public function via(object $notifiable): array
+    {
+        return ['mail'];
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
+    {
+        return (new MailMessage)
+                    ->subject('Verifikasi Akun Kuukok - Kode OTP')
+                    ->greeting('Halo, ' . $this->userName . '!')
+                    ->line('Terima kasih telah mendaftar di Kuukok Hosting.')
+                    ->line('Gunakan kode OTP berikut untuk memverifikasi akun Anda:')
+                    ->line('**' . $this->otp . '**')
+                    ->line('Kode ini akan kedaluwarsa dalam 10 menit.')
+                    ->line('Jika Anda tidak merasa mendaftar di layanan kami, abaikan email ini.');
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(object $notifiable): array
+    {
+        return [
+            //
+        ];
+    }
+}

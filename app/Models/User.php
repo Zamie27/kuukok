@@ -46,6 +46,9 @@ class User extends Authenticatable
         'cashback_balance',
         'lifetime_cashback_earned',
         'has_ordered_hosting',
+        'otp_code',
+        'otp_expires_at',
+        'is_active',
     ];
 
     /**
@@ -70,6 +73,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'otp_expires_at' => 'datetime',
         ];
     }
 
