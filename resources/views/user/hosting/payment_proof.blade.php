@@ -74,9 +74,8 @@
                             <label class="label"><span class="label-text font-semibold text-base-content">Metode Pembayaran</span></label>
                             <select name="payment_method" class="select select-bordered w-full" required>
                                 <option value="" disabled selected>Pilih metode...</option>
-                                <option value="BCA">Transfer Bank BCA</option>
-                                <option value="DANA">E-Wallet DANA</option>
-                                <option value="OVO">E-Wallet OVO</option>
+                                <option value="BANK">Transfer Antar Bank</option>
+                                <option value="EWALLET">E-Wallet</option>
                                 <option value="QRIS">QRIS All Payment</option>
                             </select>
                         </div>
