@@ -6,8 +6,14 @@
             </svg>
         </label>
     </div>
-    <div class="flex-1 px-2 mx-2">
+    <div class="flex-1 px-2 mx-2 flex items-center gap-4">
         <span class="text-lg font-bold lg:hidden">Kuukok Admin</span>
+        @if(auth()->user()->isUser())
+            <div class="hidden md:flex items-center gap-2 text-sm">
+                <span class="text-base-content/60">Kesulitan menggunakan FTP?</span>
+                <a href="{{ route('user.hosting.ftp-tutorial') }}" class="link link-primary font-bold">Lihat Tutorial FTP</a>
+            </div>
+        @endif
     </div>
     <div class="flex-none gap-2">
         <label class="swap swap-rotate btn btn-ghost btn-circle">

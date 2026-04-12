@@ -205,6 +205,9 @@ Route::middleware(['auth', 'verified'])->prefix('user/hosting')->name('user.host
     Route::get('/payment/{hosting_order}', [\App\Http\Controllers\User\HostingOrderController::class, 'payment'])->name('payment');
     Route::put('/payment/{hosting_order}/submit', [\App\Http\Controllers\User\HostingOrderController::class, 'submitPayment'])->name('order.payment.submit');
     Route::get('/my-services', [\App\Http\Controllers\User\HostingOrderController::class, 'myServices'])->name('my-services');
+    Route::get('/ftp-tutorial', function() {
+        return view('user.hosting.ftp_tutorial');
+    })->name('ftp-tutorial');
 });
 
 // Cashback System (User Flow)

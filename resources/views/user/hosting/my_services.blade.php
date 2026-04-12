@@ -11,6 +11,17 @@
         </a>
     </div>
 
+    <div class="mb-4 alert alert-info bg-primary/5 border-primary/20 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-primary shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="flex-1">
+            <h3 class="font-bold">Bingung cara menggunakan data FTP di atas?</h3>
+            <div class="text-xs">Kami telah menyiapkan panduan lengkap menggunakan FileZilla untuk mengupload file website Anda.</div>
+        </div>
+        <div class="flex-none">
+            <a href="{{ route('user.hosting.ftp-tutorial') }}" class="btn btn-sm btn-primary text-white font-bold">Lihat Panduan FTP</a>
+        </div>
+    </div>
+
     @if($orders->isEmpty())
     <div class="card bg-base-100 shadow border border-dashed border-base-300">
         <div class="card-body items-center text-center py-16">
