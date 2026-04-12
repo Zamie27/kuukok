@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('referral_code')->unique()->after('password');
-            $table->decimal('cashback_balance', 10, 2)->default(0)->after('referral_code');
+            if (!Schema::hasColumn('users', 'referral_code')) {
+                $table->string('referral_code')->unique()->after('password')->nullable();
+            }
+            if (!Schema::hasColumn('users', 'cashback_balance')) {
+                $table->decimal('cashback_balance', 10, 2)->default(0)->after('referral_code');
+            }
         });
     }
 

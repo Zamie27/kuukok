@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->decimal('lifetime_cashback_earned', 12, 2)->default(0)->after('cashback_balance');
-            $table->boolean('has_ordered_hosting')->default(false)->after('lifetime_cashback_earned');
+            if (!Schema::hasColumn('users', 'lifetime_cashback_earned')) {
+                $table->decimal('lifetime_cashback_earned', 12, 2)->default(0)->after('cashback_balance');
+            }
+            if (!Schema::hasColumn('users', 'has_ordered_hosting')) {
+                $table->boolean('has_ordered_hosting')->default(false)->after('lifetime_cashback_earned');
+            }
         });
     }
 
