@@ -4,16 +4,15 @@ on:
   push:
     branches:
       - develop
-      - main
+      - master
   pull_request:
     branches:
       - develop
-      - main
+      - master
 
 jobs:
   ci:
     runs-on: ubuntu-latest
-    environment: Testing
 
     steps:
       - name: Checkout
