@@ -41,6 +41,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'referral_code',
+        'cashback_balance',
     ];
 
     /**
@@ -82,6 +84,59 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'admin' || $this->role === 'super_admin';
+    }
+
+    /**
+     * Boot the model
+     */
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $user->referral_code = strtoupper(Str::random(10));
+            $user->role = $user->role ?? 'user';
+        });
+
+        static::created(function ($user) {
+            $user->referral()->create([
+                'code' => $user->referral_code
+            ]);
+        });
+    }
+
+    /**
+     * Check if user is standard user
+     */
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
+    }
+
+    /**
+     * Relationships
+     */
+    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function referral(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Referral::class);
+    }
+
+    public function referralUses(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ReferralUse::class, 'used_by_user_id');
+    }
+
+    public function cashbacks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Cashback::class);
+    }
+
+    public function withdrawals(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CashbackWithdrawal::class);
     }
 
     /**
