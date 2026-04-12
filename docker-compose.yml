@@ -1,0 +1,73 @@
+services:
+  # 1. Container Aplikasi (Backend Laravel 12 & PHP 8.4)
+  # Sesuai kebutuhan backend di dokumen [cite: 1586]
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/DockerFile
+    container_name: kuukok-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    ports:
+      - "8001:8000"
+      - "5174:5174"
+    volumes:
+      - ./:/var/www/html:Z
+    networks:
+      - kuukok-network
+
+  # 2. Web Server (Nginx) - Terpisah dari PHP
+  # Melayani request HTTP dan file statis [cite: 1576]
+  nginx:
+    image: nginx:alpine
+    container_name: kuukok-nginx
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/var/www/html:Z
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:Z
+    depends_on:
+      - app
+    networks:
+      - kuukok-network
+
+  # 3. Database Server (MySQL)
+  # Tempat penyimpanan terpusat data latihan dan profil atlet [cite: 1541, 1588]
+  mysql:
+    image: mysql:8.4
+    container_name: kuukok-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: db_kuukok
+      MYSQL_USER: kuukok_user
+      MYSQL_PASSWORD: kuukok_password
+      MYSQL_ROOT_PASSWORD: root_password_kuukok
+    ports:
+      - "3308:3306"
+    volumes:
+      - kuukok-db-data:/var/lib/mysql:Z
+    networks:
+      - kuukok-network
+
+  # 4. Database Management (PHPMyAdmin)
+  # Memudahkan tim SI dalam mengelola integritas data [cite: 1660]
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: kuukok-pma
+    restart: always
+    ports:
+      - "8084:80"
+    environment:
+      - PMA_ARBITRARY=1
+    depends_on:
+      - mysql
+    networks:
+      - kuukok-network
+
+networks:
+  kuukok-network:
+    driver: bridge
+
+volumes:
+  kuukok-db-data:

@@ -13,24 +13,26 @@ class FaqController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $items = Faq::orderBy('sort_order')->get();
+
         return view('admin.faqs.index', compact('items'));
     }
 
     public function create()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
+
         return view('admin.faqs.create');
     }
 
     public function store(Request $request)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $data = $request->validate([
@@ -42,20 +44,22 @@ class FaqController extends Controller
             'sort_order.unique' => 'Order sudah ada active',
         ]);
         Faq::create($data);
+
         return redirect()->route('admin.faqs.index');
     }
 
     public function edit(Faq $faq)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
+
         return view('admin.faqs.edit', ['item' => $faq]);
     }
 
     public function update(Request $request, Faq $faq)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $data = $request->validate([
@@ -76,15 +80,17 @@ class FaqController extends Controller
         }
 
         $faq->fill($data)->save();
+
         return redirect()->route('admin.faqs.index');
     }
 
     public function destroy(Faq $faq)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $faq->delete();
+
         return redirect()->route('admin.faqs.index');
     }
 }

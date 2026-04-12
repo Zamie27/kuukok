@@ -5,24 +5,25 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\TechStack;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class TechStackController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
         $techStacks = TechStack::orderBy('name')->get();
+
         return view('admin.tech_stacks.index', compact('techStacks'));
     }
 
     public function create()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -31,7 +32,7 @@ class TechStackController extends Controller
 
     public function store(Request $request)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -54,7 +55,7 @@ class TechStackController extends Controller
 
     public function edit(TechStack $techStack)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -63,7 +64,7 @@ class TechStackController extends Controller
 
     public function update(Request $request, TechStack $techStack)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -89,7 +90,7 @@ class TechStackController extends Controller
 
     public function destroy(TechStack $techStack)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 

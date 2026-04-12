@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
 use App\Models\Message;
 use App\Models\Setting;
-use App\Models\Faq;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -14,6 +14,7 @@ class ContactController extends Controller
     public function index()
     {
         $faqs = Faq::where('active', true)->orderBy('sort_order')->get();
+
         return view('contact', compact('faqs'));
     }
 
@@ -34,7 +35,7 @@ class ContactController extends Controller
                 // Let's loosen it slightly to just string validation unless requested otherwise,
                 // but for "Opsi" usually implies restriction.
                 // Let's check if the list is not empty before validating against it.
-                if (!empty($validSubjects) && !in_array($value, $validSubjects)) {
+                if (! empty($validSubjects) && ! in_array($value, $validSubjects)) {
                     // We can allow custom subjects if "Lainnya" is selected?
                     // Usually the value sent is "Lainnya" or the text itself.
                     // If the UI is a select, the value sent is one of the options.

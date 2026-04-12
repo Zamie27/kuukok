@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
@@ -92,14 +93,18 @@ class User extends Authenticatable
     protected static function booted()
     {
         static::creating(function ($user) {
-            $user->referral_code = strtoupper(Str::random(10));
+            if (Schema::hasColumn('users', 'referral_code')) {
+                $user->referral_code = strtoupper(Str::random(10));
+            }
             $user->role = $user->role ?? 'user';
         });
 
         static::created(function ($user) {
-            $user->referral()->create([
-                'code' => $user->referral_code
-            ]);
+            if (Schema::hasTable('referrals')) {
+                $user->referral()->create([
+                    'code' => $user->referral_code
+                ]);
+            }
         });
     }
 
@@ -147,7 +152,7 @@ class User extends Authenticatable
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn($word) => Str::substr($word, 0, 1))
+            ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 }

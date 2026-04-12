@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -67,7 +67,7 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 

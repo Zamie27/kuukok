@@ -7,21 +7,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Profile;
 use App\Models\TechStack;
-use App\Models\Certification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
-
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
     public function edit()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $profile = Profile::firstOrCreate(['user_id' => auth()->id()]);
@@ -34,7 +32,7 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -89,7 +87,7 @@ class ProfileController extends Controller
                 $originalSlug = $slug;
                 $count = 1;
                 while (Profile::where('slug', $slug)->where('id', '!=', $profile->id)->exists()) {
-                    $slug = $originalSlug . '-' . $count++;
+                    $slug = $originalSlug.'-'.$count++;
                 }
                 $profile->slug = $slug;
             }
@@ -123,7 +121,7 @@ class ProfileController extends Controller
             'email',
             'current_password',
             'new_password',
-            'new_password_confirmation'
+            'new_password_confirmation',
         ])->toArray();
 
         $profile->fill($profileData);
@@ -133,7 +131,7 @@ class ProfileController extends Controller
             if ($profile->avatar && Storage::disk('public')->exists($profile->avatar)) {
                 Storage::disk('public')->delete($profile->avatar);
             }
-            $profile->avatar = $request->file('avatar')->store('profiles/' . auth()->id(), 'public');
+            $profile->avatar = $request->file('avatar')->store('profiles/'.auth()->id(), 'public');
         }
 
         $profile->save();
@@ -160,11 +158,13 @@ class ProfileController extends Controller
         // 2. Add new certs
         if ($request->has('certs_new')) {
             foreach ($request->certs_new as $certData) {
-                if (empty($certData['name'])) continue;
+                if (empty($certData['name'])) {
+                    continue;
+                }
 
                 $path = null;
                 if (isset($certData['file']) && $certData['file'] instanceof \Illuminate\Http\UploadedFile) {
-                    $path = $certData['file']->store('certifications/' . auth()->id(), 'public');
+                    $path = $certData['file']->store('certifications/'.auth()->id(), 'public');
                 }
 
                 $profile->certifications()->create([
@@ -192,7 +192,7 @@ class ProfileController extends Controller
 
     public function deleteAvatar()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 

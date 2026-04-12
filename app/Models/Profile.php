@@ -25,7 +25,7 @@ class Profile extends Model
                     $originalSlug = $slug;
                     $count = 1;
                     while (static::where('slug', $slug)->exists()) {
-                        $slug = $originalSlug . '-' . $count++;
+                        $slug = $originalSlug.'-'.$count++;
                     }
                     $profile->slug = $slug;
                 }

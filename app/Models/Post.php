@@ -53,7 +53,7 @@ class Post extends Model
         static::saving(function (Post $post): void {
             $wordCount = str_word_count(strip_tags($post->content ?? ''));
             // Also count text in content_blocks if content is empty or to be accurate
-            if (!empty($post->content_blocks) && is_array($post->content_blocks)) {
+            if (! empty($post->content_blocks) && is_array($post->content_blocks)) {
                 foreach ($post->content_blocks as $block) {
                     if (isset($block['data']['text'])) {
                         $wordCount += str_word_count(strip_tags($block['data']['text']));
@@ -65,10 +65,10 @@ class Post extends Model
             // Generate Meta Description if empty
             if (empty($post->meta_description)) {
                 $descriptionText = '';
-                if (!empty($post->content_blocks) && is_array($post->content_blocks)) {
+                if (! empty($post->content_blocks) && is_array($post->content_blocks)) {
                     foreach ($post->content_blocks as $block) {
                         if (($block['type'] === 'paragraph' || $block['type'] === 'text') && isset($block['data']['text'])) {
-                            $descriptionText .= $block['data']['text'] . ' ';
+                            $descriptionText .= $block['data']['text'].' ';
                         }
                     }
                 } else {
@@ -89,9 +89,9 @@ class Post extends Model
         $toc = [];
 
         // Generate TOC from Content Blocks if available
-        if (!empty($this->content_blocks) && is_array($this->content_blocks)) {
+        if (! empty($this->content_blocks) && is_array($this->content_blocks)) {
             foreach ($this->content_blocks as $block) {
-                if ($block['type'] === 'heading' && !empty($block['data']['text'])) {
+                if ($block['type'] === 'heading' && ! empty($block['data']['text'])) {
                     $toc[] = [
                         'level' => $block['data']['level'] ?? 'h2', // Default to h2 if missing
                         'text' => strip_tags($block['data']['text']),
@@ -106,7 +106,7 @@ class Post extends Model
             preg_match_all('/<h([2-3]).*?>(.*?)<\/h[2-3]>/i', $this->content ?? '', $matches, PREG_SET_ORDER);
             foreach ($matches as $match) {
                 $toc[] = [
-                    'level' => 'h' . $match[1],
+                    'level' => 'h'.$match[1],
                     'text' => strip_tags($match[2]),
                     'id' => Str::slug(strip_tags($match[2])),
                 ];
@@ -118,12 +118,13 @@ class Post extends Model
 
     public function getCategoryColorAttribute(): string
     {
-        if (!$this->category) {
+        if (! $this->category) {
             return 'primary';
         }
 
         $colors = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'];
         $hash = crc32($this->category);
+
         return $colors[abs($hash) % count($colors)];
     }
 
@@ -131,7 +132,7 @@ class Post extends Model
     {
         $query->when($filters['search'] ?? false, function ($query, $search) {
             $query->where(function ($query) use ($search) {
-                $query->where('title', 'like', '%' . $search . '%')
+                $query->where('title', 'like', '%'.$search.'%')
                     ->orWhereJsonContains('tags', $search);
             });
         });
@@ -162,13 +163,14 @@ class Post extends Model
             return Str::limit(strip_tags($this->content), 150);
         }
 
-        if (!empty($this->content_blocks) && is_array($this->content_blocks)) {
+        if (! empty($this->content_blocks) && is_array($this->content_blocks)) {
             $text = '';
             foreach ($this->content_blocks as $block) {
                 if (($block['type'] === 'paragraph' || $block['type'] === 'text') && isset($block['data']['text'])) {
-                    $text .= $block['data']['text'] . ' ';
+                    $text .= $block['data']['text'].' ';
                 }
             }
+
             return Str::limit(strip_tags(trim($text)), 150);
         }
 
@@ -181,9 +183,10 @@ class Post extends Model
         $original = $slug;
         $i = 1;
         while (static::where('slug', $slug)->exists()) {
-            $slug = $original . '-' . $i;
+            $slug = $original.'-'.$i;
             $i++;
         }
+
         return $slug;
     }
 }

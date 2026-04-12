@@ -14,25 +14,27 @@ class PackageController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $items = Package::orderBy('sort_order')->get();
         $settings = Setting::whereIn('group', ['pricing', 'contact'])->pluck('value', 'key');
+
         return view('admin.packages.index', compact('items', 'settings'));
     }
 
     public function create()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
+
         return view('admin.packages.create');
     }
 
     public function store(Request $request)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -53,20 +55,22 @@ class PackageController extends Controller
         ]);
         $item = new Package($data);
         $item->save();
+
         return redirect()->route('admin.packages.index');
     }
 
     public function edit(Package $package)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
+
         return view('admin.packages.edit', ['item' => $package]);
     }
 
     public function update(Request $request, Package $package)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -86,15 +90,17 @@ class PackageController extends Controller
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
         $package->fill($data)->save();
+
         return redirect()->route('admin.packages.index');
     }
 
     public function destroy(Package $package)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $package->delete();
+
         return redirect()->route('admin.packages.index');
     }
 }

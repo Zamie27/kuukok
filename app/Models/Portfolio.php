@@ -88,14 +88,14 @@ class Portfolio extends Model
      */
     public function getTimelineLabelAttribute(): string
     {
-        if (!$this->start_date) {
+        if (! $this->start_date) {
             return '-';
         }
 
         $start = $this->start_date->locale('id')->isoFormat('MMMM YYYY');
 
-        if (!$this->end_date) {
-            return $start . ' - Sekarang';
+        if (! $this->end_date) {
+            return $start.' - Sekarang';
         }
 
         $end = $this->end_date->locale('id')->isoFormat('MMMM YYYY');
@@ -104,7 +104,7 @@ class Portfolio extends Model
             return $start;
         }
 
-        return $start . ' - ' . $end;
+        return $start.' - '.$end;
     }
 
     /**
@@ -112,7 +112,7 @@ class Portfolio extends Model
      */
     public function getDurationLabelAttribute(): string
     {
-        if (!$this->start_date) {
+        if (! $this->start_date) {
             return '';
         }
 
@@ -127,12 +127,13 @@ class Portfolio extends Model
             $days = $this->start_date->diffInDays($end);
             if ($days < 30) {
                 // For very short projects
-                return $days . ' Hari Pengerjaan';
+                return $days.' Hari Pengerjaan';
             }
+
             return '1 Bulan Pengerjaan';
         }
 
-        return round($months) . ' Bulan Pengerjaan';
+        return round($months).' Bulan Pengerjaan';
     }
 
     /**
@@ -190,24 +191,26 @@ class Portfolio extends Model
      */
     public function getTimelineAttribute(): string
     {
-        if (!$this->start_date) return '-';
+        if (! $this->start_date) {
+            return '-';
+        }
 
         $start = $this->start_date->translatedFormat('F');
         // If end_date is null, assume 'Present' or similar, but for now let's use logic:
         // User requested "Januari - Februari 2025"
 
-        if (!$this->end_date) {
-            return $this->start_date->translatedFormat('F Y') . ' - Sekarang';
+        if (! $this->end_date) {
+            return $this->start_date->translatedFormat('F Y').' - Sekarang';
         }
 
         $end = $this->end_date->translatedFormat('F Y');
 
         // If same year, don't repeat year in start? User example "Januari - Februari 2025" suggests this.
         if ($this->start_date->year === $this->end_date->year) {
-            return $this->start_date->translatedFormat('F') . ' - ' . $end;
+            return $this->start_date->translatedFormat('F').' - '.$end;
         }
 
-        return $this->start_date->translatedFormat('F Y') . ' - ' . $end;
+        return $this->start_date->translatedFormat('F Y').' - '.$end;
     }
 
     /**
@@ -215,7 +218,9 @@ class Portfolio extends Model
      */
     public function getDurationAttribute(): string
     {
-        if (!$this->start_date || !$this->end_date) return '';
+        if (! $this->start_date || ! $this->end_date) {
+            return '';
+        }
 
         // Calculate calendar months spanned
         $start = $this->start_date->copy()->startOfMonth();
@@ -224,7 +229,7 @@ class Portfolio extends Model
         // Actually, just comparing start of months is cleaner for "Jan - Feb" logic
         $diff = $this->start_date->copy()->startOfMonth()->diffInMonths($this->end_date->copy()->startOfMonth()) + 1;
 
-        return $diff . ' Bulan Pengerjaan';
+        return $diff.' Bulan Pengerjaan';
     }
 
     /**
@@ -251,8 +256,8 @@ class Portfolio extends Model
     /**
      * Generate a unique slug for the portfolio.
      *
-     * @param string $base The base string to generate slug from.
-     * @param bool $fromSlug Whether the $base provided is already a slug string.
+     * @param  string  $base  The base string to generate slug from.
+     * @param  bool  $fromSlug  Whether the $base provided is already a slug string.
      */
     public static function generateUniqueSlug(string $base, bool $fromSlug = false): string
     {
@@ -261,7 +266,7 @@ class Portfolio extends Model
         $original = $slug;
         $i = 1;
         while (static::where('slug', $slug)->exists()) {
-            $slug = $original . '-' . $i;
+            $slug = $original.'-'.$i;
             $i++;
         }
 

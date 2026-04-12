@@ -67,8 +67,8 @@ class BlogController extends Controller
 
         $post->load(['author.profile']);
 
-        $key = 'viewed_post_' . $post->id;
-        if (!session()->has($key)) {
+        $key = 'viewed_post_'.$post->id;
+        if (! session()->has($key)) {
             $post->increment('views');
             session()->put($key, true);
         }
@@ -81,7 +81,7 @@ class BlogController extends Controller
         $related_posts = Post::published()
             ->where('id', '!=', $post->id)
             ->where(function ($query) use ($post) {
-                if (!empty($post->tags)) {
+                if (! empty($post->tags)) {
                     foreach ($post->tags as $tag) {
                         $query->orWhereJsonContains('tags', $tag);
                     }

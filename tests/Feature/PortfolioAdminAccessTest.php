@@ -29,4 +29,3 @@ class PortfolioAdminAccessTest extends TestCase
             ->assertStatus(200);
     }
 }
-

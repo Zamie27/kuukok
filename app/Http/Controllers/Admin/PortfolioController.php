@@ -7,14 +7,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Portfolio;
 use App\Models\Profile;
-use App\Models\TechStack;
 use App\Models\Setting;
+use App\Models\TechStack;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 
 class PortfolioController extends Controller
 {
@@ -23,11 +22,12 @@ class PortfolioController extends Controller
      */
     public function index()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
         $portfolios = Portfolio::orderByDesc('created_at')->paginate(15);
+
         return view('admin.portfolios.index', compact('portfolios'));
     }
 
@@ -36,7 +36,7 @@ class PortfolioController extends Controller
      */
     public function create()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $techStacks = TechStack::all();
@@ -60,7 +60,7 @@ class PortfolioController extends Controller
      */
     public function store(Request $request)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -79,9 +79,9 @@ class PortfolioController extends Controller
             // New Fields
             'client_name' => ['nullable', 'string', 'max:255'],
             'start_month' => ['nullable', 'integer', 'between:1,12'],
-            'start_year' => ['nullable', 'integer', 'min:2000', 'max:' . (date('Y') + 5)],
+            'start_year' => ['nullable', 'integer', 'min:2000', 'max:'.(date('Y') + 5)],
             'end_month' => ['nullable', 'integer', 'between:1,12'],
-            'end_year' => ['nullable', 'integer', 'min:2000', 'max:' . (date('Y') + 5)],
+            'end_year' => ['nullable', 'integer', 'min:2000', 'max:'.(date('Y') + 5)],
             'project_status' => ['nullable', 'string', 'in:Dalam Pengerjaan,Selesai,Ditunda'],
             'live_demo_link' => ['nullable', 'url'],
             'team_size' => ['nullable', 'integer', 'min:1'],
@@ -96,7 +96,7 @@ class PortfolioController extends Controller
         ]);
 
         // Date Validation
-        if (!empty($request->start_year) && !empty($request->end_year)) {
+        if (! empty($request->start_year) && ! empty($request->end_year)) {
             $start = Carbon::createFromDate($request->start_year, $request->start_month ?? 1, 1);
             $end = Carbon::createFromDate($request->end_year, $request->end_month ?? 1, 1);
 
@@ -115,7 +115,7 @@ class PortfolioController extends Controller
         }
         if (empty($data['meta_description'])) {
             // Prefer excerpt, fallback to description (stripped tags)
-            $source = !empty($data['excerpt']) ? $data['excerpt'] : strip_tags($data['description'] ?? '');
+            $source = ! empty($data['excerpt']) ? $data['excerpt'] : strip_tags($data['description'] ?? '');
             $data['meta_description'] = Str::limit($source, 160);
         }
 
@@ -123,15 +123,15 @@ class PortfolioController extends Controller
         $data['is_personal_project'] = $request->boolean('is_personal_project');
 
         // Handle dates
-        if (!empty($request->start_month) && !empty($request->start_year)) {
+        if (! empty($request->start_month) && ! empty($request->start_year)) {
             $data['start_date'] = Carbon::createFromDate($request->start_year, $request->start_month, 1)->startOfMonth()->format('Y-m-d');
         }
-        if (!empty($request->end_month) && !empty($request->end_year)) {
+        if (! empty($request->end_month) && ! empty($request->end_year)) {
             $data['end_date'] = Carbon::createFromDate($request->end_year, $request->end_month, 1)->endOfMonth()->format('Y-m-d');
         }
 
         // Handle tags (already array if from select2, but just in case)
-        if (isset($data['tags']) && !is_array($data['tags'])) {
+        if (isset($data['tags']) && ! is_array($data['tags'])) {
             $data['tags'] = array_map('trim', explode(',', $data['tags']));
         }
 
@@ -152,12 +152,12 @@ class PortfolioController extends Controller
         $portfolio->save();
 
         // Handle Tech Stacks
-        if (!empty($techStacksData)) {
+        if (! empty($techStacksData)) {
             $portfolio->techStacks()->sync($techStacksData);
         }
 
         // Handle Team Members
-        if (!empty($teamMembersData)) {
+        if (! empty($teamMembersData)) {
             $syncData = [];
             foreach ($teamMembersData as $member) {
                 if (isset($member['profile_id'])) {
@@ -170,21 +170,22 @@ class PortfolioController extends Controller
         // Handle Cover Image with consistent naming
         if ($request->hasFile('cover_image')) {
             try {
-                $directory = 'portfolios/' . $portfolio->id;
+                $directory = 'portfolios/'.$portfolio->id;
                 Storage::disk('public')->makeDirectory($directory);
 
                 $file = $request->file('cover_image');
-                $filename = 'cover-' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                $filename = 'cover-'.Str::random(8).'.'.$file->getClientOriginalExtension();
                 $path = $file->storeAs($directory, $filename, 'public');
 
-                if (!$path) {
+                if (! $path) {
                     throw new \Exception('Failed to store cover image.');
                 }
 
                 $portfolio->cover_image = $path;
                 $portfolio->save();
             } catch (\Exception $e) {
-                \Log::error('Portfolio Cover Upload Error: ' . $e->getMessage());
+                \Log::error('Portfolio Cover Upload Error: '.$e->getMessage());
+
                 return back()->withErrors(['cover_image' => 'Failed to upload cover image. Please try again.'])->withInput();
             }
         }
@@ -192,16 +193,16 @@ class PortfolioController extends Controller
         // Handle Gallery with consistent naming
         if ($request->hasFile('gallery')) {
             try {
-                $directory = 'portfolios/' . $portfolio->id;
+                $directory = 'portfolios/'.$portfolio->id;
                 Storage::disk('public')->makeDirectory($directory);
 
                 $galleryPaths = [];
                 foreach ($request->file('gallery') as $index => $file) {
-                    $filename = 'gallery-' . ($index + 1) . '-' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                    $filename = 'gallery-'.($index + 1).'-'.Str::random(8).'.'.$file->getClientOriginalExtension();
                     $path = $file->storeAs($directory, $filename, 'public');
 
-                    if (!$path) {
-                        throw new \Exception('Failed to store gallery file ' . $file->getClientOriginalName());
+                    if (! $path) {
+                        throw new \Exception('Failed to store gallery file '.$file->getClientOriginalName());
                     }
 
                     $galleryPaths[] = $path;
@@ -209,7 +210,8 @@ class PortfolioController extends Controller
                 $portfolio->gallery = $galleryPaths;
                 $portfolio->save();
             } catch (\Exception $e) {
-                \Log::error('Portfolio Gallery Upload Error: ' . $e->getMessage());
+                \Log::error('Portfolio Gallery Upload Error: '.$e->getMessage());
+
                 return back()->withErrors(['gallery' => 'Failed to upload gallery files. Please try again.'])->withInput();
             }
         }
@@ -228,7 +230,7 @@ class PortfolioController extends Controller
      */
     public function edit(Portfolio $portfolio)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -255,13 +257,13 @@ class PortfolioController extends Controller
      */
     public function update(Request $request, Portfolio $portfolio)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:portfolios,slug,' . $portfolio->id],
+            'slug' => ['nullable', 'string', 'max:255', 'unique:portfolios,slug,'.$portfolio->id],
             'description' => ['nullable', 'string'],
             'excerpt' => ['nullable', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,webp', 'max:5120'], // 5MB
@@ -273,9 +275,9 @@ class PortfolioController extends Controller
             // New Fields
             'client_name' => ['nullable', 'string', 'max:255'],
             'start_month' => ['nullable', 'integer', 'between:1,12'],
-            'start_year' => ['nullable', 'integer', 'min:2000', 'max:' . (date('Y') + 5)],
+            'start_year' => ['nullable', 'integer', 'min:2000', 'max:'.(date('Y') + 5)],
             'end_month' => ['nullable', 'integer', 'between:1,12'],
-            'end_year' => ['nullable', 'integer', 'min:2000', 'max:' . (date('Y') + 5)],
+            'end_year' => ['nullable', 'integer', 'min:2000', 'max:'.(date('Y') + 5)],
             'project_status' => ['nullable', 'string', 'in:Dalam Pengerjaan,Selesai,Ditunda'],
             'live_demo_link' => ['nullable', 'url'],
             'team_size' => ['nullable', 'integer', 'min:1'],
@@ -290,7 +292,7 @@ class PortfolioController extends Controller
         ]);
 
         // Date Validation
-        if (!empty($request->start_year) && !empty($request->end_year)) {
+        if (! empty($request->start_year) && ! empty($request->end_year)) {
             $start = Carbon::createFromDate($request->start_year, $request->start_month ?? 1, 1);
             $end = Carbon::createFromDate($request->end_year, $request->end_month ?? 1, 1);
 
@@ -309,22 +311,22 @@ class PortfolioController extends Controller
         }
         if (empty($data['meta_description'])) {
             // Prefer excerpt, fallback to description (stripped tags)
-            $source = !empty($data['excerpt']) ? $data['excerpt'] : strip_tags($data['description'] ?? '');
+            $source = ! empty($data['excerpt']) ? $data['excerpt'] : strip_tags($data['description'] ?? '');
             $data['meta_description'] = Str::limit($source, 160);
         }
 
         $data['is_personal_project'] = $request->boolean('is_personal_project');
 
         // Handle dates
-        if (!empty($request->start_month) && !empty($request->start_year)) {
+        if (! empty($request->start_month) && ! empty($request->start_year)) {
             $data['start_date'] = Carbon::createFromDate($request->start_year, $request->start_month, 1)->startOfMonth()->format('Y-m-d');
         }
-        if (!empty($request->end_month) && !empty($request->end_year)) {
+        if (! empty($request->end_month) && ! empty($request->end_year)) {
             $data['end_date'] = Carbon::createFromDate($request->end_year, $request->end_month, 1)->endOfMonth()->format('Y-m-d');
         }
 
         // Handle tags
-        if (isset($data['tags']) && !is_array($data['tags'])) {
+        if (isset($data['tags']) && ! is_array($data['tags'])) {
             $data['tags'] = array_map('trim', explode(',', $data['tags']));
         }
 
@@ -343,14 +345,14 @@ class PortfolioController extends Controller
         $portfolio->save();
 
         // Handle Tech Stacks
-        if (!empty($techStacksData)) {
+        if (! empty($techStacksData)) {
             $portfolio->techStacks()->sync($techStacksData);
         } else {
             $portfolio->techStacks()->detach();
         }
 
         // Handle Team Members
-        if (!empty($teamMembersData)) {
+        if (! empty($teamMembersData)) {
             $syncData = [];
             foreach ($teamMembersData as $member) {
                 if (isset($member['profile_id'])) {
@@ -404,7 +406,7 @@ class PortfolioController extends Controller
         // Handle Cover Image
         if ($request->hasFile('cover_image')) {
             try {
-                $directory = 'portfolios/' . $portfolio->id;
+                $directory = 'portfolios/'.$portfolio->id;
                 Storage::disk('public')->makeDirectory($directory);
 
                 // Delete old image
@@ -412,17 +414,18 @@ class PortfolioController extends Controller
                     Storage::disk('public')->delete($portfolio->cover_image);
                 }
                 $file = $request->file('cover_image');
-                $filename = 'cover-' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                $filename = 'cover-'.Str::random(8).'.'.$file->getClientOriginalExtension();
                 $path = $file->storeAs($directory, $filename, 'public');
 
-                if (!$path) {
+                if (! $path) {
                     throw new \Exception('Failed to store cover image.');
                 }
 
                 $portfolio->cover_image = $path;
                 $portfolio->save();
             } catch (\Exception $e) {
-                \Log::error('Portfolio Update Cover Error: ' . $e->getMessage());
+                \Log::error('Portfolio Update Cover Error: '.$e->getMessage());
+
                 return back()->withErrors(['cover_image' => 'Failed to update cover image.'])->withInput();
             }
         }
@@ -430,15 +433,15 @@ class PortfolioController extends Controller
         // Handle Gallery Additions
         if ($request->hasFile('gallery')) {
             try {
-                $directory = 'portfolios/' . $portfolio->id;
+                $directory = 'portfolios/'.$portfolio->id;
                 Storage::disk('public')->makeDirectory($directory);
 
                 $currentGallery = $portfolio->gallery ?? [];
                 foreach ($request->file('gallery') as $index => $file) {
-                    $filename = 'gallery-' . (count($currentGallery) + $index + 1) . '-' . Str::random(8) . '.' . $file->getClientOriginalExtension();
+                    $filename = 'gallery-'.(count($currentGallery) + $index + 1).'-'.Str::random(8).'.'.$file->getClientOriginalExtension();
                     $path = $file->storeAs($directory, $filename, 'public');
 
-                    if (!$path) {
+                    if (! $path) {
                         throw new \Exception('Failed to store gallery file.');
                     }
 
@@ -447,7 +450,8 @@ class PortfolioController extends Controller
                 $portfolio->gallery = $currentGallery;
                 $portfolio->save();
             } catch (\Exception $e) {
-                \Log::error('Portfolio Update Gallery Error: ' . $e->getMessage());
+                \Log::error('Portfolio Update Gallery Error: '.$e->getMessage());
+
                 return back()->withErrors(['gallery' => 'Failed to add gallery files.'])->withInput();
             }
         }
@@ -466,7 +470,7 @@ class PortfolioController extends Controller
      */
     public function destroy(Portfolio $portfolio)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -480,8 +484,8 @@ class PortfolioController extends Controller
             }
         }
         // Delete folder
-        Storage::disk('public')->deleteDirectory('portfolios/' . $portfolio->id);
-        Storage::disk('public')->deleteDirectory('portfolios/' . $portfolio->slug); // Legacy cleanup
+        Storage::disk('public')->deleteDirectory('portfolios/'.$portfolio->id);
+        Storage::disk('public')->deleteDirectory('portfolios/'.$portfolio->slug); // Legacy cleanup
 
         $portfolio->delete();
 

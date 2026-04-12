@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Post;
 use App\Models\Portfolio;
-use App\Models\Package;
+use App\Models\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

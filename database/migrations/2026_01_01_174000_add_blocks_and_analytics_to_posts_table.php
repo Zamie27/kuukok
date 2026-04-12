@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            if (!Schema::hasColumn('posts', 'content_blocks')) {
+            if (! Schema::hasColumn('posts', 'content_blocks')) {
                 $table->json('content_blocks')->nullable()->after('content');
             }
-            if (!Schema::hasColumn('posts', 'whatsapp_clicks')) {
+            if (! Schema::hasColumn('posts', 'whatsapp_clicks')) {
                 $table->unsignedBigInteger('whatsapp_clicks')->default(0)->after('read_time');
             }
-            if (!Schema::hasColumn('posts', 'share_clicks')) {
+            if (! Schema::hasColumn('posts', 'share_clicks')) {
                 $table->unsignedBigInteger('share_clicks')->default(0)->after('whatsapp_clicks');
             }
         });

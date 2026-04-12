@@ -12,7 +12,7 @@ class TodoList extends Component
     public function addTask()
     {
         $this->validate(['newTask' => 'required|string|max:255']);
-        
+
         Todo::create([
             'task' => $this->newTask,
             'is_completed' => false,
@@ -25,7 +25,7 @@ class TodoList extends Component
     {
         $todo = Todo::find($id);
         if ($todo) {
-            $todo->update(['is_completed' => !$todo->is_completed]);
+            $todo->update(['is_completed' => ! $todo->is_completed]);
         }
     }
 
@@ -37,7 +37,7 @@ class TodoList extends Component
     public function render()
     {
         return view('livewire.admin.todo-list', [
-            'todos' => Todo::latest()->get()
+            'todos' => Todo::latest()->get(),
         ]);
     }
 }

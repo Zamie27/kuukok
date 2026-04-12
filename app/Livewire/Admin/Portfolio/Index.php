@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Admin\Portfolio;
 
 use App\Models\Portfolio;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -20,28 +19,38 @@ use Livewire\WithPagination;
  */
 class Index extends Component
 {
-    use WithPagination;
     use WithFileUploads;
+    use WithPagination;
 
     /** Listing state */
     public string $search = '';
+
     public string $statusFilter = '';
 
     /** Form state */
     public bool $showModal = false;
+
     public ?int $editingId = null;
 
     public string $title = '';
+
     public string $slug = '';
+
     public ?string $excerpt = null;
+
     public ?string $description = null;
+
     public string $status = 'draft';
+
     public ?string $meta_title = null;
+
     public ?string $meta_description = null;
+
     public string $tagsInput = ''; // Comma-separated tags input
 
     /** Uploaded files */
     public $coverUpload; // TemporaryUploadedFile|null
+
     /** @var array<int, mixed> */
     public array $galleryUploads = [];
 
@@ -59,7 +68,7 @@ class Index extends Component
     {
         $uniqueSlug = 'unique:portfolios,slug';
         if ($this->editingId) {
-            $uniqueSlug = 'unique:portfolios,slug,' . $this->editingId;
+            $uniqueSlug = 'unique:portfolios,slug,'.$this->editingId;
         }
 
         return [
@@ -90,7 +99,7 @@ class Index extends Component
     /** Auto-generate slug when title updates (unless editing an existing custom slug). */
     public function updatedTitle(): void
     {
-        if (!$this->editingId || $this->slug === '') {
+        if (! $this->editingId || $this->slug === '') {
             $this->slug = Portfolio::generateUniqueSlug($this->title);
         }
     }
@@ -124,6 +133,7 @@ class Index extends Component
     {
         if ($this->editingId) {
             $this->update();
+
             return;
         }
 
@@ -131,7 +141,7 @@ class Index extends Component
 
         $tags = $this->parseTags($this->tagsInput);
 
-        $portfolio = new Portfolio();
+        $portfolio = new Portfolio;
         $portfolio->fill([
             'title' => $this->title,
             'slug' => $this->slug,
@@ -153,7 +163,7 @@ class Index extends Component
 
         // Handle gallery uploads
         $galleryPaths = $this->storeGallery($portfolio->id);
-        if (!empty($galleryPaths)) {
+        if (! empty($galleryPaths)) {
             $portfolio->gallery = $galleryPaths;
         }
 
@@ -172,7 +182,7 @@ class Index extends Component
     /** Update an existing portfolio. */
     public function update(): void
     {
-        if (!$this->editingId) {
+        if (! $this->editingId) {
             return;
         }
 
@@ -192,7 +202,7 @@ class Index extends Component
         ]);
 
         // Update publish timestamp accordingly
-        if ($portfolio->status === 'published' && !$portfolio->published_at) {
+        if ($portfolio->status === 'published' && ! $portfolio->published_at) {
             $portfolio->published_at = now();
         }
         if ($portfolio->status !== 'published') {
@@ -207,12 +217,12 @@ class Index extends Component
 
         // Gallery uploads (append to existing order)
         $newGallery = $this->storeGallery($portfolio->id);
-        if (!empty($newGallery)) {
+        if (! empty($newGallery)) {
             $portfolio->gallery = array_values(array_merge((array) $portfolio->gallery ?? [], $newGallery));
         }
 
         // Apply reordering from UI (this->gallery holds current order)
-        if (!empty($this->gallery)) {
+        if (! empty($this->gallery)) {
             $portfolio->gallery = array_values($this->gallery);
         }
 
@@ -229,7 +239,7 @@ class Index extends Component
         $portfolio = Portfolio::findOrFail($id);
 
         // Security: Remove files from public disk
-        $baseDir = 'portfolios/' . $portfolio->id;
+        $baseDir = 'portfolios/'.$portfolio->id;
         try {
             \Storage::disk('public')->delete($portfolio->cover_image ?? '');
             foreach ((array) $portfolio->gallery ?? [] as $path) {
@@ -238,7 +248,7 @@ class Index extends Component
             \Storage::disk('public')->deleteDirectory($baseDir);
         } catch (\Throwable $e) {
             // Log but do not expose details to user
-            \Log::warning('Failed to delete portfolio files: ' . $e->getMessage());
+            \Log::warning('Failed to delete portfolio files: '.$e->getMessage());
         }
 
         $portfolio->delete();
@@ -283,7 +293,7 @@ class Index extends Component
     /** Move gallery item from one position to another. */
     public function moveGalleryItem(int $fromIndex, int $toIndex): void
     {
-        if (!isset($this->gallery[$fromIndex]) || $fromIndex === $toIndex) {
+        if (! isset($this->gallery[$fromIndex]) || $fromIndex === $toIndex) {
             return;
         }
 
@@ -341,6 +351,7 @@ class Index extends Component
                 $tags[] = $t;
             }
         }
+
         // limit tags to reasonable count
         return array_slice(array_unique($tags), 0, 12);
     }
@@ -350,7 +361,8 @@ class Index extends Component
     {
         $dir = "portfolios/{$portfolioId}";
         $ext = $this->coverUpload->getClientOriginalExtension();
-        $filename = 'cover_' . Str::random(12) . '.' . $ext;
+        $filename = 'cover_'.Str::random(12).'.'.$ext;
+
         return $this->coverUpload->storeAs($dir, $filename, 'public');
     }
 
@@ -359,14 +371,15 @@ class Index extends Component
     {
         $paths = [];
         foreach ($this->galleryUploads as $upload) {
-            if (!$upload) {
+            if (! $upload) {
                 continue;
             }
             $dir = "portfolios/{$portfolioId}/gallery";
             $ext = $upload->getClientOriginalExtension();
-            $filename = 'img_' . Str::random(12) . '.' . $ext;
+            $filename = 'img_'.Str::random(12).'.'.$ext;
             $paths[] = $upload->storeAs($dir, $filename, 'public');
         }
+
         return $paths;
     }
 

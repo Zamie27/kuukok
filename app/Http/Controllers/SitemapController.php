@@ -6,8 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Portfolio;
 use App\Models\Post;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\URL;
 
 class SitemapController extends Controller
 {
@@ -41,8 +41,8 @@ class SitemapController extends Controller
 
         foreach ($urls as [$loc, $lastmod]) {
             $xml .= '<url>';
-            $xml .= '<loc>' . e($loc) . '</loc>';
-            $xml .= '<lastmod>' . ($lastmod ? $lastmod->toAtomString() : now()->toAtomString()) . '</lastmod>';
+            $xml .= '<loc>'.e($loc).'</loc>';
+            $xml .= '<lastmod>'.($lastmod ? $lastmod->toAtomString() : now()->toAtomString()).'</lastmod>';
             $xml .= '<changefreq>weekly</changefreq>';
             $xml .= '<priority>0.8</priority>';
             $xml .= '</url>';
@@ -53,4 +53,3 @@ class SitemapController extends Controller
         return response($xml, 200)->header('Content-Type', 'application/xml');
     }
 }
-

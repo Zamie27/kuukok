@@ -16,6 +16,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::orderBy('name')->paginate(10);
+
         return view('admin.users.index', compact('users'));
     }
 
@@ -82,7 +83,7 @@ class UserController extends Controller
         $user->email = $validated['email'];
         $user->role = $validated['role'];
 
-        if (!empty($validated['password'])) {
+        if (! empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
         }
 

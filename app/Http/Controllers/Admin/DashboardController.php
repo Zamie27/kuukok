@@ -16,7 +16,7 @@ class DashboardController extends Controller
 {
     public function __invoke(Request $request)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -53,10 +53,10 @@ class DashboardController extends Controller
         $direction = $request->input('direction', 'desc');
         $validSorts = ['title', 'views', 'read_time', 'total_cta', 'created_at'];
 
-        if (!in_array($sort, $validSorts)) {
+        if (! in_array($sort, $validSorts)) {
             $sort = 'views';
         }
-        if (!in_array($direction, ['asc', 'desc'])) {
+        if (! in_array($direction, ['asc', 'desc'])) {
             $direction = 'desc';
         }
 

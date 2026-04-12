@@ -8,31 +8,32 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
         $posts = Post::orderByDesc('created_at')->paginate(15);
+
         return view('admin.posts.index', compact('posts'));
     }
 
     public function create()
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
+
         return view('admin.posts.create');
     }
 
     public function store(Request $request)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $data = $request->validate([
@@ -69,7 +70,7 @@ class PostController extends Controller
         $post->save();
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('posts/' . $post->id, 'public');
+            $path = $request->file('cover_image')->store('posts/'.$post->id, 'public');
             $post->cover_image = $path;
             $post->save();
         }
@@ -79,20 +80,21 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
+
         return view('admin.posts.edit', compact('post'));
     }
 
     public function update(Request $request, Post $post)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $data = $request->validate([
             'title' => ['required', 'string', 'max:160'],
-            'slug' => ['required', 'string', 'max:180', 'unique:posts,slug,' . $post->id],
+            'slug' => ['required', 'string', 'max:180', 'unique:posts,slug,'.$post->id],
             'category' => ['nullable', 'string', 'max:80'],
             'content' => ['required', 'string'],
             'content_blocks' => ['nullable', 'string'],
@@ -113,7 +115,7 @@ class PostController extends Controller
         }
 
         $post->fill($data);
-        if ($post->status === 'published' && !$post->published_at) {
+        if ($post->status === 'published' && ! $post->published_at) {
             $post->published_at = now();
         }
         if ($post->status === 'draft') {
@@ -122,7 +124,7 @@ class PostController extends Controller
         $post->save();
 
         if ($request->hasFile('cover_image')) {
-            $path = $request->file('cover_image')->store('articles/' . $post->id, 'public');
+            $path = $request->file('cover_image')->store('articles/'.$post->id, 'public');
             $post->cover_image = $path;
             $post->save();
         }
@@ -132,16 +134,17 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
         $post->delete();
+
         return redirect()->route('admin.posts.index');
     }
 
     public function uploadImage(Request $request)
     {
-        if (!Gate::allows('access-admin')) {
+        if (! Gate::allows('access-admin')) {
             abort(403);
         }
 
@@ -151,7 +154,8 @@ class PostController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('uploads/posts', 'public');
-            return response()->json(['url' => asset('storage/' . $path)]);
+
+            return response()->json(['url' => asset('storage/'.$path)]);
         }
 
         return response()->json(['error' => 'No image uploaded'], 400);

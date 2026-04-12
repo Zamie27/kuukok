@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OtpMail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
-use App\Models\User;
-use App\Mail\OtpMail;
 
 class ForgotPasswordController extends Controller
 {
@@ -37,16 +37,18 @@ class ForgotPasswordController extends Controller
         $email = $request->email;
 
         // Store OTP in cache for 10 minutes
-        Cache::put('password_reset_otp_' . $email, $otp, now()->addMinutes(10));
+        Cache::put('password_reset_otp_'.$email, $otp, now()->addMinutes(10));
 
         $user = User::where('email', $email)->first();
 
         try {
             Mail::to($user)->send(new OtpMail($otp, $user));
+
             return redirect()->route('password.otp', ['email' => $email])
                 ->with('status', 'Kode OTP telah dikirim ke email Anda.');
         } catch (\Exception $e) {
-            Log::error('Gagal mengirim email OTP: ' . $e->getMessage());
+            Log::error('Gagal mengirim email OTP: '.$e->getMessage());
+
             return back()->withErrors(['email' => 'Gagal mengirim email. Silakan coba lagi.']);
         }
     }
@@ -58,7 +60,7 @@ class ForgotPasswordController extends Controller
     {
         $email = $request->query('email');
 
-        if (!$email) {
+        if (! $email) {
             return redirect()->route('password.request');
         }
 
@@ -75,16 +77,16 @@ class ForgotPasswordController extends Controller
             'otp' => 'required|numeric|digits:6',
         ]);
 
-        $cachedOtp = Cache::get('password_reset_otp_' . $request->email);
+        $cachedOtp = Cache::get('password_reset_otp_'.$request->email);
 
-        if (!$cachedOtp || $cachedOtp != $request->otp) {
+        if (! $cachedOtp || $cachedOtp != $request->otp) {
             return back()->withErrors(['otp' => 'Kode OTP salah atau sudah kadaluarsa.']);
         }
 
         // OTP verified, create a temporary token to allow password reset
         // This prevents users from skipping the OTP step
         $token = \Illuminate\Support\Str::random(60);
-        Cache::put('password_reset_token_' . $request->email, $token, now()->addMinutes(15));
+        Cache::put('password_reset_token_'.$request->email, $token, now()->addMinutes(15));
 
         return redirect()->route('password.reset', ['email' => $request->email, 'token' => $token]);
     }
@@ -97,12 +99,12 @@ class ForgotPasswordController extends Controller
         $email = $request->query('email');
         $token = $request->query('token');
 
-        if (!$email || !$token) {
+        if (! $email || ! $token) {
             return redirect()->route('password.request');
         }
 
         // Verify the token exists
-        if (!Cache::has('password_reset_token_' . $email) || Cache::get('password_reset_token_' . $email) !== $token) {
+        if (! Cache::has('password_reset_token_'.$email) || Cache::get('password_reset_token_'.$email) !== $token) {
             return redirect()->route('password.request')->withErrors(['email' => 'Sesi reset password tidak valid atau kadaluarsa.']);
         }
 
@@ -133,7 +135,7 @@ class ForgotPasswordController extends Controller
         ]);
 
         // Verify token again
-        if (!Cache::has('password_reset_token_' . $request->email) || Cache::get('password_reset_token_' . $request->email) !== $request->token) {
+        if (! Cache::has('password_reset_token_'.$request->email) || Cache::get('password_reset_token_'.$request->email) !== $request->token) {
             return back()->withErrors(['email' => 'Sesi reset password tidak valid atau kadaluarsa.']);
         }
 
@@ -143,8 +145,8 @@ class ForgotPasswordController extends Controller
         ])->save();
 
         // Clear all caches
-        Cache::forget('password_reset_otp_' . $request->email);
-        Cache::forget('password_reset_token_' . $request->email);
+        Cache::forget('password_reset_otp_'.$request->email);
+        Cache::forget('password_reset_token_'.$request->email);
 
         return redirect()->route('login')->with('status', 'Password berhasil direset. Silakan login dengan password baru.');
     }

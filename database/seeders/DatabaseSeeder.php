@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Profile;
+use App\Models\Faq;
+use App\Models\Message;
+use App\Models\Package;
 use App\Models\Portfolio;
 use App\Models\Post;
-use App\Models\Package;
-use App\Models\Faq;
+use App\Models\Profile;
 use App\Models\Testimonial;
-use App\Models\Message;
+use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -49,9 +49,9 @@ class DatabaseSeeder extends Seeder
         Portfolio::factory()->count(4)->create();
 
         $packages = [
-            ['name' => 'Basic', 'price_text' => 'Mulai dari Rp 100K', 'label' => null, 'features' => ['Landing page responsif','Custom design minimalis','SEO-friendly structure'], 'cta_link' => route('contact.index'), 'status' => 'active', 'sort_order' => 1],
-            ['name' => 'Graphic Design', 'price_text' => 'Mulai dari Rp 20K', 'label' => 'Paling Laris', 'features' => ['Logo design profesional','Social media content','Brand guidelines'], 'cta_link' => route('contact.index'), 'status' => 'active', 'sort_order' => 2],
-            ['name' => 'Full Service', 'price_text' => 'Custom', 'label' => 'Enterprise', 'features' => ['Web Development + Design','Priority support 24/7','Maintenance bulanan'], 'cta_link' => route('contact.index'), 'status' => 'active', 'sort_order' => 3],
+            ['name' => 'Basic', 'price_text' => 'Mulai dari Rp 100K', 'label' => null, 'features' => ['Landing page responsif', 'Custom design minimalis', 'SEO-friendly structure'], 'cta_link' => route('contact.index'), 'status' => 'active', 'sort_order' => 1],
+            ['name' => 'Graphic Design', 'price_text' => 'Mulai dari Rp 20K', 'label' => 'Paling Laris', 'features' => ['Logo design profesional', 'Social media content', 'Brand guidelines'], 'cta_link' => route('contact.index'), 'status' => 'active', 'sort_order' => 2],
+            ['name' => 'Full Service', 'price_text' => 'Custom', 'label' => 'Enterprise', 'features' => ['Web Development + Design', 'Priority support 24/7', 'Maintenance bulanan'], 'cta_link' => route('contact.index'), 'status' => 'active', 'sort_order' => 3],
         ];
         foreach ($packages as $p) {
             Package::firstOrCreate(['name' => $p['name']], $p);

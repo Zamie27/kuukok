@@ -31,7 +31,7 @@ class BlogAnalyticsTest extends TestCase
 
         // 2. Test the analytics tracking endpoint (WhatsApp)
         $response = $this->postJson(route('blog.track', $post), [
-            'type' => 'whatsapp'
+            'type' => 'whatsapp',
         ]);
         $response->assertStatus(200);
 
@@ -43,7 +43,7 @@ class BlogAnalyticsTest extends TestCase
 
         // 3. Test the analytics tracking endpoint (Share)
         $response = $this->postJson(route('blog.track', $post), [
-            'type' => 'share'
+            'type' => 'share',
         ]);
         $response->assertStatus(200);
 
@@ -77,7 +77,7 @@ class BlogAnalyticsTest extends TestCase
             'content_blocks' => [
                 ['type' => 'paragraph', 'data' => ['text' => 'This is from blocks.']],
                 ['type' => 'image', 'data' => ['url' => '...']],
-                ['type' => 'paragraph', 'data' => ['text' => 'More text.']]
+                ['type' => 'paragraph', 'data' => ['text' => 'More text.']],
             ],
             'status' => 'published',
             'author_id' => $user->id,

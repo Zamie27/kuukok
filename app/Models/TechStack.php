@@ -19,10 +19,15 @@ class TechStack extends Model
 
     // Categories
     public const CATEGORY_BACKEND = 'Backend';
+
     public const CATEGORY_FRONTEND = 'Frontend';
+
     public const CATEGORY_TOOLS = 'Tools';
+
     public const CATEGORY_DESIGN = 'Design';
+
     public const CATEGORY_OFFICE = 'Office';
+
     public const CATEGORY_DATABASE = 'Database';
 
     public static function getCategories(): array

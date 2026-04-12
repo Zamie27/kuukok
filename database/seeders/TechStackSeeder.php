@@ -21,7 +21,7 @@ class TechStackSeeder extends Seeder
             ['name' => 'Ruby', 'category' => 'Backend'],
             ['name' => 'Go', 'category' => 'Backend'],
             ['name' => 'Laravel', 'category' => 'Backend'],
-            
+
             // Frontend
             ['name' => 'React', 'category' => 'Frontend'],
             ['name' => 'Vue', 'category' => 'Frontend'],

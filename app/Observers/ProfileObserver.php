@@ -2,10 +2,10 @@
 
 namespace App\Observers;
 
-use App\Models\Profile;
 use App\Models\AuditLog;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class ProfileObserver
 {
@@ -63,9 +63,9 @@ class ProfileObserver
     {
         // Don't log if we don't have a user (e.g. seeder or console command)
         // unless we want to log system actions too.
-        
+
         $userId = Auth::id();
-        
+
         AuditLog::create([
             'user_id' => $userId,
             'auditable_type' => Profile::class,

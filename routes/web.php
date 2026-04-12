@@ -1,19 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\PostController;
-use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\FaqController;
-use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\MessageController;
-use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PortfolioController;
-use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SitemapController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,13 +35,13 @@ Route::get('/', function () {
 
     // Stats Logic
     $projectCount = \App\Models\Portfolio::count(); // Count all created projects as per request "berdasarkan di halaman projek yang dibuat"
-    $projectCountText = $projectCount < 10 ? $projectCount : (floor($projectCount / 10) * 10 . '+');
+    $projectCountText = $projectCount < 10 ? $projectCount : (floor($projectCount / 10) * 10 .'+');
 
     $clientCount = \App\Models\Testimonial::count(); // "menampilkan berdasarkan data testimoni"
-    $clientCountText = $clientCount < 10 ? $clientCount : (floor($clientCount / 10) * 10 . '+');
+    $clientCountText = $clientCount < 10 ? $clientCount : (floor($clientCount / 10) * 10 .'+');
 
     $years = date('Y') - 2020;
-    $yearsText = $years . '+';
+    $yearsText = $years.'+';
 
     return view('index', compact('testimonials', 'packages', 'portfolios', 'latest_posts', 'settings', 'projectCountText', 'clientCountText', 'yearsText'));
 })->name('home');
@@ -58,6 +58,7 @@ Route::get('/pricing', function () {
     $testimonials = \App\Models\Testimonial::where('status', 'active')->orderBy('sort_order')->orderByDesc('created_at')->get();
     $faqs = \App\Models\Faq::where('active', true)->orderBy('sort_order')->get();
     $settings = \App\Models\Setting::where('group', 'pricing')->pluck('value', 'key');
+
     return view('pricing', compact('packages', 'testimonials', 'faqs', 'settings'));
 })->name('pricing.index');
 
@@ -84,13 +85,13 @@ Route::get('/about', function () {
 
     // Stats Logic (Consistent with Home)
     $projectCount = \App\Models\Portfolio::count();
-    $projectCountText = $projectCount < 10 ? $projectCount : (floor($projectCount / 10) * 10 . '+');
+    $projectCountText = $projectCount < 10 ? $projectCount : (floor($projectCount / 10) * 10 .'+');
 
     $clientCount = \App\Models\Testimonial::count();
-    $clientCountText = $clientCount < 10 ? $clientCount : (floor($clientCount / 10) * 10 . '+');
+    $clientCountText = $clientCount < 10 ? $clientCount : (floor($clientCount / 10) * 10 .'+');
 
     $years = date('Y') - 2020;
-    $yearsText = $years . '+';
+    $yearsText = $years.'+';
 
     return view('about', compact('team', 'settings', 'projectCountText', 'clientCountText', 'yearsText'));
 })->name('about.index');
@@ -153,18 +154,20 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
             // 2. Coba buat Symlink
             try {
                 symlink($target, $link);
+
                 return 'Storage link RE-CREATED (Symlink Mode). <a href="/admin/profile">Back to Profile</a>';
             } catch (\Throwable $e) {
                 // 3. Jika Symlink gagal (biasanya di shared hosting), buat Folder Biasa
                 // Karena kita sudah ubah config filesystems 'root' ke public_path('storage'),
                 // maka folder biasa pun akan berfungsi normal!
-                if (!is_dir($link)) {
+                if (! is_dir($link)) {
                     mkdir($link, 0755, true);
                 }
+
                 return 'Storage folder CREATED (Directory Mode - Fallback). <a href="/admin/profile">Back to Profile</a>';
             }
         } catch (\Throwable $e) {
-            return 'Error: ' . $e->getMessage() . '<br>Please create "storage" folder manually in public_html.';
+            return 'Error: '.$e->getMessage().'<br>Please create "storage" folder manually in public_html.';
         }
     })->middleware('can:access-admin');
 });

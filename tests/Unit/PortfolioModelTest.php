@@ -37,4 +37,3 @@ class PortfolioModelTest extends TestCase
         $this->assertNull($p->published_at);
     }
 }
-

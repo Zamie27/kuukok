@@ -42,7 +42,7 @@ return [
             'driver' => 'local',
             // Gunakan path absolut ke public_html/storage jika di production
             'root' => env('FILESYSTEM_PUBLIC_ROOT', storage_path('app/public')),
-            'url' => env('APP_URL') . '/storage',
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,

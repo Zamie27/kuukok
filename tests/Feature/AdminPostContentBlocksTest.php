@@ -21,13 +21,13 @@ class AdminPostContentBlocksTest extends TestCase
             [
                 'id' => 1234567890,
                 'type' => 'paragraph',
-                'data' => ['text' => 'First paragraph block.']
+                'data' => ['text' => 'First paragraph block.'],
             ],
             [
                 'id' => 1234567891,
                 'type' => 'heading',
-                'data' => ['level' => 'h2', 'text' => 'Heading Block']
-            ]
+                'data' => ['level' => 'h2', 'text' => 'Heading Block'],
+            ],
         ];
 
         // 3. Post Data
@@ -68,7 +68,7 @@ class AdminPostContentBlocksTest extends TestCase
             'slug' => 'original-slug',
             'content' => '<p>Original Content</p>',
             'status' => 'draft',
-            'author_id' => $admin->id
+            'author_id' => $admin->id,
         ]);
         $post->content_blocks = []; // Empty initially
         $post->save();
@@ -78,8 +78,8 @@ class AdminPostContentBlocksTest extends TestCase
             [
                 'id' => 999,
                 'type' => 'quote',
-                'data' => ['text' => 'Updated Quote', 'cite' => 'Me']
-            ]
+                'data' => ['text' => 'Updated Quote', 'cite' => 'Me'],
+            ],
         ];
 
         // 3. Update Data

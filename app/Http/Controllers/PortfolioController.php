@@ -65,7 +65,7 @@ class PortfolioController extends Controller
     public function show(Portfolio $portfolio): View
     {
         // If not published and user is not admin/author, 404
-        if ($portfolio->status !== 'published' && !auth()->check()) {
+        if ($portfolio->status !== 'published' && ! auth()->check()) {
             abort(404);
         }
 

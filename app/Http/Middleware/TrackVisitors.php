@@ -17,7 +17,7 @@ class TrackVisitors
     public function handle(Request $request, Closure $next): Response
     {
         // Skip tracking for admin routes, assets, or non-GET requests
-        if ($request->is('admin*') || !$request->isMethod('GET')) {
+        if ($request->is('admin*') || ! $request->isMethod('GET')) {
             return $next($request);
         }
 
