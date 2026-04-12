@@ -34,8 +34,10 @@
                             <td>
                                 @if($user->role === 'super_admin')
                                     <span class="badge badge-primary badge-outline">Super Admin</span>
-                                @else
+                                @elseif($user->role === 'admin')
                                     <span class="badge badge-secondary badge-outline">Admin</span>
+                                @else
+                                    <span class="badge badge-accent badge-outline">User</span>
                                 @endif
                             </td>
                             <td>{{ $user->created_at->format('d M Y') }}</td>

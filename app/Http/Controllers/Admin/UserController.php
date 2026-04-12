@@ -37,7 +37,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', Rule::in(['admin', 'super_admin'])],
+            'role' => ['required', Rule::in(['user', 'admin', 'super_admin'])],
         ]);
 
         User::create([
@@ -76,7 +76,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', Rule::in(['admin', 'super_admin'])],
+            'role' => ['required', Rule::in(['user', 'admin', 'super_admin'])],
         ]);
 
         $user->name = $validated['name'];
