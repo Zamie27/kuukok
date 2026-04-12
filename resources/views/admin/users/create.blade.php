@@ -40,8 +40,9 @@
                         <span class="label-text">Role</span>
                     </label>
                     <select name="role" class="select select-bordered w-full @error('role') select-error @enderror">
-                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                        <option value="super_admin" {{ old('role') == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
+                        <option value="user" {{ old('role', $user->role ?? '') == 'user' ? 'selected' : '' }}>User (Standard)</option>
+                        <option value="admin" {{ old('role', $user->role ?? '') == 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="super_admin" {{ old('role', $user->role ?? '') == 'super_admin' ? 'selected' : '' }}>Super Admin</option>
                     </select>
                     @error('role')
                         <span class="text-error text-sm mt-1">{{ $message }}</span>
