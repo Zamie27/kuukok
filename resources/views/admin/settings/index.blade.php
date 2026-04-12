@@ -136,6 +136,23 @@
                     </div>
 
 
+                    <!-- Payment Settings -->
+                    <div class="space-y-4 pt-8 mt-8 border-t">
+                        <h2 class="text-xl font-semibold border-b pb-2">Pengaturan Pembayaran (Hosting)</h2>
+
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Gambar QRIS Pembayaran</span></label>
+                            <input type="file" name="payment_qris_image" class="file-input file-input-bordered w-full" accept="image/*" />
+                            @if(isset($settings['payment_qris_image']) && $settings['payment_qris_image'])
+                            <div class="mt-2">
+                                <img src="{{ asset('storage/' . $settings['payment_qris_image']) }}" alt="QRIS Code" class="w-48 h-auto rounded-lg shadow-sm border p-2">
+                                <p class="text-xs text-base-content/60 mt-1">QRIS aktif saat ini</p>
+                            </div>
+                            @endif
+                            <label class="label"><span class="label-text-alt text-base-content/60">Upload gambar QRIS yang akan ditampilkan kepada user saat melakukan pemesanan hosting.</span></label>
+                        </div>
+                    </div>
+
                     <div class="pt-4">
                         <button type="submit" class="btn btn-primary text-white w-full sm:w-auto">Simpan Pengaturan</button>
                     </div>

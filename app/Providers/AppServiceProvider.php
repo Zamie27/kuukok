@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Profile::observe(ProfileObserver::class);
 
         Gate::define('access-admin', function ($user) {
-            return $user->isAdmin();
+            return in_array($user->role, ['super_admin', 'admin', 'editor', 'penulis', 'user']);
         });
 
         Gate::define('manage-users', function ($user) {

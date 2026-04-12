@@ -48,7 +48,12 @@ Route::get('/', function () {
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
-Route::post('/blog/{post}/track', [BlogController::class, 'trackClick'])->name('blog.track');
+
+Route::get('/hosting', [\App\Http\Controllers\HostingController::class, 'index'])->name('hosting.index');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/blog/{post}/track', [BlogController::class, 'trackClick'])->name('blog.track');
+});
 
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
 Route::get('/portfolio/{portfolio:slug}', [PortfolioController::class, 'show'])->name('portfolio.show');
@@ -111,6 +116,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::resource('faqs', FaqController::class);
     Route::resource('portfolios', AdminPortfolioController::class);
     Route::resource('testimonials', TestimonialController::class);
+    Route::resource('hosting-packages', \App\Http\Controllers\Admin\HostingPackageController::class);
+    Route::put('hosting-packages-settings', [\App\Http\Controllers\Admin\HostingPackageController::class, 'updateSettings'])->name('hosting-packages.settings.update');
 
     Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
@@ -131,6 +138,18 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // User Management (Super Admin only)
     Route::middleware('can:manage-users')->resource('users', \App\Http\Controllers\Admin\UserController::class);
+
+    // Hosting System (Admin Flow)
+    Route::resource('hosting-orders', \App\Http\Controllers\Admin\HostingOrderController::class)->only(['index', 'show']);
+    Route::post('hosting-orders/{hosting_order}/approve', [\App\Http\Controllers\Admin\HostingOrderController::class, 'approvePayment'])->name('hosting-orders.approve');
+    Route::put('hosting-orders/{hosting_order}/provision', [\App\Http\Controllers\Admin\HostingOrderController::class, 'provision'])->name('hosting-orders.provision');
+    Route::post('hosting-orders/{hosting_order}/reject', [\App\Http\Controllers\Admin\HostingOrderController::class, 'reject'])->name('hosting-orders.reject');
+    Route::post('hosting-orders/upload-qris', [\App\Http\Controllers\Admin\HostingOrderController::class, 'uploadQris'])->name('hosting-orders.upload-qris');
+
+    // Cashback Withdrawals (Admin)
+    Route::get('cashback-withdrawals', [\App\Http\Controllers\Admin\CashbackWithdrawalController::class, 'index'])->name('cashback-withdrawals.index');
+    Route::post('cashback-withdrawals/{withdrawal}/approve', [\App\Http\Controllers\Admin\CashbackWithdrawalController::class, 'approve'])->name('cashback-withdrawals.approve');
+    Route::post('cashback-withdrawals/{withdrawal}/reject', [\App\Http\Controllers\Admin\CashbackWithdrawalController::class, 'reject'])->name('cashback-withdrawals.reject');
 
     // Utility route for storage link (alternative for hosting with disabled functions)
     Route::get('/fix-storage', function () {
@@ -170,4 +189,26 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
             return 'Error: '.$e->getMessage().'<br>Please create "storage" folder manually in public_html.';
         }
     })->middleware('can:access-admin');
+});
+
+// User Dashboard
+Route::middleware(['auth', 'verified'])->prefix('user')->name('user.')->group(function () {
+    Route::redirect('/', '/user/dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+});
+
+// Hosting System (User Flow)
+Route::middleware(['auth', 'verified'])->prefix('user/hosting')->name('user.hosting.')->group(function () {
+    Route::get('/buy', [\App\Http\Controllers\User\HostingOrderController::class, 'index'])->name('buy');
+    Route::get('/order/{package}', [\App\Http\Controllers\User\HostingOrderController::class, 'create'])->name('order');
+    Route::post('/order', [\App\Http\Controllers\User\HostingOrderController::class, 'store'])->name('order.store');
+    Route::get('/payment/{hosting_order}', [\App\Http\Controllers\User\HostingOrderController::class, 'payment'])->name('payment');
+    Route::put('/payment/{hosting_order}/submit', [\App\Http\Controllers\User\HostingOrderController::class, 'submitPayment'])->name('order.payment.submit');
+    Route::get('/my-services', [\App\Http\Controllers\User\HostingOrderController::class, 'myServices'])->name('my-services');
+});
+
+// Cashback System (User Flow)
+Route::middleware(['auth', 'verified'])->prefix('user/cashback')->name('user.cashback.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\User\CashbackController::class, 'index'])->name('index');
+    Route::post('/', [\App\Http\Controllers\User\CashbackController::class, 'store'])->name('store');
 });

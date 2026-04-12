@@ -1,11 +1,13 @@
 <nav class="custom-navbar w-full z-[9999]">
     <div class="navbar container mx-auto px-4 lg:px-8">
         <div class="navbar-start">
-            <a href="{{ route('home') }}" class="btn btn-ghost text-xl font-bold text-primary">{{ config('app.name') }}</a>
+            <a href="{{ route('home') }}"
+                class="btn btn-ghost text-xl font-bold text-primary">{{ config('app.name') }}</a>
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1 font-medium text-black dark:text-white mix-blend-difference">
                 <li><a href="{{ route('home') }}">Home</a></li>
+                <li><a href="{{ route('hosting.index') }}">Hosting Web</a></li>
                 <li><a href="{{ route('about.index') }}">Tentang Kami</a></li>
                 <li><a href="{{ route('portfolio.index') }}">Portofolio</a></li>
                 <li><a href="{{ route('pricing.index') }}">Harga</a></li>
@@ -15,23 +17,35 @@
         </div>
         <div class="navbar-end gap-2">
             <!-- Theme toggle uses localStorage key 'kuukok-theme' handled in resources/js/app.js -->
-            <button type="button" id="themeToggleBtn" class="btn btn-ghost btn-circle text-black dark:text-white mix-blend-difference" aria-label="Toggle theme">
+            <button type="button" id="themeToggleBtn"
+                class="btn btn-ghost btn-circle text-black dark:text-white mix-blend-difference"
+                aria-label="Toggle theme">
                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <path d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364 6.364-1.414-1.414M6.05 6.05 4.636 4.636m12.728 0-1.414 1.414M6.05 17.95l-1.414 1.414M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                    <path
+                        d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364 6.364-1.414-1.414M6.05 6.05 4.636 4.636m12.728 0-1.414 1.414M6.05 17.95l-1.414 1.414M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z"
+                        stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
                 </svg>
             </button>
+            @guest
+                <a href="{{ route('login') }}"
+                    class="btn btn-ghost btn-sm font-medium text-dark dark:text-white mix-blend-difference">Login</a>
+            @endguest
             @auth
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-ghost btn-sm font-medium text-dark dark:text-white mix-blend-difference">Dashboard</a>
+                <a href="{{ route('admin.dashboard') }}"
+                    class="btn btn-ghost btn-sm font-medium text-dark dark:text-white mix-blend-difference">Dashboard</a>
             @endauth
-            <!-- Mobile menu -->
+
             <div class="dropdown dropdown-end lg:hidden">
                 <label tabindex="0" class="btn btn-ghost btn-circle text-black dark:text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </label>
-                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 font-medium text-black dark:text-white">
+                <ul tabindex="0"
+                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 font-medium text-black dark:text-white">
                     <li><a href="{{ route('home') }}">Home</a></li>
+                    <li><a href="{{ route('hosting.index') }}">Hosting Web</a></li>
                     <li><a href="{{ route('about.index') }}">Tentang Kami</a></li>
                     <li><a href="{{ route('portfolio.index') }}">Portofolio</a></li>
                     <li><a href="{{ route('pricing.index') }}">Harga</a></li>

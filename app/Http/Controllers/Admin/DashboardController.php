@@ -75,6 +75,8 @@ class DashboardController extends Controller
 
         $analyticsPosts = $analyticsQuery->paginate(10)->withQueryString();
 
+        $activeOrders = \App\Models\Order::where('user_id', auth()->id())->where('status', 'active')->count();
+
         return view('admin.dashboard', compact(
             'stats',
             'popularPosts',
@@ -83,7 +85,8 @@ class DashboardController extends Controller
             'recentMessages',
             'analyticsPosts',
             'sort',
-            'direction'
+            'direction',
+            'activeOrders'
         ));
     }
 }

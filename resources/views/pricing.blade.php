@@ -35,10 +35,13 @@
         <div class="max-w-7xl mx-auto px-4 lg:px-8 py-16 space-y-10 pricing">
             <div class="pricing__grid reveal-on-scroll">
                 @foreach($packages as $package)
-                <article class="pricing__card interactive-transition {{ $package->label === 'Paling Laris' || $package->label === 'Populer' ? 'pricing__card--recommended scale-105 z-10 shadow-2xl' : '' }}">
+                @php
+                    $isPopular = str_contains($package->label ?? '', 'Paling Laris');
+                @endphp
+                <article class="pricing__card interactive-transition {{ $isPopular ? 'pricing__card--recommended scale-105 z-10 shadow-2xl' : '' }}">
                     <div class="card-body p-8 space-y-6">
                         @if($package->label)
-                        <div class="badge {{ $package->label === 'Paling Laris' || $package->label === 'Populer' ? 'badge-primary badge-lg text-white mb-2' : 'badge-outline' }}">
+                        <div class="badge {{ $isPopular ? 'badge-primary badge-lg text-white mb-2' : 'badge-outline' }}">
                             {{ $package->label }}
                         </div>
                         @endif

@@ -11,6 +11,7 @@ class CashbackWithdrawal extends Model
         'amount',
         'method',
         'account_name',
+        'account_number',
         'bank_info',
         'status',
     ];
@@ -18,5 +19,15 @@ class CashbackWithdrawal extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return match($this->status) {
+            'pending' => 'Menunggu',
+            'approved' => 'Disetujui',
+            'rejected' => 'Ditolak',
+            default => $this->status,
+        };
     }
 }

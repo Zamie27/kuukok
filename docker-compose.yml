@@ -13,6 +13,7 @@ services:
       - "5174:5174"
     volumes:
       - ./:/var/www/html:Z
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini:Z
     networks:
       - kuukok-network
 

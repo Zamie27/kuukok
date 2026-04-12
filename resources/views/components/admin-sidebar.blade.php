@@ -1,19 +1,24 @@
+@php
+    $dashboardRoute = Auth::user()->isStaff() ? route('admin.dashboard') : route('user.dashboard');
+    $isDashboard = request()->routeIs('admin.dashboard') || request()->routeIs('user.dashboard');
+@endphp
 <aside class="min-h-full w-80 bg-base-100 text-base-content border-r border-base-300 flex flex-col">
     <div class="p-6 mb-2 hidden lg:block">
-        <a href="{{ route('admin.dashboard') }}" class="text-2xl font-bold text-primary flex items-center gap-2">
-            <span>Kuukok Admin</span>
+        <a href="{{ $dashboardRoute }}" class="text-2xl font-bold text-primary flex items-center gap-2">
+            <span>Kuukok{{ Auth::user()->isStaff() ? ' Admin' : '' }}</span>
         </a>
     </div>
 
     <ul class="menu w-full px-4 space-y-1">
         <li>
-            <a href="{{ route('admin.dashboard') }}" aria-current="{{ (request()->routeIs('admin.dashboard') || request()->is('admin/dashboard')) ? 'page' : '' }}" class="{{ (request()->routeIs('admin.dashboard') || request()->is('admin/dashboard')) ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
+            <a href="{{ $dashboardRoute }}" aria-current="{{ $isDashboard ? 'page' : '' }}" class="{{ $isDashboard ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
                 Dashboard
             </a>
         </li>
+        @if(Auth::user()->isStaff())
         <li>
             <a href="{{ route('admin.posts.index') }}" aria-current="{{ (request()->routeIs('admin.posts.*') || request()->is('admin/posts*')) ? 'page' : '' }}" class="{{ (request()->routeIs('admin.posts.*') || request()->is('admin/posts*')) ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -27,7 +32,23 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Harga
+                Manajemen Harga
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('admin.hosting-packages.index') }}" aria-current="{{ (request()->routeIs('admin.hosting-packages.*') || request()->is('admin/hosting-packages*')) ? 'page' : '' }}" class="{{ (request()->routeIs('admin.hosting-packages.*') || request()->is('admin/hosting-packages*')) ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                </svg>
+                Manajemen Hosting
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('admin.hosting-orders.index') }}" aria-current="{{ (request()->routeIs('admin.hosting-orders.*') || request()->is('admin/hosting-orders*')) ? 'page' : '' }}" class="{{ (request()->routeIs('admin.hosting-orders.*') || request()->is('admin/hosting-orders*')) ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                Pesanan Hosting
             </a>
         </li>
         <li>
@@ -71,6 +92,7 @@
                 Pengaturan Website
             </a>
         </li>
+        @endif
         @can('manage-users')
         <li>
             <a href="{{ route('admin.users.index') }}" aria-current="{{ (request()->routeIs('admin.users.*') || request()->is('admin/users*')) ? 'page' : '' }}" class="{{ (request()->routeIs('admin.users.*') || request()->is('admin/users*')) ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
@@ -81,6 +103,43 @@
             </a>
         </li>
         @endcan
+        @if(Auth::user()->isStaff())
+        <li>
+            <a href="{{ route('admin.cashback-withdrawals.index') }}" aria-current="{{ request()->routeIs('admin.cashback-withdrawals.*') ? 'page' : '' }}" class="{{ request()->routeIs('admin.cashback-withdrawals.*') ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Pencairan Cashback
+            </a>
+        </li>
+        @endif
+        
+        @if(Auth::user()->isUser())
+        <div class="divider text-xs opacity-50 uppercase px-4 mt-4">Hosting</div>
+        <li>
+            <a href="{{ route('user.hosting.buy') }}" aria-current="{{ request()->routeIs('user.hosting.buy') || request()->routeIs('user.hosting.order') ? 'page' : '' }}" class="{{ request()->routeIs('user.hosting.buy') || request()->routeIs('user.hosting.order') ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Beli Hosting
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('user.hosting.my-services') }}" aria-current="{{ request()->routeIs('user.hosting.my-services') ? 'page' : '' }}" class="{{ request()->routeIs('user.hosting.my-services') ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                </svg>
+                Layanan Saya
+            </a>
+        <li>
+            <a href="{{ route('user.cashback.index') }}" aria-current="{{ request()->routeIs('user.cashback.*') ? 'page' : '' }}" class="{{ request()->routeIs('user.cashback.*') ? 'menu-active active bg-base-300 text-base-content rounded-md' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Cashback Saya
+            </a>
+        </li>
+        @endif
         <li>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

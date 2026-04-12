@@ -21,9 +21,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $admins = [
-            ['name' => 'Super Admin', 'email' => 'admin@kuukok.test', 'role' => 'admin'],
+            ['name' => 'Super Admin', 'email' => 'superadmin@kuukok.test', 'role' => 'super_admin'],
+            ['name' => 'Admin', 'email' => 'admin@kuukok.test', 'role' => 'admin'],
             ['name' => 'Editor Kuukok', 'email' => 'editor@kuukok.test', 'role' => 'editor'],
             ['name' => 'Penulis Kuukok', 'email' => 'penulis@kuukok.test', 'role' => 'penulis'],
+            ['name' => 'User Kuukok', 'email' => 'user@kuukok.test', 'role' => 'user'],
         ];
 
         foreach ($admins as $a) {

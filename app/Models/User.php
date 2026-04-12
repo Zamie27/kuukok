@@ -44,6 +44,8 @@ class User extends Authenticatable
         'role',
         'referral_code',
         'cashback_balance',
+        'lifetime_cashback_earned',
+        'has_ordered_hosting',
     ];
 
     /**
@@ -85,6 +87,14 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === 'admin' || $this->role === 'super_admin';
+    }
+
+    /**
+     * Check if user is staff (editor or penulis)
+     */
+    public function isStaff(): bool
+    {
+        return in_array($this->role, ['super_admin', 'admin', 'editor', 'penulis']);
     }
 
     /**
@@ -142,6 +152,24 @@ class User extends Authenticatable
     public function withdrawals(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(CashbackWithdrawal::class);
+    }
+
+    /**
+     * Referral & Cashback Logic
+     */
+    public function isReferralActive(): bool
+    {
+        return $this->has_ordered_hosting;
+    }
+
+    public function isReferralExpired(): bool
+    {
+        return $this->created_at->addDays(30)->isPast();
+    }
+
+    public function canEarnMoreCashback(): bool
+    {
+        return $this->lifetime_cashback_earned < 30000;
     }
 
     /**

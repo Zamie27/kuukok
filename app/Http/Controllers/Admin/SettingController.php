@@ -44,6 +44,9 @@ class SettingController extends Controller
 
             // Portfolio Settings
             'portfolio_tags' => 'Web Development,Mobile App,UI/UX Design,Digital Marketing,SEO,E-Commerce',
+
+            // Payment Settings
+            'payment_qris_image' => '',
         ];
 
         foreach ($defaults as $key => $value) {
@@ -52,6 +55,8 @@ class SettingController extends Controller
                 $group = 'contact';
             } elseif (str_starts_with($key, 'portfolio_')) {
                 $group = 'portfolio';
+            } elseif (str_starts_with($key, 'payment_')) {
+                $group = 'payment';
             }
 
             Setting::firstOrCreate(
@@ -71,7 +76,7 @@ class SettingController extends Controller
             abort(403);
         }
 
-        $data = $request->except(['_token', '_method', 'about_image']);
+        $data = $request->except(['_token', '_method', 'about_image', 'payment_qris_image']);
 
         // Update text settings
         foreach ($data as $key => $value) {
@@ -104,6 +109,23 @@ class SettingController extends Controller
             Setting::updateOrCreate(
                 ['key' => 'about_image'],
                 ['value' => $path, 'group' => 'about', 'type' => 'image']
+            );
+        }
+
+        // Handle QRIS Image Upload
+        if ($request->hasFile('payment_qris_image')) {
+            $file = $request->file('payment_qris_image');
+            $path = $file->store('settings', 'public');
+
+            // Delete old image if exists
+            $oldImage = Setting::where('key', 'payment_qris_image')->value('value');
+            if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+                Storage::disk('public')->delete($oldImage);
+            }
+
+            Setting::updateOrCreate(
+                ['key' => 'payment_qris_image'],
+                ['value' => $path, 'group' => 'payment', 'type' => 'image']
             );
         }
 
