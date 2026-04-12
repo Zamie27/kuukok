@@ -6,7 +6,7 @@
         </a>
         <div>
             <h1 class="text-3xl font-bold">Tutorial Penggunaan FTP</h1>
-            <p class="text-base-content/60">Panduan menghubungkan hosting Anda menggunakan FTP FileZilla.</p>
+            <p class="text-base-content/70 dark:text-base-content/90">Panduan menghubungkan hosting Anda menggunakan FTP FileZilla.</p>
         </div>
     </div>
 

@@ -11,11 +11,11 @@
         </a>
     </div>
 
-    <div class="mb-4 alert alert-info bg-primary/5 border-primary/20 shadow-sm">
+    <div class="mb-4 alert alert-info bg-primary/10 dark:bg-primary/20 border-primary/20 shadow-sm text-base-content h-auto py-4">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-primary shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
         <div class="flex-1">
-            <h3 class="font-bold">Bingung cara menggunakan data FTP di atas?</h3>
-            <div class="text-xs">Kami telah menyiapkan panduan lengkap menggunakan FileZilla untuk mengupload file website Anda.</div>
+            <h3 class="font-bold text-base-content">Bingung cara menggunakan data FTP di atas?</h3>
+            <div class="text-xs text-base-content/70 dark:text-base-content/90">Kami telah menyiapkan panduan lengkap menggunakan FileZilla untuk mengupload file website Anda.</div>
         </div>
         <div class="flex-none">
             <a href="{{ route('user.hosting.ftp-tutorial') }}" class="btn btn-sm btn-primary text-white font-bold">Lihat Panduan FTP</a>
@@ -65,19 +65,19 @@
                         @if($order->hostingAccount)
                         <div class="space-y-2 text-sm">
                             <div class="flex flex-col">
-                                <span class="text-xs text-base-content/50">Host:</span>
+                                <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Host:</span>
                                 <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->ftp_host }}</span>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs text-base-content/50">Port:</span>
+                                <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Port:</span>
                                 <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->ftp_port ?? '21' }}</span>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs text-base-content/50">Username:</span>
+                                <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Username:</span>
                                 <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->ftp_username }}</span>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs text-base-content/50">Password:</span>
+                                <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Password:</span>
                                 <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->ftp_password }}</span>
                             </div>
                         </div>
@@ -95,15 +95,15 @@
                         @if($order->hostingAccount)
                         <div class="space-y-2 text-sm">
                             <div class="flex flex-col">
-                                <span class="text-xs text-base-content/50">Host:</span>
+                                <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Host:</span>
                                 <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->db_host }}</span>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs text-base-content/50">Database Name:</span>
+                                <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Database Name:</span>
                                 <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->db_name }}</span>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-xs text-base-content/50">Username:</span>
+                                <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Username:</span>
                                 <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->db_username }}</span>
                             </div>
                         </div>
