@@ -86,7 +86,9 @@ Route::get('reset-password/{token}', function ($token) {
 Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
 
 Route::get('/about', function () {
-    $team = \App\Models\Profile::with('user')->get();
+    $team = \App\Models\Profile::whereHas('user', function($query) {
+        $query->whereIn('role', ['super_admin', 'admin']);
+    })->with('user')->get();
     $settings = \App\Models\Setting::where('group', 'about')->pluck('value', 'key');
 
     // Stats Logic (Consistent with Home)
