@@ -114,6 +114,10 @@
                                 <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Username:</span>
                                 <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->db_username }}</span>
                             </div>
+                            <div class="flex flex-col">
+                                <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Password:</span>
+                                <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->db_password }}</span>
+                            </div>
                             @if($order->hostingAccount->pma_link)
                             <div class="flex flex-col md:col-span-3 mt-2">
                                 <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Akses phpMyAdmin:</span>
