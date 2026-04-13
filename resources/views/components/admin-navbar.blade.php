@@ -11,7 +11,7 @@
         @if(auth()->user()->isUser())
             <div class="hidden md:flex items-center gap-2 text-sm">
                 <span class="text-base-content/60">Kesulitan menggunakan FTP?</span>
-                <a href="{{ route('user.hosting.ftp-tutorial') }}" class="link link-primary font-bold">Lihat Tutorial FTP</a>
+                <a href="{{ route('user.hosting.ftp-tutorial') }}" target="_blank" rel="noopener noreferrer" class="link link-primary font-bold">Lihat Tutorial FTP</a>
             </div>
         @endif
     </div>

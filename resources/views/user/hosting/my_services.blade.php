@@ -18,7 +18,7 @@
             <div class="text-xs text-base-content/70 dark:text-base-content/90">Kami telah menyiapkan panduan lengkap menggunakan FileZilla untuk mengupload file website Anda.</div>
         </div>
         <div class="flex-none">
-            <a href="{{ route('user.hosting.ftp-tutorial') }}" class="btn btn-sm btn-primary text-white font-bold">Lihat Panduan FTP</a>
+            <a href="{{ route('user.hosting.ftp-tutorial') }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary text-white font-bold">Lihat Panduan FTP</a>
         </div>
     </div>
 
