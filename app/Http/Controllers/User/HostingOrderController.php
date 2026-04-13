@@ -42,7 +42,29 @@ class HostingOrderController extends Controller
             'whatsapp_number' => 'required|string|max:20',
             'project_name' => 'required|string|max:255',
             'github_repo_url' => 'nullable|url',
-            'referral_code_used' => 'nullable|string|max:10',
+            'referral_code_used' => [
+                'nullable',
+                'string',
+                'max:10',
+                'exists:users,referral_code',
+                function ($attribute, $value, $fail) {
+                    if ($value === Auth::user()->referral_code) {
+                        $fail('Anda tidak bisa menggunakan kode referral Anda sendiri.');
+                    }
+                    
+                    // Cek apakah user sudah pernah menggunakan kode referral sebelumnya
+                    $alreadyUsed = Order::where('user_id', Auth::id())
+                        ->whereNotNull('referral_code_used')
+                        ->where('status', '!=', 'cancelled')
+                        ->exists();
+                        
+                    if ($alreadyUsed) {
+                        $fail('Anda hanya dapat menggunakan kode referral satu kali (untuk order pertama Anda).');
+                    }
+                },
+            ],
+        ], [
+            'referral_code_used.exists' => 'Kode referral tidak valid.',
         ]);
 
         $package = HostingPackage::findOrFail($request->hosting_package_id);
