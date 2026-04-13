@@ -32,7 +32,8 @@ class OtpVerificationController extends Controller
             $user->email_verified_at = now();
             $user->save();
 
-            return redirect()->route('dashboard')->with('success', 'Akun berhasil diverifikasi!');
+            $redirectRoute = $user->isAdmin() ? 'admin.dashboard' : 'user.dashboard';
+            return redirect()->route($redirectRoute)->with('success', 'Akun berhasil diverifikasi!');
         }
 
         return back()->withErrors(['otp' => 'Kode OTP tidak valid atau sudah kedaluwarsa.']);
