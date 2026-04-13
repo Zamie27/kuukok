@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\HostingAccountReady;
+use App\Mail\HostingPriceSet;
+use App\Mail\HostingPaymentApproved;
 
 class HostingOrderController extends Controller
 {
@@ -51,7 +53,20 @@ class HostingOrderController extends Controller
             // 1. Update Order Status
             $hosting_order->update(['status' => 'active']);
             
-            // 2. Mark User as having ordered hosting (to activate their own referral code)
+            // 2. If it's an UPGRADE, mark parent as upgraded and transfer account
+            if ($hosting_order->type === 'upgrade' && $hosting_order->parent_id) {
+                $parentOrder = Order::find($hosting_order->parent_id);
+                if ($parentOrder) {
+                    $parentOrder->update(['status' => 'upgraded']);
+                    
+                    // Transfer hosting account from parent to this upgrade order
+                    if ($parentOrder->hostingAccount) {
+                        $parentOrder->hostingAccount->update(['order_id' => $hosting_order->id]);
+                    }
+                }
+            }
+
+            // 3. Mark User as having ordered hosting (to activate their own referral code)
             $user = $hosting_order->user;
             if (!$user->has_ordered_hosting) {
                 $user->update(['has_ordered_hosting' => true]);
@@ -100,6 +115,13 @@ class HostingOrderController extends Controller
             }
         });
 
+        // Kirim email notifikasi bahwa pembayaran diterima
+        try {
+            Mail::to($hosting_order->customer_email)->send(new HostingPaymentApproved($hosting_order));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send payment approved email: ' . $e->getMessage());
+        }
+
         return redirect()->back()->with('success', 'Pembayaran disetujui, layanan diaktifkan, dan sistem referral diproses.');
     }
 
@@ -118,11 +140,12 @@ class HostingOrderController extends Controller
             'db_name' => 'nullable|string',
             'db_username' => 'nullable|string',
             'db_password' => 'nullable|string',
+            'pma_link' => 'nullable|url',
         ]);
 
         $hosting_order->hostingAccount()->updateOrCreate(
             ['order_id' => $hosting_order->id],
-            $request->only(['ftp_host', 'ftp_port', 'ftp_username', 'ftp_password', 'db_name', 'db_username', 'db_password'])
+            $request->only(['ftp_host', 'ftp_port', 'ftp_username', 'ftp_password', 'db_name', 'db_username', 'db_password', 'pma_link'])
         );
 
         // Kirim email notifikasi ke customer
@@ -141,6 +164,44 @@ class HostingOrderController extends Controller
         if (!Gate::allows('access-admin')) abort(403);
         $hosting_order->update(['status' => 'rejected']);
         return redirect()->back()->with('success', 'Pesanan ditolak.');
+    }
+
+    public function setPrice(Request $request, Order $hosting_order)
+    {
+        if (!Gate::allows('access-admin')) abort(403);
+
+        $request->validate([
+            'price_total' => 'required|numeric|min:0',
+            'admin_notes' => 'nullable|string|max:1000',
+        ]);
+
+        $hosting_order->update([
+            'price_total' => $request->price_total,
+            'admin_notes' => $request->admin_notes,
+            'unique_code' => $hosting_order->unique_code ?: rand(1, 999),
+            'status' => 'pending_payment',
+        ]);
+
+        // Kirim email notifikasi bahwa harga sudah ditentukan
+        try {
+            Mail::to($hosting_order->customer_email)->send(new HostingPriceSet($hosting_order));
+        } catch (\Exception $e) {
+            \Log::error('Failed to send price set email: ' . $e->getMessage());
+        }
+
+        return redirect()->back()->with('success', 'Harga dan keterangan berhasil ditetapkan.');
+    }
+
+    public function toggleSuspend(Order $hosting_order)
+    {
+        if (!Gate::allows('access-admin')) abort(403);
+
+        $hosting_order->update([
+            'is_suspended' => !$hosting_order->is_suspended
+        ]);
+
+        $status = $hosting_order->is_suspended ? 'ditangguhkan' : 'diaktifkan kembali';
+        return redirect()->back()->with('success', "Layanan berhasil $status.");
     }
 
     public function uploadQris(Request $request)

@@ -10,6 +10,8 @@ class Order extends Model
 {
     protected $fillable = [
         'user_id',
+        'type',
+        'parent_id',
         'customer_name',
         'customer_email',
         'project_name',
@@ -21,11 +23,18 @@ class Order extends Model
         'domain_type',
         'domain_name',
         'price_total',
+        'unique_code',
         'referral_code_used',
         'status',
         'payment_proof',
+        'is_suspended',
         'admin_notes',
     ];
+
+    public function getFinalPriceAttribute(): float
+    {
+        return (float) ($this->price_total + $this->unique_code);
+    }
 
     /**
      * Relationships
@@ -38,6 +47,16 @@ class Order extends Model
     public function hostingPackage(): BelongsTo
     {
         return $this->belongsTo(HostingPackage::class);
+    }
+
+    public function parentOrder(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function upgradeOrders(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function payment(): HasOne
@@ -56,11 +75,13 @@ class Order extends Model
     public function getStatusLabelAttribute(): string
     {
         return match($this->status) {
+            'waiting_price' => 'Menunggu Penentuan Harga',
             'pending_payment' => 'Menunggu Pembayaran',
             'waiting_confirmation' => 'Menunggu Konfirmasi',
             'active' => 'Aktif',
             'rejected' => 'Ditolak',
-            default => 'Unknown',
+            'upgraded' => 'Sudah Upgrade',
+            default => $this->status,
         };
     }
 }

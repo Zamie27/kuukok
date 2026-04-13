@@ -41,6 +41,7 @@
                 'active' => 'badge-success',
                 'waiting_confirmation' => 'badge-warning',
                 'pending_payment' => 'badge-info',
+                'waiting_price' => 'badge-secondary',
                 'rejected' => 'badge-error',
                 default => 'badge-ghost',
             };
@@ -55,7 +56,14 @@
             </div>
             <div class="card-body">
                 @if($order->status === 'active')
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    @if($order->is_suspended)
+                        <div class="py-12 text-center bg-error/5 rounded-2xl border border-error/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-error mx-auto mb-4 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            <h3 class="text-2xl font-bold text-error mb-2">Paket Ditangguhkan</h3>
+                            <p class="text-base-content/60 max-w-md mx-auto">Layanan hosting Anda sementara tidak aktif. Hubungi admin untuk informasi lebih lanjut.</p>
+                        </div>
+                    @else
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- FTP Details -->
                     <div class="space-y-4">
                         <h3 class="font-bold text-lg border-b pb-2 flex items-center gap-2">
@@ -106,11 +114,33 @@
                                 <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Username:</span>
                                 <span class="font-mono bg-base-200 px-2 py-1 rounded">{{ $order->hostingAccount->db_username }}</span>
                             </div>
+                            @if($order->hostingAccount->pma_link)
+                            <div class="flex flex-col md:col-span-3 mt-2">
+                                <span class="text-xs font-semibold text-base-content/70 dark:text-base-content/80 uppercase tracking-wider">Akses phpMyAdmin:</span>
+                                <a href="{{ $order->hostingAccount->pma_link }}" target="_blank" class="btn btn-xs btn-outline btn-secondary w-fit mt-1 gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                    Buka phpMyAdmin
+                                </a>
+                            </div>
+                            @endif
                         </div>
                         @else
                         <p class="text-xs italic text-base-content/50 px-2">Data database sedang disiapkan oleh admin...</p>
                         @endif
                     </div>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <a href="{{ route('user.hosting.upgrade.index', $order->id) }}" class="btn btn-sm btn-outline btn-secondary gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+                            Upgrade Paket
+                        </a>
+                    </div>
+                    @endif
+                @elseif($order->status === 'waiting_price')
+                <div class="py-8 text-center bg-secondary/5 rounded-xl border border-secondary/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-secondary mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                    <h3 class="font-bold text-lg text-secondary">Menunggu Harga Admin</h3>
+                    <p class="text-sm text-base-content/60 max-w-xs mx-auto mt-2">Admin sedang mengecek ketersediaan domain dan akan segera memberikan harga khusus untuk Anda.</p>
                 </div>
                 @elseif($order->status === 'waiting_confirmation')
                 <div class="py-8 text-center bg-warning/5 rounded-xl border border-warning/20">
@@ -122,6 +152,17 @@
                 <div class="py-8 text-center bg-info/5 rounded-xl border border-info/20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-info mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                     <h3 class="font-bold text-lg text-info">Belum Konfirmasi Bayar</h3>
+                    <div class="mt-2 mb-1 flex flex-col items-center">
+                        <span class="text-xs text-base-content/50 uppercase font-semibold">Total Transfer:</span>
+                        <span class="text-xl font-bold font-mono">
+                            Rp {{ number_format(floor($order->final_price / 1000), 0, ',', '.') }}.<span>{{ sprintf('%03d', $order->unique_code) }}</span>
+                        </span>
+                    </div>
+                    @if($order->admin_notes)
+                    <div class="my-3 p-3 bg-info/10 text-info text-sm rounded-lg border border-info/20 max-w-xs mx-auto italic">
+                        "{{ $order->admin_notes }}"
+                    </div>
+                    @endif
                     <p class="text-sm text-base-content/60 max-w-xs mx-auto mt-2 mb-4">Anda belum mengunggah bukti pembayaran untuk pesanan ini.</p>
                     <a href="{{ route('user.hosting.payment', $order->id) }}" class="btn btn-info btn-sm text-white">Bayar Sekarang</a>
                 </div>

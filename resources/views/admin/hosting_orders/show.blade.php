@@ -52,6 +52,19 @@
                             <p class="text-base-content/50">Database:</p>
                             <p class="font-bold">{{ $order->database ?? '-' }}</p>
                         </div>
+                        <div class="space-y-1">
+                            <p class="text-base-content/50">Domain:</p>
+                            <p class="font-bold text-lg">{{ $order->domain_name }}{{ $order->domain_type === 'subdomain' ? '.kuukok.my.id' : '' }}</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-base-content/50">Tipe Pesanan:</p>
+                            <p class="font-bold uppercase">
+                                {{ $order->type === 'upgrade' ? 'UPGRADE' : 'BARU' }}
+                                @if($order->parent_id)
+                                    <a href="{{ route('admin.hosting-orders.show', $order->parent_id) }}" class="text-primary hover:underline ml-1">(Lihat #{{ $order->parent_id }})</a>
+                                @endif
+                            </p>
+                        </div>
                     </div>
                     
                     @if($order->github_repo_url)
@@ -114,6 +127,10 @@
                                 <input type="text" name="db_username" value="{{ $order->hostingAccount->db_username ?? '' }}" class="input input-bordered" />
                             </div>
                             <div class="form-control">
+                                <label class="label"><span class="label-text text-secondary font-bold">Akses phpMyAdmin (URL)</span></label>
+                                <input type="url" name="pma_link" value="{{ $order->hostingAccount->pma_link ?? '' }}" placeholder="https://..." class="input input-bordered border-secondary/30" />
+                            </div>
+                            <div class="form-control">
                                 <label class="label"><span class="label-text">DB Password</span></label>
                                 <input type="text" name="db_password" value="{{ $order->hostingAccount->db_password ?? '' }}" class="input input-bordered" />
                             </div>
@@ -134,6 +151,7 @@
                 <div class="card-body text-center">
                     @php
                         $statusLabel = match($order->status) {
+                            'waiting_price' => 'Menunggu Penentuan Harga',
                             'pending_payment' => 'Menunggu Pembayaran',
                             'waiting_confirmation' => 'Verifikasi Bukti Bayar',
                             'active' => 'Layanan Aktif',
@@ -141,8 +159,36 @@
                             default => $order->status,
                         };
                     @endphp
-                    <div class="text-2xl font-black mb-4">{{ $statusLabel }}</div>
-                    
+                    <div class="text-2xl font-black mb-1">{{ $statusLabel }}</div>
+                    @if($order->price_total > 0)
+                    <div class="mb-4 flex flex-col">
+                        <span class="text-[10px] uppercase font-bold text-base-content/40">Total Tagihan User:</span>
+                        <span class="text-lg font-bold text-success">
+                            Rp {{ number_format(floor($order->final_price / 1000), 0, ',', '.') }}.<span>{{ sprintf('%03d', $order->unique_code) }}</span>
+                        </span>
+                    </div>
+                    @endif
+
+                    @if($order->status == 'waiting_price')
+                    <div class="flex flex-col gap-4 p-4 bg-secondary/10 rounded-lg border border-secondary/20">
+                        <p class="text-sm font-semibold text-secondary">Masukkan Harga Akhir:</p>
+                        <form action="{{ route('admin.hosting-orders.set-price', ['hosting_order' => $order->id]) }}" method="POST" class="space-y-3">
+                            @csrf
+                            <div class="form-control">
+                                <label class="label"><span class="label-text-alt font-semibold">Total Harga (Rp)</span></label>
+                                <input type="number" name="price_total" class="input input-bordered input-sm" placeholder="Contoh: 50000" required />
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text-alt font-semibold">Keterangan Biaya</span></label>
+                                <textarea name="admin_notes" class="textarea textarea-bordered textarea-sm" placeholder="Contoh: +20.000 untuk domain dan +30.000 untuk jasa hosting"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-secondary btn-sm text-white w-full">
+                                Tetapkan Harga & Lanjutkan
+                            </button>
+                        </form>
+                    </div>
+                    @endif
+
                     @if($order->status == 'waiting_confirmation')
                     <div class="flex flex-col gap-2">
                         <form action="{{ route('admin.hosting-orders.approve', ['hosting_order' => $order->id]) }}" method="POST">
@@ -155,6 +201,23 @@
                             @csrf
                             <button type="submit" class="btn btn-error btn-outline w-full" onclick="return confirm('Tolak pesanan ini?')">
                                 Tolak Pesanan
+                            </button>
+                        </form>
+                    </div>
+                    @endif
+
+                    @if($order->status == 'active')
+                    <div class="mt-4 pt-4 border-t">
+                        <form action="{{ route('admin.hosting-orders.toggle-suspend', $order->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn {{ $order->is_suspended ? 'btn-success text-white' : 'btn-warning text-white' }} w-full gap-2">
+                                @if($order->is_suspended)
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    Aktifkan Kembali Layanan
+                                @else
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                                    Tangguhkan Layanan
+                                @endif
                             </button>
                         </form>
                     </div>

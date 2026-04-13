@@ -17,6 +17,7 @@ class HostingAccount extends Model
         'db_username',
         'db_password',
         'db_host',
+        'pma_link',
     ];
 
     public function order(): BelongsTo

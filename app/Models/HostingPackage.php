@@ -10,6 +10,8 @@ class HostingPackage extends Model
         'name',
         'price_text',
         'label',
+        'rank',
+        'is_custom_domain',
         'features',
         'cta_link',
         'status',

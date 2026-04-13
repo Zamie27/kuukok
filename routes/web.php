@@ -147,6 +147,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('hosting-orders/{hosting_order}/approve', [\App\Http\Controllers\Admin\HostingOrderController::class, 'approvePayment'])->name('hosting-orders.approve');
     Route::put('hosting-orders/{hosting_order}/provision', [\App\Http\Controllers\Admin\HostingOrderController::class, 'provision'])->name('hosting-orders.provision');
     Route::post('hosting-orders/{hosting_order}/reject', [\App\Http\Controllers\Admin\HostingOrderController::class, 'reject'])->name('hosting-orders.reject');
+    Route::post('hosting-orders/{hosting_order}/set-price', [\App\Http\Controllers\Admin\HostingOrderController::class, 'setPrice'])->name('hosting-orders.set-price');
+    Route::post('hosting-orders/{hosting_order}/toggle-suspend', [\App\Http\Controllers\Admin\HostingOrderController::class, 'toggleSuspend'])->name('hosting-orders.toggle-suspend');
     Route::post('hosting-orders/upload-qris', [\App\Http\Controllers\Admin\HostingOrderController::class, 'uploadQris'])->name('hosting-orders.upload-qris');
 
     // Cashback Withdrawals (Admin)
@@ -208,6 +210,10 @@ Route::middleware(['auth', 'verified'])->prefix('user/hosting')->name('user.host
     Route::get('/payment/{hosting_order}', [\App\Http\Controllers\User\HostingOrderController::class, 'payment'])->name('payment');
     Route::put('/payment/{hosting_order}/submit', [\App\Http\Controllers\User\HostingOrderController::class, 'submitPayment'])->name('order.payment.submit');
     Route::get('/my-services', [\App\Http\Controllers\User\HostingOrderController::class, 'myServices'])->name('my-services');
+    // Upgrade System
+    Route::get('/upgrade/{order}', [\App\Http\Controllers\User\HostingUpgradeController::class, 'index'])->name('upgrade.index');
+    Route::get('/upgrade/{order}/package/{package}', [\App\Http\Controllers\User\HostingUpgradeController::class, 'create'])->name('upgrade.create');
+    Route::post('/upgrade/{order}', [\App\Http\Controllers\User\HostingUpgradeController::class, 'store'])->name('upgrade.store');
     Route::get('/ftp-tutorial', function() {
         return redirect('https://kuukok.my.id/blog/cara-menghubungkan-ke-layanan-hosting-anda-menggunakan-ftp');
     })->name('ftp-tutorial');

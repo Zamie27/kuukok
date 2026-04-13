@@ -43,6 +43,7 @@ class HostingOrderController extends Controller
             'project_name' => 'required|string|max:255',
             'framework' => 'required|string|max:255',
             'database' => 'required|string|max:255',
+            'domain_name' => 'required|string|max:255',
             'github_repo_url' => 'nullable|url',
             'referral_code_used' => [
                 'nullable',
@@ -71,8 +72,17 @@ class HostingOrderController extends Controller
 
         $package = HostingPackage::findOrFail($request->hosting_package_id);
 
+        $priceTotal = $package->price;
+        $status = 'pending_payment';
+
+        if ($package->is_custom_domain) {
+            $priceTotal = 0;
+            $status = 'waiting_price';
+        }
+
         $order = Order::create([
             'user_id' => Auth::id(),
+            'type' => 'initial',
             'hosting_package_id' => $package->id,
             'customer_name' => $request->customer_name,
             'customer_email' => $request->customer_email,
@@ -81,10 +91,17 @@ class HostingOrderController extends Controller
             'database' => $request->database,
             'whatsapp_number' => $request->whatsapp_number,
             'github_repo_url' => $request->github_repo_url,
-            'price_total' => $package->price,
+            'domain_type' => $package->is_custom_domain ? 'custom' : 'subdomain',
+            'domain_name' => $request->domain_name,
+            'price_total' => $priceTotal,
+            'unique_code' => $priceTotal > 0 ? rand(1, 999) : 0,
             'referral_code_used' => $request->referral_code_used,
-            'status' => 'pending_payment',
+            'status' => $status,
         ]);
+
+        if ($status === 'waiting_price') {
+            return redirect()->route('user.hosting.my-services')->with('success', 'Pesanan berhasil dikirim. Admin akan segera mengecek ketersediaan domain dan menentukan harga terbaik untuk Anda.');
+        }
 
         return redirect()->route('user.hosting.payment', $order->id);
     }
@@ -148,6 +165,7 @@ class HostingOrderController extends Controller
     {
         $orders = Order::with(['hostingPackage', 'hostingAccount'])
             ->where('user_id', Auth::id())
+            ->where('status', '!=', 'upgraded')
             ->latest()
             ->get();
             

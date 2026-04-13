@@ -1,6 +1,17 @@
 <x-layouts.admin title="Pembayaran Hosting">
 <div class="mx-auto max-w-4xl">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        @if($order->status === 'waiting_price')
+            <div class="col-span-full py-16 text-center bg-base-100 shadow border border-base-200 rounded-2xl">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-secondary mx-auto mb-6 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                <h2 class="text-3xl font-bold text-secondary mb-4">Menunggu Penentuan Harga</h2>
+                <p class="text-lg text-base-content/60 max-w-2xl mx-auto mb-8">
+                    Admin sedang meninjau pesanan Anda untuk mengecek ketersediaan domain dan menghitung biaya upgrade/layanan yang sesuai. 
+                    Halaman ini akan diperbarui secara otomatis ketika harga sudah keluar. Silakan cek kembali dalam waktu dekat.
+                </p>
+                <a href="{{ route('user.hosting.my-services') }}" class="btn btn-primary px-8 text-white rounded-full">Kembali ke Layanan Saya</a>
+            </div>
+        @else
         <!-- Instruski Pembayaran -->
         <div class="space-y-6">
             <div class="card bg-base-100 shadow border border-base-200">
@@ -52,9 +63,30 @@
                         </div>
                     </div>
 
-                    <div class="alert alert-info mt-6 text-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span>Total yang harus dibayar: <strong>Rp {{ number_format($order->price_total, 0, ',', '.') }}</strong></span>
+                    @if($order->admin_notes)
+                    <div class="p-4 bg-info/5 border border-info/20 rounded-lg text-sm italic text-info mb-4">
+                        Keterangan Admin: "{{ $order->admin_notes }}"
+                    </div>
+                    @endif
+
+                    <div class="alert alert-info mt-6 shadow-md border-2 border-info/50">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div class="flex flex-col">
+                            <span class="text-xs uppercase font-bold opacity-70">Total yang harus dibayar:</span>
+                            <span class="text-2xl font-black tracking-tight">
+                                Rp {{ number_format(floor($order->final_price / 1000), 0, ',', '.') }}.<span>{{ sprintf('%03d', $order->unique_code) }}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-4 bg-warning/10 border-l-4 border-warning text-warning-content rounded-r-lg">
+                        <div class="flex gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                            <div>
+                                <p class="font-bold text-sm uppercase">Penting!</p>
+                                <p class="text-xs leading-relaxed">Mohon transfer <strong>TEPAT</strong> sesuai nominal di atas (sampai 3 digit terakhir). Perbedaan nominal akan menghambat proses verifikasi otomatis admin.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,6 +138,8 @@
                 </div>
             </div>
         </div>
+        @endif
+    </div>
     </div>
 </div>
 </x-layouts.admin>
