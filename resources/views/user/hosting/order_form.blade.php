@@ -40,6 +40,28 @@
                     </div>
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Framework Yang Digunakan</span>
+                        </label>
+                        <input type="text" name="framework" placeholder="Contoh: Laravel / Codeigniter" class="input input-bordered w-full" required />
+                        <label class="label mt-[-4px]">
+                            <span class="label-text-alt text-base-content/50">Codeigniter/Laravel/dll</span>
+                        </label>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Database Yang Digunakan</span>
+                        </label>
+                        <input type="text" name="database" placeholder="Contoh: MySQL / Supabase" class="input input-bordered w-full" required />
+                        <label class="label mt-[-4px]">
+                            <span class="label-text-alt text-base-content/50">MYSQL/SQlite/MongoDB/SupaBase/dll</span>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="form-control">
                     <label class="label"><span class="label-text font-semibold">URL Repository Github (Opsional)</span></label>
                     <input type="url" name="github_repo_url" placeholder="https://github.com/username/repo" class="input input-bordered w-full" />

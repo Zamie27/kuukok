@@ -44,6 +44,14 @@
                             <p class="text-base-content/50">Total Bayar:</p>
                             <p class="font-bold text-lg text-accent">Rp {{ number_format($order->price_total, 0, ',', '.') }}</p>
                         </div>
+                        <div class="space-y-1">
+                            <p class="text-base-content/50">Framework:</p>
+                            <p class="font-bold">{{ $order->framework ?? '-' }}</p>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-base-content/50">Database:</p>
+                            <p class="font-bold">{{ $order->database ?? '-' }}</p>
+                        </div>
                     </div>
                     
                     @if($order->github_repo_url)

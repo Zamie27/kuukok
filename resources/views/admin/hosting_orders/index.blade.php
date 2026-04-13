@@ -103,7 +103,15 @@
                         <td>
                             <span class="badge badge-outline">{{ $order->hostingPackage->name ?? 'N/A' }}</span>
                         </td>
-                        <td>{{ $order->project_name }}</td>
+                        <td>
+                            <div class="flex flex-col">
+                                <span class="font-medium">{{ $order->project_name }}</span>
+                                <div class="flex gap-1 mt-1">
+                                    <span class="badge badge-xs badge-ghost opacity-70">{{ $order->framework }}</span>
+                                    <span class="badge badge-xs badge-ghost opacity-70">{{ $order->database }}</span>
+                                </div>
+                            </div>
+                        </td>
                         <td class="font-bold">Rp {{ number_format($order->price_total, 0, ',', '.') }}</td>
                         <td>
                             @php

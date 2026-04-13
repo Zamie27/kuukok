@@ -41,6 +41,8 @@ class HostingOrderController extends Controller
             'customer_email' => 'required|email|max:255',
             'whatsapp_number' => 'required|string|max:20',
             'project_name' => 'required|string|max:255',
+            'framework' => 'required|string|max:255',
+            'database' => 'required|string|max:255',
             'github_repo_url' => 'nullable|url',
             'referral_code_used' => [
                 'nullable',
@@ -75,6 +77,8 @@ class HostingOrderController extends Controller
             'customer_name' => $request->customer_name,
             'customer_email' => $request->customer_email,
             'project_name' => $request->project_name,
+            'framework' => $request->framework,
+            'database' => $request->database,
             'whatsapp_number' => $request->whatsapp_number,
             'github_repo_url' => $request->github_repo_url,
             'price_total' => $package->price,

@@ -13,6 +13,8 @@ class Order extends Model
         'customer_name',
         'customer_email',
         'project_name',
+        'framework',
+        'database',
         'whatsapp_number',
         'github_repo_url',
         'hosting_package_id',
